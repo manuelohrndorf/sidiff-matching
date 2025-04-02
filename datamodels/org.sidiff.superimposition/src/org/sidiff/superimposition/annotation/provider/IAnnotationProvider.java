@@ -1,5 +1,6 @@
 package org.sidiff.superimposition.annotation.provider;
 
+import java.util.Collection;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.resource.Resource;
@@ -19,5 +20,5 @@ public interface IAnnotationProvider extends ITypedExtension, IConfigurableExten
 	TypedExtensionManager<IAnnotationProvider> MANAGER =
 			new TypedExtensionManager<>(new NoExtensionManagerStorage<>(DESCRIPTION));
 
-	Set<Annotation> getAnnotations(Resource model);
+	Set<Annotation> getAnnotations(Collection<Resource> allModels, Resource currentModel);
 }

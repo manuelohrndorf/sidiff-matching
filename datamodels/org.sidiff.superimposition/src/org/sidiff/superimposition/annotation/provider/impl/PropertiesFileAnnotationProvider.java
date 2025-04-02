@@ -1,21 +1,14 @@
 package org.sidiff.superimposition.annotation.provider.impl;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.sidiff.common.emf.modelstorage.EMFStorage;
-import org.sidiff.common.extension.configuration.BasicExtensionConfiguration;
-import org.sidiff.common.extension.configuration.ConfigurationOption;
-import org.sidiff.common.extension.configuration.IExtensionConfiguration;
+import org.sidiff.common.extension.configuration.*;
+import org.sidiff.common.file.PropertiesUtil;
 import org.sidiff.common.util.StringListSerializer;
 import org.sidiff.entities.Annotation;
 import org.sidiff.entities.util.EntitiesUtil;
@@ -28,7 +21,8 @@ import org.sidiff.superimposition.annotation.provider.AbstractAnnotationProvider
  * and the value being a semicolon separated set of annotations (may be Formulas).</p>
  * <p>First looks for the exact filename including extension, then for the filename without extension.</p>
  * <p>The location of the properties file is configured using the configuration option,
- * relative to the project which contains the models to be annotated.</p>
+ * relative to the project which contains the models to be annotated. Leave the option empty
+ * to automatically search for an appropriate properties file.</p>
  * <p>Example: <code>annot.properties</code></p>
  * <pre>
  * A.ecore=Foo and Bar
@@ -48,7 +42,8 @@ public class PropertiesFileAnnotationProvider extends AbstractAnnotationProvider
 		propertiesFileOption =
 			ConfigurationOption.builder(String.class)
 				.key("propertiesFile")
-				.name("Annotation .properties file (in the model's project)")
+				.name("Annotation .properties file (in the model's project) (empty to search automatically)")
+				.defaultValue("")
 				.build();
 		useConditionAnnotationsOption =
 			ConfigurationOption.builder(Boolean.class)
@@ -61,11 +56,11 @@ public class PropertiesFileAnnotationProvider extends AbstractAnnotationProvider
 	}
 
 	@Override
-	public Set<Annotation> getAnnotations(Resource model) {
-		Properties properties = loadProperties(model);
-		String annotationValue = properties.getProperty(model.getURI().lastSegment());
+	public Set<Annotation> getAnnotations(Collection<Resource> allModels, Resource currentModel) {
+		Properties properties = loadProperties(currentModel);
+		String annotationValue = properties.getProperty(currentModel.getURI().lastSegment());
 		if(annotationValue == null) {
-			annotationValue = properties.getProperty(model.getURI().trimFileExtension().lastSegment());
+			annotationValue = properties.getProperty(currentModel.getURI().trimFileExtension().lastSegment());
 		}
 		if(annotationValue == null) {
 			return Collections.emptySet();
@@ -78,16 +73,23 @@ public class PropertiesFileAnnotationProvider extends AbstractAnnotationProvider
 	}
 
 	private Properties loadProperties(Resource model) {
-		IProject project = EMFStorage.toIFile(model.getURI()).getProject();
-		IFile propertiesFile = project.getFile(propertiesFileOption.getValue());
-		if(!propertiesFile.exists()) {
-			throw new IllegalStateException("Configured properties file does not exist");			
+		IFile modelFile = EMFStorage.toIFile(model.getURI());
+		String fileName = propertiesFileOption.getValue().trim();
+		if (fileName.isEmpty()) {
+			try {
+				return PropertiesUtil.findPreferredProperties(modelFile);
+			} catch (CoreException e) {
+				throw new IllegalStateException("Could not find a properties file", e);
+			}
 		}
-		try (InputStream contents = propertiesFile.getContents(true)) {
-			Properties properties = new Properties();
-			properties.load(contents);
-			return properties;
-		} catch (IOException | CoreException e) {
+
+		IFile propertiesFile = modelFile.getProject().getFile(fileName);
+		if(!propertiesFile.exists()) {
+			throw new IllegalStateException("Configured properties file does not exist");
+		}
+		try {
+			return PropertiesUtil.loadProperties(propertiesFile);
+		} catch (CoreException e) {
 			throw new IllegalStateException("Properties file could not be loaded", e);
 		}
 	}
@@ -98,7 +100,7 @@ public class PropertiesFileAnnotationProvider extends AbstractAnnotationProvider
 				return EntitiesUtil.createConditionAnnotation(FormulaParser.INSTANCE.parse(annotString));
 			} catch (InvalidFormulaException e) {
 				// fall through
-			}					
+			}
 		}
 		return EntitiesUtil.createModelAnnotation(annotString);
 	}

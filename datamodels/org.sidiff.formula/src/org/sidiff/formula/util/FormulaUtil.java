@@ -15,7 +15,7 @@ public class FormulaUtil {
 	private FormulaUtil() {
 		throw new AssertionError();
 	}
-	
+
 	public static Optional<Boolean> getBooleanValue(Formula formula) {
 		if(formula instanceof Variable) {
 			switch(((Variable)formula).getName()) {
@@ -26,10 +26,14 @@ public class FormulaUtil {
 		return Optional.empty();
 	}
 	
+	public static Formula create(boolean b) {
+		return createVariable(String.valueOf(b));
+	}
+
 	public static Formula createTrue() {
 		return createVariable("true");
 	}
-	
+
 	public static Formula createFalse() {
 		return createVariable("false");
 	}
@@ -55,7 +59,7 @@ public class FormulaUtil {
 		variable.setType(type);
 		return variable;
 	}
-	
+
 	/**
 	 * Creates a new {@link Not} with the given inner formula.
 	 * @param formula the inner formula
@@ -79,22 +83,28 @@ public class FormulaUtil {
 		and.setRight(right);
 		return and;
 	}
-	
+
 	/**
 	 * Creates a new {@link And} with the given formulas.
-	 * Returns the formula itself, if only one argument. 
+	 * Returns the formula itself, if only one argument.
+	 * @param formulas formulas to concatenate, must be at least one
+	 * @return new Conjunction/And
+	 * @deprecated Use createAnd(Array.asList(...)) or createAnd(existingList) instead.
+	 */
+	public static Formula createAnd(Formula... formulas) {
+		return createAnd(Arrays.asList(formulas));
+	}
+
+	/**
+	 * Creates a new {@link And} with the given formulas.
+	 * Returns the formula itself, if only one argument.
 	 * @param formulas formulas to concatenate, must be at least one
 	 * @return new Conjunction/And
 	 */
-	public static Formula createAnd(Formula... formulas) {
-		switch(formulas.length) {
-			case 0: 
-				throw new IllegalArgumentException("At least one formula required");
-			case 1:
-				return formulas[0];
-			default:
-				return createAnd(formulas[0], createAnd(Arrays.copyOfRange(formulas, 1, formulas.length)));
-		}
+	public static Formula createAnd(List<Formula> formulas) {
+		return formulas.stream()
+				.reduce(FormulaUtil::createAnd)
+				.orElseGet(FormulaUtil::createTrue);
 	}
 
 	/**
@@ -109,22 +119,16 @@ public class FormulaUtil {
 		or.setRight(right);
 		return or;
 	}
-	
+
 	/**
 	 * Creates a new {@link Or} with the given formulas.
-	 * Returns the formula itself, if only one argument.
-	 * @param formulas to concatenate, must be at least one
+	 * @param formulas to concatenate
 	 * @return new Disjunction/Or
 	 */
-	public static Formula createOr(Formula... formulas) {
-		switch(formulas.length) {
-			case 0: 
-				throw new IllegalArgumentException("At least one formula required");
-			case 1:
-				return formulas[0];
-			default:
-				return createOr(formulas[0], createOr(Arrays.copyOfRange(formulas, 1, formulas.length)));
-		}
+	public static Formula createOr(List<Formula> formulas) {
+		return formulas.stream()
+				.reduce(FormulaUtil::createOr)
+				.orElseGet(FormulaUtil::createFalse);
 	}
 
 	/**
@@ -138,6 +142,17 @@ public class FormulaUtil {
 		xor.setLeft(left);
 		xor.setRight(right);
 		return xor;
+	}
+
+	/**
+	 * Creates a new {@link Xor} with the given formulas.
+	 * @param formulas to concatenate
+	 * @return new Xor
+	 */
+	public static Formula createXor(List<Formula> formulas) {
+		return formulas.stream()
+				.reduce(FormulaUtil::createXor)
+				.orElseGet(FormulaUtil::createFalse);
 	}
 
 	/**

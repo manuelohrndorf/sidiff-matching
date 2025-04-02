@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: SiDiff Annotation Service - Default
 Bundle-SymbolicName: org.sidiff.annotation.default;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.2.1.qualifier
 Require-Bundle: org.sidiff.annotation;visibility:=reexport,
  org.sidiff.common.emf;visibility:=reexport,
  org.sidiff.configuration

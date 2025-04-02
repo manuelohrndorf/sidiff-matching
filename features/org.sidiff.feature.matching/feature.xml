@@ -2,7 +2,7 @@
 <feature
       id="org.sidiff.feature.matching"
       label="SiDiff Matching"
-      version="1.2.0.qualifier"
+      version="1.2.1.qualifier"
       provider-name="Software Engineering Group, University of Siegen"
       plugin="org.sidiff.branding.core">
 
@@ -150,206 +150,210 @@ Java and all Java-based trademarks are trademarks of Oracle Corporation in the U
          id="org.sidiff.feature.integration.preferences.matching"
          version="0.0.0"/>
 
+   <includes
+         id="org.sidiff.feature.metrics"
+         version="0.0.0"/>
+
    <plugin
          id="org.sidiff.annotation"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.2.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.sidiff.annotation.default"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.2.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.sidiff.candidates"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.2.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.sidiff.candidates.type"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.2.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.sidiff.comparators"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.2.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.sidiff.comparefunctions"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.2.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.sidiff.conditions"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.2.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.sidiff.configuration"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.2.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.sidiff.correspondences"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.2.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.sidiff.correspondences.matchingmodel"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.2.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.sidiff.domain"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.2.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.sidiff.matcher"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.2.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.sidiff.matching.api"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.2.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.sidiff.matching.model"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.2.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.sidiff.matching.model.edit"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.2.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.sidiff.matching.model.editor"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.2.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.sidiff.similarities"
          download-size="0"
          install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.sidiff.similaritiescalculation"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
+         version="1.2.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.sidiff.branding.core"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="1.2.1.qualifier"/>
 
    <plugin
          id="org.sidiff.common"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.2.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.sidiff.common.emf"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.2.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.sidiff.common.emf.doctype"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.2.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.sidiff.common.emf.input"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.2.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.sidiff.common.emf.settings"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.2.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.sidiff.common.emf.stringresolver"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.2.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.sidiff.common.extension"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.2.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.sidiff.common.xml"
          download-size="0"
          install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.sidiff.correspondences.pairtable"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
+         version="1.2.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.sidiff.common.statistics"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.2.1.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="org.sidiff.common.ui"
+         download-size="0"
+         install-size="0"
+         version="1.2.1.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="org.sidiff.similaritiescalculation"
+         download-size="0"
+         install-size="0"
+         version="1.2.1.qualifier"
          unpack="false"/>
 
 </feature>

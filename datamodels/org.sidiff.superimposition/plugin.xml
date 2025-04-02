@@ -120,5 +120,14 @@
             generic
          </documentType>
       </annotationProvider>
+      <annotationProvider
+            class="org.sidiff.superimposition.annotation.provider.impl.ExclusivePresenceConditionAnnotationProvider"
+            description="Creates C-style presence conditions assuming each model excludes all other models."
+            key="ExclusivePresenceConditionAnnotations"
+            name="Exclusive Presence Condition Annotations">
+         <documentType>
+            generic
+         </documentType>
+      </annotationProvider>
    </extension>
 </plugin>

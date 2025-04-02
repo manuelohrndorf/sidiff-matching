@@ -32,7 +32,7 @@ public class Z3SatSolverAdapter implements ISatSolverAdapter {
 			Status status = solver.check();
 
 			Map<String, String> assignments = new HashMap<>();
-			if (status.equals(Status.SATISFIABLE)) {
+			if (status == Status.SATISFIABLE) {
 				for (Expr expr : FormulaConverter.getVariables(boolExpr)) {
 					Expr assignment = solver.getModel().getConstInterp(expr);
 					assignments.put(expr.toString(), assignment != null ? assignment.toString() : "X");
@@ -112,30 +112,25 @@ public class Z3SatSolverAdapter implements ISatSolverAdapter {
 
 				Solver solver = ctx.mkSolver();
 				solver.add(boolExpr);
-				Status status = solver.check();
 
-				while (status.equals(Status.SATISFIABLE)) {
+				Status status;
+				while ((status = solver.check()) == Status.SATISFIABLE) {
 					Map<String, String> assignments = new HashMap<>();
-					if (status.equals(Status.SATISFIABLE)) {
-						Set<Expr> expressions = new HashSet<>();
-						for (Expr expr : FormulaConverter.getVariables(boolExpr)) {
-							Expr assignment = solver.getModel().getConstInterp(expr);
-							if (assignment != null) {
-								assignments.put(expr.toString(), assignment.toString());
-								Boolean b = Boolean.valueOf(assignment.toString());
-								expressions.add(ctx.mkEq(expr, ctx.mkBool(!b)));
-							} else {
-								assignments.put(expr.toString(), "X");
-							}
+					Set<Expr> expressions = new HashSet<>();
+					for (Expr expr : FormulaConverter.getVariables(boolExpr)) {
+						Expr assignment = solver.getModel().getConstInterp(expr);
+						if (assignment != null) {
+							assignments.put(expr.toString(), assignment.toString());
+							Boolean b = Boolean.valueOf(assignment.toString());
+							expressions.add(ctx.mkEq(expr, ctx.mkBool(!b)));
+						} else {
+							assignments.put(expr.toString(), "X");
 						}
-						if (!expressions.isEmpty()) {
-							solver.add(ctx.mkOr(expressions.toArray(new BoolExpr[] {})));
-						}
-						result.add(new SatResult(convertStatusToEStatus(status), formula, assignments));
 					}
-
-					status = solver.check();
-
+					if (!expressions.isEmpty()) {
+						solver.add(ctx.mkOr(expressions.toArray(new BoolExpr[] {})));
+					}
+					result.add(new SatResult(convertStatusToEStatus(status), formula, assignments));
 				}
 
 				return result;

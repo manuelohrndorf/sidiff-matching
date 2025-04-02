@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Sidiff Candicates Service
 Bundle-SymbolicName: org.sidiff.candidates;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.2.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.sidiff.common.extension;visibility:=reexport,
  org.sidiff.common.emf;visibility:=reexport
