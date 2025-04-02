@@ -1,0 +1,379 @@
+\documentclass[10pt,a4paper]{scrartcl}
+\usepackage[ansi]{umlaute}
+\usepackage{ngerman}
+\usepackage{graphicx}
+\usepackage[final]{listings}
+\lstset{tabsize=2,basicstyle=\ttfamily\small}
+\usepackage[draft]{fixme}
+\usepackage{color}
+\definecolor{LinkColor}{rgb}{0.0,0.0,0.0} 
+\usepackage[
+        bookmarks=true,
+        bookmarksopen=true,
+        bookmarksopenlevel={1},
+        bookmarksnumbered=true,
+        plainpages=false,
+        pdfpagelabels=true,
+        hypertexnames=false,
+        pdftitle={},
+        pdfauthor={Maik Schmidt},
+        pdfcreator={},
+        pdfsubject={},
+        pdfkeywords={},
+        final]{hyperref}
+\hypersetup{colorlinks=true,
+        anchorcolor=LinkColor,
+        linkcolor=LinkColor,
+        citecolor=LinkColor,
+        filecolor=LinkColor,
+        menucolor=LinkColor,
+        pagecolor=LinkColor,
+        urlcolor=LinkColor}
+
+\newcommand{\hinweis}[1]{
+\textbf{Hinweis:} #1
+}
+
+\title{Introduction to Utils}
+\author{Maik Schmidt}
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section*{Dokumenthistorie}
+Dieses Dokument wird fortlaufend gepflegt. Die nachfolgende Tabelle gibt 
+eine Übersicht über die Änderungen in einzelnen Versionen.\\
+
+\begin{tabular}{|c|p{11cm}|}\hline
+Datum & Änderungen \\\hline\hline
+07.09.09 & Gliederung \\\hline
+08.09.09 & Inhalt \\\hline
+14.09.09 & Angleichen v. Konzept und Realität \\\hline
+22.09.09 & Angleichen v. Konzept und Realität, komplett überarbeitet \\\hline
+\end{tabular} 
+
+\subsection*{Geplante Änderungen}
+Folgende Änderungen sind bereits absehbar, wurden im aktuellen Dokument
+berücksichtigt aber noch nicht umgesetzt:
+\begin{itemize}
+ \item Teilweise Überarbeitung und weitere Dokumentation!
+\end{itemize}
+
+\newpage
+\section{Einführung}
+
+Die Bibliothek "`org.sidiff.common"' fasst allgemeine, in vielen Kontexten
+wiederverwendbare Funktionen zusammen. Sie bildet daher die Grundlage aller 
+SiDiff-Module und Applikationen. 
+Die Bibliothek ist hybrid ausgelegt und kann als OSGI-Bundle oder
+als Bibliothek im Classpath der nutzenden Applikation eingebunden werden.
+\footnote{Je nach Kontext werden beispielsweise Meldungen an einen ggf.
+vorhandenen OSGI Logger oder aber an die Konsole übergeben}
+Die OSGI spezifischen Teile werden durch den Aktivator
+\textsl{org.sidiff.common.Activator} aktiviert.
+
+\subsection{Klassen von Utilities}
+Diese Bibliothek adressiert verschiedene Anwendungsgebiete. Die
+Hilfsfunktionen verteilen sich dementsprechend auf die folgenden Klassen/Pakete.
+\begin{itemize}
+ \item org.sidiff.common.app (Bau von Applikationen)
+ \item org.sidiff.common.collections (Ver-/Bearbeiten von Java-Collections)
+ \item org.sidiff.common.crypto (Kryptographie und Lizenzierung)
+ \item org.sidiff.common.exceptions (Einheitliche Ausnahmebehandlung)
+ \item org.sidiff.common.io (Daten Ein-/Aus-/Übergabe)
+ \item org.sidiff.common.lcs (Allgemeine lcs-Implementierung)
+ \item org.sidiff.common.logging (Einheitlicher Protokoll-Mechanismus)
+ \item org.sidiff.common.xml (XML Verarbeitung und Transformation)
+ \item org.sidiff.common.util (Enthält nicht weiter gruppierbare Hilfsfunktionen)
+\end{itemize}
+Die Pakete enthalten zum Teil Klassen, die lediglich statische Funktionen bereitstellen.
+Diese sind mit dem Suffix "`Util"' gekennzeichnet. Instanziierbare Klassen besitzen diesen
+Suffix nicht.
+
+
+\subsection{Abhängigkeiten}
+Die Apache Bibliothek XERCES muss zur Laufzeit als Bibliothek im Classpath
+oder aber als entsprechendes Bundle (org.apache.xerces) verfügbar sein.
+Optional werden org.osgi.service.log (org.eclipse.osgi.services) und
+org.osgi.framework (org.eclipse.osgi) genutzt.
+
+\clearpage
+
+\section{Application}
+
+In diesem Paket werden Hilfsfunktionen, für den Bau von Applikationen angeboten.
+
+\subsection{CommandLine}
+Bitte in der Javadoc nachlesen.
+
+\section{Crypto}
+Dieses Paket umfasst einzelne Klassen und Applikationen zur 
+\begin{itemize}
+ \item Verschlüsselung von Konfigurationsdaten
+ \item (Teil)Signierung von Konfigurationsdaten \\(Erlaubt gezielte Eingriffe in die Konfiguration in Abhängigkeit der Lizenz)
+ \item Ver- und Entschlüsselung von Datenströmen \\(Schutz von Konfigurationsdateien)
+\end{itemize}
+Die hier bereitgestellte Funktionalität wird noch nicht benutzt und wird daher (noch)
+nicht weiter beschrieben\footnote{\textbf{Überarbeitung notwendig!}}.
+
+
+\section{Exceptions}
+Dieses Paket stellt Klassen zur Ausnahme- (Exceptions) und Fehlerbehandlung (Runtime-Exceptions) bereit. Sie sind projektweit
+als Basisklassen für eigene Exceptions zu verwenden um ein einheitliches Verhalten zu gewährleisten. So implementieren die bereitgestellten
+Exceptions gewisse Automatismen, wie beispielsweise eine automatische Fehler-Protokollierung. Ferner werden aber auch einige Komfortfunktionen,
+wie das Kapseln von inneren Exceptions bereitgestellt. 
+Es gibt zwei zu verwendende Basisklassen:
+\begin{itemize}
+ \item SiDiffException
+ \item SiDiffRuntimeException
+\end{itemize}
+
+\section{IO}
+Die zu verarbeitenden Daten, Konfigurationen und Rückgabe-Kanäle werden häufig
+\footnote{Auch zwischen den Modulen von SiDiff} in Form von Datenströmen übergeben.
+Um die Handhabung von Datenstömen zu vereinfachen und zu vereinheitlichen\footnote{Zugriff
+erfolgt einheitlich, unabhängig von der Quellen bzw. Senke (Dateien, Resource, Jar oder
+Bundle, Strings für Zwischenergebnisse)} bietet dieses Paket unterschiedliche Funktionen an.
+
+\begin{itemize}
+\item IOUtil\\
+	Allgemeine IO Funktionen um Datenstöme anzufordern.
+\item MapUtil\\
+	Zugriff auf persistente, getypte Maps.
+\item ResourceUtil\\
+	Zugriff auf Ressourcen und Classloaderverwaltung.
+\item Serializer\\
+	Allgemeiner Serialisierer (Schnittstelle)
+\end{itemize}
+
+\subsection{Map}
+An vielen Stellen werden Maps benötigt um Komponenten zu konfigurieren oder zu 
+steuern. Die IO-Utils stellen daher einen Mechanismus für typsichere, persistente
+Maps bereit. Der Inhalt der Maps ist dabei mittels einer XML-Datei folgenden 
+Aufbaus zu spezifizieren\footnote{Vgl. org.sidiff.common.io.map.dtd}:
+
+\begin{lstlisting}
+<!ELEMENT Map (MapEntry*)>
+<!ATTLIST Map type CDATA #IMPLIED >
+
+<!ELEMENT MapEntry EMPTY>
+<!ATTLIST MapEntry
+	key CDATA #REQUIRED 
+	value CDATA #REQUIRED >
+\end{lstlisting}
+
+\section{Logging}
+
+Das Package "`logging"' stellt einen Mechanismus bereit, mit dessen Hilfe unterschiedliche 
+SiDiff-Benutzergruppen über aktuelle Ereignisse innerhalb der Software informiert werden sollen.
+Die Logausgaben werden bei Bedarf mit Kontextinformationen, wie Datum, Uhrzeit, Aufrufer etc.
+angereichert und "`schön"' formatiert bzw. eingerückt. Die Ausgabe und Formatierung erfolgt dabei 
+entsprechend eines kontextabhängigen Ausgabekanals. Je nach Ausführungskontext können unterschiedliche
+Kanäle wie Konsole, Datei, OSGI-Logger etc. verwendet werden. Der zu verwendende Ausgabekanal
+wird entsprechend des Kontextes automatisch bestimmt - kann aber auch manuell gesetzt werden. 
+
+\subsection{Klassifikation der Logausgabe}
+
+Werden Logausgaben übergeben, so müssen diese entsprechend einer passenden Ereignisklasse klassifiziert
+werden. Folgende Zuordnung ist zu beachten.
+
+\begin{tabular}{|c|c|p{9cm}|}\hline
+Event   & Zielgruppe  & Bedeutung \\\hline\hline
+MESSAGE & Endanwender & Allgemeine Mitteilungen über das was gerade passiert.\\& & z.B. 'Lade model x' \\\hline
+NOTICE  & Endanwender & Hinweis für fortgeschrittenen User.\\& & z.B. Abstieg in Subsequenzen etc.\\\hline
+ERROR   & Endanwender & Fehlermeldung \\\hline
+WARNING & Entwickler  & (Potentielle) Fehler wie 'summe gewichte !=1\\& & oder Zugriff auf Attribut fehlgeschlagen\\\hline
+EVENT   & Entwickler  & SiDiff interne Ereignisse.\\& & z.B. "`Mach Created A-B"' \\\hline
+SIGNAL  & Entwickler  & Native Calls etc.\\\hline
+DEBUG   & Entwickler  & Informationen zum internen Zustand\\& & von Komponenten zur Fehlersuche\\\hline
+\end{tabular} 
+	
+\subsection{Aufruf und Benutzung}
+
+An Entwickler gerichtete Nachrichten sind durch ein \textbf{assert} zu kapseln. Dies ermöglicht die bedingte
+Ausführung, was einen Laufzeitvorteil für den Endanwender darstellt.
+
+\begin{lstlisting}
+	 assert(LogUtil.print(LogEvent.WARNING,"Message",exception));
+\end{lstlisting}
+Sollen Entwicklernachrichten generiert werden, so muss die Auswertung von Assertions aktiviert werden. Zu diesem
+Zweck muss der Java-VM \textbf{-enableassertions} oder kurz \textbf{-ea} übergeben werden.
+
+\subsection{Konfiguration}
+
+Das Logging kann zum Start einer Applikation über Java-Properties konfiguriert werden. Diese werden der 
+Java-VM wie folgt übergeben:\\\\
+
+\textbf{java -D\textit{PropertyName}="'\textit{PropertyValue}"'}\\\\
+Die folgenden Properties können gesetzt werden:
+
+\begin{tabular}{|c|l|l|}\hline
+Property   & Argument    & Bedeutung \\\hline\hline
+LOGCHANNEL & Channelname & Name des zu verwendenden Ausgabekanals \\\hline
+LOGMODULES & Modulnamen  & durch "`,"' getrennt - Module die geloggt werden sollen.\\& & defaultmäßig alle. \\\hline
+LOGEVENTS  & Eventnamen  & durch "`,"' getrennt - Ereignisse die geloggt werden sollen.\\& & defaultmäßig "`MESSAGE,ERROR"' \\\hline
+\end{tabular}
+\\\\Als Name ist jeweils auch der Wildcard "`*"' erlaubt.
+
+\subsection{Ausgabekanäle}
+
+Zur Ausgabe von Meldungen sind folgende Kanäle möglich:
+
+\begin{tabular}{|l|l|}\hline
+Channelname       & Bedeutung \\\hline\hline
+ConsoleLogChannel & Meldungen werden auf der Konsole ausgegeben\\\hline
+EclipseLogChannel & Meldungen werden an die Eclipse-Fehlerkonsole geleitet\\\hline
+FileLogChannel    & Meldungen werden in eine Datei geschrieben\\\hline
+OSGILogChannel    & Meldungen werden an den OSGI-Logservice übergeben\\\hline
+TeePipeChannel		& Meldungen an mehrere Channels übergeben (schachtelbar)\\\hline
+\end{tabular}
+
+
+\subsubsection{FileLogChannel}
+
+Der "`FileLogChannel"' benötigt den Pfad zur Protokolldatei. Dieser muss durch ein weiteres Property spezifiziert werden.
+
+\begin{tabular}{|c|l|l|}\hline
+Property   & Argument    & Bedeutung \\\hline\hline
+FILENAME & Protokolldatei & Absoluter Pfad im Dateisystem\\\hline
+\end{tabular}
+
+\subsubsection{TeePipeChannel}
+
+TODO: Wird z.Z. implementiert.
+
+\subsubsection{EclipseLogChannel}
+
+TODO: Wird z.Z. implementiert.
+
+\section{Collection Utilities}
+Die Java-Klassenbibliothek stellt vielfältige Containerklassen für unterschiedliche Einsatzzwecke, und mit unterschiedlichen
+Eigenschaften bereit. Instanzen dieser Klassen werden häufig für den Datenaustausch genutzt. 
+Dies hat oft den Nachteil, dass bei einer schrittweisen Verarbeitung (Filterung, Vereinigung etc.) eine Kopie
+der Kollektion angelegt werden muss. Erschwerend kommt hinzu, dass häufig nur die ersten Elemente einer solchen n-fachen Kopie
+letztendlich verarbeitet werden. Daher kann es sinnvoll sein die "`Verarbeitungslogik"' in Form von Selektoren zu implementieren
+und Sichten auf Kollektionen zu definieren.\\
+Ferner tritt immer wieder das Problem auf, dass Objekte einer \textit{Collection} zur Verarbeitung klassifiziert werden müssen. Diese
+Problemdomäne wird ebenfalls adressiert.\\
+Zusätzlich bietet dieses Paket aber auch spezielle Collection-Klassen mit speziellen Eingenschaften.
+
+\subsection{Die Utilities}
+
+\subsubsection{Selektoren}
+Beispiel:
+\begin{lstlisting}
+	public static Selector<EObject> byInstance(final EClass eClass) {
+		return new Selector<EObject>(){
+			public boolean select(EObject item) {
+				return eClass.isInstance(item);
+			}
+		};
+	}
+\end{lstlisting}
+\textit{DefaultSelectors} stellt dabei allgemeine\footnote{Alles, Nichts, Teilmenge einer Aufzählung} Selektoren bereit
+(Die an den entsprechenden Stellen zu verwenden sind!).
+
+\subsubsection{Klassifikatoren}
+Beispiel:
+\begin{lstlisting}
+	 public final static Classifier<EdgeType, Edge> EDGE_BY_TYPE = 
+	 	new CollectionUtil.Classifier<EdgeType, Edge>(){ 
+	 		public EdgeType classify(Edge item) {
+	 			return item.getEdgeType();
+	 		}
+	 	};
+\end{lstlisting}
+
+\subsubsection{ClassificationUtil}
+Klassifiziert übergebene Kollektionen anhand eines ebenfalls zu übergebenden Klassifikators. Das Ergebnis
+der Berechnung ist eine (u.U. sortierte) Map, die als Werte Listen oder Mengen enthält. 
+
+\subsubsection{FilterUtil}
+Filtern Kollektionen gemäß übergebener Selektoren. Dabei wird eine \textbf{modifizierbare Kopie} der übergebenen
+Kollektion erzeugt.
+
+\subsubsection{ViewUtil}
+Erzeugen Sichten auf die übergebenen Kollektionen. Z.B. Vereinigung, Filterung etc. Es liegt in der Natur
+der Sache, dass die erzeugte Sicht \textbf{"`Read-Only"'} ist.
+
+\subsubsection{SetUtil}
+
+Typische Mengenoperationen (Vereinigung, Durchschnitt, Differenz) auf Sets. Dabei wird eine
+\textbf{modifizierbare Kopie} der übergebenen Mengen berechnet.
+
+
+\subsubsection{CollectionUtil}
+
+Test und Konvertierung von Kollektionen. Z.B. ob zwei Kollektionen die gleichen Elemente enthalten...
+
+
+\subsection{Spezielle Collections}
+
+\subsubsection{MapWithDefault}
+Diese Map erweitert (Decorator Pattern) eine gegebene Map um die Möglichkeit einen Defaultwert für nicht vorhandene
+Schlüssel zu setzen.
+
+\subsubsection{CrossMap}
+
+Bei dieser Klasse handelt es sich um eine spezielle Implementierung einer Map, die zu jedem Wert auch den entsprechenden
+Schlüssel effizient bestimmen kann.
+
+\subsubsection{ValueMap}
+
+Speichert zu einem Schlüssel eine Menge von Werten. Für jeden in der Map enthaltenen Wert besteht eine effiziente Möglichkeit
+den entsprechenden Schlüssel abzufragen.
+
+
+\section{lcs}
+Generische Implementiertung einer LCS auf beliebigen Sequenzen
+
+\section{xml}
+Dieses Paket bietet Funtionen zur Verarbeitung und zur Manipulation von XML-Dokumenten, insbesondere zum
+
+\begin{itemize}
+\item Laden und Speichern von XML-Dokumenten (mit DOM/SAX+eigenem XML-Writer)
+\item Auswerten von XPath
+\item Validieren von XML-Dokumenten (gegenüber lokal vorliegenden DTDs durch Mapping mittels Resolver)
+\end{itemize}
+
+Die Funktionen sind wie folgt zugeordnet:
+
+\begin{tabular}{|l|l|l|}\hline
+Klasse        & Technologieeinordnung & Funktion/Einsatzkontext \\\hline\hline
+XMLParser     & SAX/DOM          & Scanner zur Verwendung mit einem ContentHandler\\ & & Parser zur Erzeugung eines DOM Baumes. \\\hline
+XMLDOMCreator & DOM              & Erzeugen und serialisieren eines XML-DOM \\\hline
+XMLWriter     & Eigenentwicklung & Programmatische Erzeugung von XML Dokumenten \\\hline
+XMLTransformer& XSLT             & XSLT Transformation von XML Dokumenten \\\hline
+XMLResolver   & Global           & Verwaltet Mapping zwischen DTD-Deklarationen\\& & und internen Ressourcen fest. (zur Validierung)\\\hline
+\end{tabular}
+
+\section{Utilities}
+In diesem Paket sind Hilfsklassen und Funktionen zusammengefasst, die keine größere Gruppe
+von Funktionen bilden. Funktionen werden dabei i.d.R. durch einzelne Klassen angeboten.
+
+\subsection{StringUtil}
+Wandelt übergebene Objekte in eine menschenlesbare Stringrepräsentation um. Dies ist insbesondere
+für die Synthese von Debug-Ausgaben\footnote{Der innere Zustand von Objekten kann formalisiert werden} nützlich, die anschließend
+protokolliert werden können. Die Art und Weise dieser Serialisierung wird durch "`StringResolver"' definiert, die kontextabhängig 
+konfiguriert werden können!
+
+\subsection{ReflectionUtil}
+
+Kapselt die Java-Reflection API und bietet komfortable (korrekt getypte) Zugriffsmethoden. Da intern das ResourceUtil verwendet wird,
+ist die Quelle der Klasse transparent\footnote{Ermöglicht das reflektive Instanziieren von Klassen in fremden Bundles oder Fragmenten!}.
+
+\subsection{StatisticUtil}
+
+Ermöglicht es Statistiken anzulegen\footnote{Müsste mal überarbeitet werden}. Speziell
+\begin{itemize}
+\item Laufzeitmessungen zwischen Aufrufen (Start/Stop Timer)
+\item Zählen von Aufrufen
+\end{itemize}
+
+
+\subsection{SiDiffUIUtil}
+
+Adhoc GUI für schnelle Prototypen. Öffnet Fenster mit entsprechendem Text oder auch interpretiertem HTML.
+
+\end{document}

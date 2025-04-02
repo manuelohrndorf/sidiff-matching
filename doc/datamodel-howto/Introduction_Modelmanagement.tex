@@ -1,0 +1,375 @@
+\documentclass[10pt,a4paper]{scrartcl}
+\usepackage[latin10]{inputenc}
+\usepackage{ngerman}
+\usepackage{graphicx}
+\usepackage[final]{listings}
+\lstset{tabsize=2,basicstyle=\ttfamily\small}
+\usepackage[draft]{fixme}
+\usepackage{color}
+\definecolor{LinkColor}{rgb}{0.0,0.0,0.0} 
+\definecolor{URLColor}{rgb}{0.0,0.0,1.0} 
+\usepackage[
+        bookmarks=true,
+        bookmarksopen=true,
+        bookmarksopenlevel={1},
+        bookmarksnumbered=true,
+        plainpages=false,
+        pdfpagelabels=true,
+        hypertexnames=false,
+        pdftitle={},
+        pdfauthor={Sven Wenzel},
+        pdfcreator={LaTeX with hyperref and KOMA-Script},
+        pdfsubject={},
+        pdfkeywords={},
+        final]{hyperref}
+\hypersetup{colorlinks=true,
+        anchorcolor=LinkColor,
+        linkcolor=LinkColor,
+        citecolor=LinkColor,
+        filecolor=LinkColor,
+        menucolor=LinkColor,
+        pagecolor=LinkColor,
+        urlcolor=URLColor}
+        
+\newcommand{\hinweis}[1]{\textbf{Hinweis:} #1}
+
+\title{SiDiff 2.0 -- Introduction to modelmanagement}
+\author{Oliver Scharmann}
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+\section*{Dokumenthistorie}
+Dieses Dokument wird fortlaufend gepflegt. Die nachfolgende Tabelle gibt 
+eine Übersicht über die Änderungen in einzelnen Versionen.
+
+\begin{tabular}{|c|p{10.8cm}|}
+\hline
+Datum & Änderungen \\\hline\hline
+9.9.09 & erste Version \\\hline
+22.9.09 & Ergänzungen und Systemüberblick \\\hline
+27.10.09 & Strukturierung und Abbildungen \\\hline
+\end{tabular} 
+
+\subsection*{Geplante Änderungen}
+Folgende Änderungen sind bereits absehbar, wurden im aktuellen Dokument
+aber noch nicht umgesetzt:
+%\begin{itemize}
+% \item Einführung
+%\end{itemize}
+
+\clearpage
+
+
+\section{Vorwort}
+
+Der Inhalt folgender Quellen über das Eclipse Modeling Framework im allgemeinen und Metamodelierung im speziellen wird im folgenden Vorrausgesetzt:
+\begin{itemize}
+ \item Kapitel 2 aus: Dave Steinberg et al., EMF: Eclipse Modeling Framework, Addison-Wesley Longman, ISBN 978-0-32133-188-5, 2009
+ \item Abschnitt EMF aus dem Skript zur Vorlesung Softwaretechnik I \\\href{http://pi.informatik.uni-siegen.de/Mitarbeiter/kehrer/lehre/ws08/st1/emf/}{http://pi.informatik.uni-siegen.de/Mitarbeiter/kehrer/lehre/ws08/st1/emf}
+ \item Skript über Metamodelle \\\href{http://pi.informatik.uni-siegen.de/kelter/lehre/08w/lm/lm_mm_20081124_a5.pdf}{http://pi.informatik.uni-siegen.de/kelter/lehre/08w/lm/lm\_mm\_20081124\_a5.pdf}
+ \item EMF Homepage \\\href{http://www.eclipse.org/modeling/emf/}{http://www.eclipse.org/modeling/emf/}
+\end{itemize}
+
+
+\section{Motivation}
+
+Im Kontext von SiDiff stellt sich die Herausforderung nahezu beliebige Datenstrukturen verarbeiten zu müssen. So besitzt jeder zu
+unterstützende Dokumenttyp ein eigenes Metamodell, sowie dessen Umsetzung in Form einer entsprechenden, streng strukturierten Datenstruktur.
+Zusätzlich können die Werkzeugeigenen Metamodelle nur selten zu direkten Verarbeitung geeignet oder bekannt. Somit ist es notwendig für jeden 
+Dokumentyp ein entsprechendes Metamodell zumindest implizit zu entwickeln. 
+
+Eine einfache Methode, um beliebige Datenstrukturen zu verarbeiten, ist es diese als allgemeine Graphstruktur zu interpretieren und zu verarbeiten.
+Dieses Vorgehen besitzt jedoch den Nachteil, dass 
+
+\begin{itemize}
+\item das Wissen über die Dokumentstruktur (Metamodell) lediglich implizit vorliegt
+\item eine laufzeitintensive, dynamische Graph Implementierung verwendet werden muss
+\item eine dynamische Graph-Instanz aus den Daten erzeugt werden muss
+\item Fehlerhafte Dokumente unerkannt bleiben
+\item uvm.
+\end{itemize}
+
+Das Eclipse Modeling Framework (EMF) stellt eine Metasprache und Werkzeuge bereit, die es ermöglicht Metamodelle zu Formulieren und anschließend entsprechende Instanzen 
+zu erzeugen und zu verarbeiten. Dabei kann nativer Code für die Datenstrukturen generiert und verwendet werden, was dynamische Datenstrukturen überflüssig macht.
+
+\begin{itemize}  
+	\item Dokumentation des Datenstruktur durch explizites Metamodel
+  \item Graphartige, reflektive Schnittstelle.
+  \item Statische (durch automatisiert generierten Modellcode) und dynamische Realisierung (durch dynamische Interpretation von Metamodellen) von Modelinstanzen möglich
+  \item Persistenz durch De-/Serialisierung in XML
+  \item EMF/Ecore findet bereits breite Anwendung im Werkzeugbau; Entsprechende Werkzeuge können somit nativ unterstützt werden.
+\end{itemize}
+
+
+\section{Verarbeitung von Modellen in SiDiff}
+
+Mit SiDiff werden die Daten von Anwendungen (z.B. Modellierungswerkzeuge, UML-Diagramme oder Simulationstools) in unterschiedlichen Versionen verglichen. Um diese Daten 
+verarbeiten zu können, wird ein Metamodell erstellt, welches die Daten für den Vergleich und die Berechnung der Differenzen strukturiert ablegt.  
+Dieses Metamodell kann man auf unterschiedliche Weise spezifizieren. In EMF erstellt man ein Ecore-Modell, welches das Aussehen eines UML-Klassendiagramms besitzt aber 
+über eine eigene Typwelt verfügt, und die Serialisierung und Deserialisierung der Anwendungsdaten ermöglicht.
+Als Format verwendet EMF \emph{XML Metadata Interchange (XMI)}.\\ 
+Für die Verwendung einer Anwendung mit SiDiff, sollte diese ihre Daten optimalerweise im XML-Format exportieren können, weil so nur ein XSLT-Skript geschrieben werden 
+muss, um die Daten in das Format des Metamodells zu überführen. Verwendet das Werkzeug jedoch ein proprietäres Format, so muss ein Parser erstellt werden, welcher die 
+Syntax der Daten analysiert und über Methodenaufrufe des aus dem Metamodell generierten Javacodes die Instanzen der Datenstrukturen anlegt.\\
+EMF kann aus den per XSLT transformierten und in XMI gespeicherten Daten über die Deserialisierung automatisch die Laufzeitdatenstrukturen im Speicher aufbauen. 
+Anschließend können die Laufzeitdatenstrukturen an den SiDiff-Algorithmus weitergereicht werden, oder alternativ im Modelstorage abgelegt werden. Zusätzlich bietet EMF 
+eine generische Schnittstelle (reflective API) für den Zugriff auf die Elemente des Metamodells. Durch die Verwendung dieser Schnittstelle kann der SiDiff-Algorithmus 
+unabhängig vom Metamodell arbeiten.\\
+\begin{figure}
+\includegraphics[trim = 13mm 20mm 13mm 11mm, clip, width=\linewidth]{pics/MM_schema2}
+\caption{Systemüberblick}
+\end{figure}
+
+
+\section{Metamodellierung}
+%Annotationsmechanismus ermöglicht Konfiguration von SiDiff
+Eine *.ecore-Datei entspricht einem Metamodell. In SiDiff beschränken wir uns auf Strukturierungselemente von Ecore
+d.h. einige wenige EMF-Elemente, um Datenmodelle zu abzubilden.Hierbei dient die Vererbung als Hilfsmittel um Attribute bzw. Referenzen von anderen Klassen zu übernehmen. ("`Abkürzung"')\\
+Pakete werden nur zur Strukturierung und ohne weitere semantische Bedeutung verwendet. Wir empfehlen die \emph{explizite} Modellierung eines Wurzelelements.
+
+\subsubsection{Modellelemente}
+\begin{description}
+ \item[EClass] Modellelemente (auch solche, die in Diagrammen als Kanten dargestellt werden)
+ \item[EAttribute] Attribute (Eigenschaften von Knoten)
+ \item[EReference] Beziehungen von Modellelementen bzw. Referenzen auf andere Modellelemente. 
+  \texttt{EReference} ist gerichtet. Um bidirektionale Beziehungen abzubilden werden zwei gegenläufige 
+  \texttt{EReference}s benötigt, die sich jeweils als \texttt{EOpposite} eingetragen haben.
+ \item[EAnnotation] Metainformationen für Modellelemente. \texttt{EAnnotations} können genutzt werden, um Teile des Algorithmus bzw. der Komponenten zu steuern.
+\end{description}
+
+
+\subsubsection{Kantentypen (aus Entwicklersicht)}
+
+Wir unterscheiden ferner zwischen folgenden Arten von Kanten. Die Art wird in 
+der \texttt{EdgeSemantic} ausgedrückt.
+\begin{description}
+ \item[Submodel] Referenzen auf ein Submodell (gekennzeichnet durch eine EAnnotation ``SUBMODEL'' an der Kante)
+ \item[Nesting] Baumkanten vom Vater zum Kind
+ \item[Parent] Baumkanten vom Kind zum Vater
+ \item[Reference] alle Kanten, die keine Baumkanten sind
+ \item[Incoming] Referenzen, die im Metamodel mit der EAnnotation ``INCOMING'' markiert sind. Diese Kanten sind eigentlich nicht Bestandteil 
+des Metamodells; sie wurden nur als Rückwärtskanten eingefügt, um einer \emph{eingehenden Kante} entgegenlaufen zu können.
+ \item[Outgoing] Referenzen, die nicht mit INCOMING markiert sind (Standardfall)
+\end{description}
+
+\subsubsection{Annotationen}
+
+\begin{tabular}{|l|l||c|p{7cm}|}\hline
+Annotation      & Nutzendes Bundel & Elemente & Bedeutung \\\hline\hline
+Submodel        & "`Edge Semantik"' & EReference & Kennzeichnen Referenzen auf ein Submodell \\\hline
+Incoming        & "`Edge Semantik"' & EReference & Diese Kanten sind nicht Bestandteil des konzeptuellen Metamodells (Lediglich technisch zur Rückwärtsnavigation)
+IGNOREDIFF      & core.difference.differencemodel& Es wird keine Differenz für das annotierte \\&& Element ausgegeben. \\\hline
+NoHash          & core.annotators.hashing        & Attributwert bzw. Referenzziel wird nicht \\&& in die Hashwertberechnung einbezogen. \\\hline
+Path            & core.annotators                & Attributwert wird zum bilden des Pfades \\&& verwendet. \\\hline
+AbsolutePosition& core.difference.differencemodel& Differenz wird auf Basis der Absolutposition \\&& gebildet. (Pflicht bei "`UpperBound"' $>$1) \\\hline
+RelativePosition& core.difference.differencemodel& Differenz wird auf Basis der Relativposition \\&& gebildet. (Pflicht bei "`UpperBound"' $>$1) \\\hline
+\end{tabular} 
+
+\subsubsection{Best Practice}
+
+
+\subsection{Werkzeugt und Generierungsprozess}
+
+Zur komfortablen, graphischen (Weiter-)Entwicklung der Metamodelle wurde daher der IBM Software Modeler in den Buildprozess einbezogen.
+
+\subsubsection{Import von Software Modeller Modellen}
+
+Ant und Imprt Skript.
+	
+\section{Das Arbeiten mit Modellen}
+
+Model $=$ Metamodell $+$ Instanz; Mussen verwaltet werden.
+
+\subsection{ModelStorage (org.sidiff.common.emf)}
+
+Der Modelstorage dient als Zentraler Funktionseinheit für das Laden und den Import von Modellen. Gleichzeitig ermöglicht der Modelstorage aber auch den 
+einheitlichen Zufriff auf beliebige, zu verarbeitende Modell. 
+
+\begin{figure}
+\includegraphics[trim = 13mm 20mm 13mm 11mm, width=\linewidth]{pics/ModelStorage}
+\caption{Der Modelstorage}
+\end{figure}
+
+
+\subsection{Arbeiten mit Metamodellen}
+
+\begin{itemize}
+ \item Wie komme ich an das Metamodell? (EPackage.Registry..., obj.eClass())
+\end{itemize}
+
+
+\subsection{Arbeiten mit Instanzen}
+
+
+\begin{itemize}
+ \item Ein Modell wird durch eine Resource repräsentiert
+ \item EMF-eigener Deserialisierungs-Mechanismus setzt bestz. Format voraus
+ \item Externe Darstellung muss entsprechend transformiert werden (z.b. mit XSLT) (mehrere Varianten, Dokument von ETAS wiederverwenden)
+ \item Nutzung der reflektiven Schnittstelle (eGet()), Verweis auf genaue Stelle im Buch
+\end{itemize}
+
+
+\subsection{Navigation mit Pfaden}
+
+Austauschbare Path Engine ...
+
+\subsection{EMFUtil}
+Mit \texttt{EMFUtil} werden allgemeine, häufige EMF Operationsfolgen zu einzelnen zusammengefasst.
+
+\paragraph{Objektliste einer Referenz abfragen}
+Mit \texttt{EMFUtil.getObjectListFromReference(EObject object, EReference reference)} kann für ein
+Objekt \texttt{object} eine Referenz \texttt{reference} abgefragt werden. Das/die Referenzziel(e) wird
+als Liste vom Typ \texttt{EObjec} zurückgegeben.
+
+Mit \texttt{EMFUtil.fillObjectListFromReference(List<EObject> result, EObject object, EReference reference)} kann dieselbe Abfrage ausgeführt werden, jedoch wird hier die übergebene Liste \texttt{result} gefüllt anstatt eine neue anzulegen.
+
+\paragraph{AllContents als Liste}
+Da \texttt{EObject.eAllContents()} bzw. \texttt{Resource.getAllContents()} nur Iteratoren zurückliefern, aber oftmals Objektlisten benötigt werden, kann mit \texttt{EMFUtil.getEAllContentsAsList(...)} den Gesamtinhalt eines Objekts oder eine Ressource als Liste abfragen.
+
+\paragraph{Menge der Elemente in AllContents}
+Da \texttt{EObject.eAllContents()} bzw. \texttt{Resource.getAllContents()} nur Iteratoren zurückliefern, aber oftmals die Anzahl der Objekte benötigt wird, kann mit \texttt{EMFUtil.getEAllContentsSize(...)} die Anzahl abgefragt werden.
+
+\paragraph{Objekt-ID abfragen}
+Mit \texttt{EMFUtil.getEObjectID(EObject eobj)} kann die ID eines Objekts abgefragt werden. Wir erwarten, dass jede Metaklasse ein Stringattribut als ID definiert.
+
+\paragraph{Attributwert abfragen}
+Mit \texttt{EMFUtil.getEObjectsAttribute(EObject eobj, String attributeName)} kann direkt der Wert eines Attributs abgefragt werden.
+
+
+
+\subsubsection{EMFMetaAccess}
+Mit \texttt{EMFMetaAccess} können Abfragen auf dem Metamodell getätigt werden.
+
+\paragraph{Abfrage von Meta-Klassen}
+\texttt{EMFMetaAccess} bietet mehrere Methoden an, um Meta-Klassen abzufragen.
+
+\texttt{EMFMetaAccess.getMetaObjectByName(EObject object, String type)} gibt die \texttt{EClass} vom Typ \texttt{type} zurück. Hierbei wird im Metamodell des gegebenen \texttt{object} gesucht. Außerdem wird auch in den Metamodellen potenzieller Supertypen der Metaklasse von \texttt{object} gesucht.
+
+\texttt{EMFMetaAccess.getMetaObjectByName(String packageNS, String type)} gibt den \texttt{EClassifier} vom Typ \texttt{type} aus dem Metamodell mit dem gegebenen Paketnamensraum \texttt{packageNS} zurück. \texttt{packageNS} ist hierbei der namespace URI.
+
+\texttt{EMFMetaAccess.getMetaClassesForPackage(String packageNS)} gibt eine Liste alle Metaklassen eines Metamodells zurück.\texttt{packageNS} ist hierbei der namespace URI des Metamodells.
+
+Eine Liste von Metaklassen kann man sich anhand einer kommaseparierten Liste von Namen geben lassen. Die Funktion wird durch \texttt{EMFMetaAccess.getMetaObjectListByString(String packageNS, String commaSepList, Class<T> type)} angeboten. \texttt{type} gibt mit \texttt{EClass.class} oder \texttt{EClassifier.class} an, auf welchen Typ die Ergebnisliste gecastet wird.
+
+\paragraph{Abfrage von Referenzen}
+Eine bestimmte Referenz einer Metaklasse kann mittels \texttt{EMFMetaAccess.getMetaReferenceByName(String packageNS, String type, String referenceName)} abgefragt werden.
+
+Alle Referenzen einer Klasse kann mit \texttt{EMFMetaAccess.getReferences(EClass eClass)} abgefragt werden. Referenzen zwischen Eltern und Kindknoten werden hierbei ausgeschlossen.
+
+Um bei der Abfrage von Referenzen nur nach solchen mit einer bestimmten Semantik zu fragen, kann man \texttt{EMFMetaAccess.getReferences(EClass eClass, EdgeSemantic semantic)} aufrufen.
+
+Referenzen die auf Kindknoten zeigen können mit \texttt{EMFMetaAccess.getChildrenReferences(EClass eClass)} abgefragt werden.
+
+Mit \texttt{EMFMetaAccess.getReferencesByNames(EClass eClass, String names)} kann eine Menge von Referenzen einer Metaklasse abgefragt werden. \texttt{names} ist entweder eine kommaseparierte Liste von Namen oder ein regulärer Ausdruck.
+
+Mit \texttt{EMFMetaAccess.translatePath(EClass eClass, String path)} kann ein Pfadausdruck in eine \texttt{EMFPath} übersetzt werden.
+
+\paragraph{Abfrage von Attributen}
+Mit \texttt{EMFMetaAccess.getAttributesByRegEx(EClass eClass, String regex, boolean regexExpectedResult)} kann man zu einer
+Metaklasse eine Menge an Attributen abfragen, auf deren Namen der reguläre Ausdruck \texttt{regex} matched. Mit \texttt{regexExpectedResult} kann das erwartete Ergebnis der Ausdrucksprüfung festgelegt werden, um Attribute in die Ergebnisliste zu übernehmen: \texttt{true} heißt der reguläre Ausdruck muss erfüllt sein, \texttt{false} heißt, er darf nicht erfüllt sein.
+
+
+\subsubsection{EMFModelAccess}
+Mit \texttt{EMFModelAccess} werden komfortable Abfragen auf Modellinstanzen
+angeboten. Abfragen, die mit dem allgemeinen Ecore-Operationsumfang getätigt
+werden können, sollen hier jedoch nicht unnötig gekapselt werden.
+\texttt{EMFModelAccess} konzentriert sich nur auf Abfragen und Funktionen, die
+über den allgemeinen Ecore-Operationsumfang hinausgehen.
+
+Nachfolgend stellen wir häufige Abfragen vor, ungeachtet dessen, ob sie mittels
+\texttt{EMFModelAccess} oder mit dem allgemeinen Ecore-Operationsumfang getätigt
+werden können.
+
+\paragraph{Dokumenttyp erfragen}
+Den Dokumenttyp eines Modells kann man mit \texttt{EMFModelAccess.getDocumentType()} abfragen.
+Als Parameter ist entweder ein Modell (\texttt{Resource}) oder ein Modellelement \texttt{EObject}.
+
+\paragraph{Parent}
+Den Elternknoten eines EObject fragt man ab mit \texttt{EObject.eContainer()}.
+
+\paragraph{Kinder}
+Alle Kindknoten eines EObject werden abgefragt mit \texttt{EObject.eContents()}
+
+Kindknoten, die über einen bestimmten Kantentyp verbunden sind, kann man mit \texttt{EMFModelAccess.getChildren(EObject eObject, EReference type)} abfragen.
+
+Kindknoten, die von einem bestimmten Typ (Metaklasse) sind, kann man mit\\ \texttt{EMFModelAccess.getChildren(EObject eObject, EClass type)} abfragen.
+
+Eine Liste aller Typen (Metaklassen) von (vorhandenen) Kindern kann man mit \texttt{EMFModelAccess.getChildrenTypes(EObject eObject)} abfragen. (Achtung: Diese Abfrage bezieht sich auf eine Modellinstanz, nicht auf das Metamodell!)
+
+\paragraph{Bäume}
+Die Prüfung, ob ein \texttt{EObject} oder eine \texttt{Resource} einen Baum repräsentieren, erfolgt mit
+\texttt{EMFModelAccess.isTree(...)}. Es wird erwartet, dass Resourcen Bäume sind, wenn sie nur ein Wurzelelement enthalten, welches selbst wiederum einen Baum bildet.
+
+Mit \texttt{EMFModelAccess.getTreeRoot(EObject eObject)} wird nach der Wurzel des Baumes gesucht, in dem sich das gegebene Object befindet.
+
+Die Anzahl der Elemente in einem Baum kann mittels \texttt{EMFUtil.getEAllContentsSize()} abgefragt werden. Als Parameter ist entweder ein Modell (\texttt{Resource}) oder ein Modellelement \texttt{EObject}.
+
+Mit \texttt{EMFModelAccess.traverse(EObject eObject, TreeVisitor visitor)} kann man einen Baum traversieren. \texttt{root} gibt dabei die Wurzel an. Der \texttt{TreeVisitor} stellt ein Interface zum Traversieren dar. 
+
+\paragraph{TreeVisitor}
+\begin{lstlisting}
+public interface TreeVisitor {
+	public boolean preExecute(EObject object);
+	public void postExecute(EObject object);
+	public void init(EObject root) throws NoValidTreeException;
+	public void finish(EObject root);
+}
+\end{lstlisting}
+\texttt{init()} und \texttt{finish()} werden jeweils vor und nach dem Traversieren des Baumes mit dem Wurzelknoten als Parameter aufgerufen. Hier können (De-)Initialisierungen stattfinden. \texttt{preExecute()} wird in Reihenfolge einer Tiefensuche für jeden Knoten aufgerufen. Der Rückgabewert bestimmt, ob in den Teilbaum abgestiegen werden soll oder nicht. \texttt{postExecute()} wird nach durchlaufen des Teilbaums aufgerufen.
+
+Mit \texttt{TreeVisitorImpl} steht eine leere Standardimplementierung des \texttt{TreeVisitor} zur Verfügung.
+
+
+\paragraph{Referenzierte Elemente}
+Benachbarte Elemente, die keine Kinder sind, bezeichnen wir als referenzierte Objekte. Für diese gibt es folgende Zugriffsmethoden:
+
+\texttt{EMFModelAccess.getReferencedObjects(EObject eObject, EClass type)} gibt alle benachbarten Elemente vom Typ \texttt{type} zurück.
+
+\texttt{EMFModelAccess.getReferencedObjects(EObject eObject, EdgeSemantic semantic)} gibt alle benachbarten Elemente zurück, die über eine Kante mit entsprechender Semantik (\texttt{semantic}) erreicht werden.
+
+\texttt{EMFModelAccess.getReferencedObjects(EObject eObject, EdgeSemantic semantic, EClass type)} gibt alle benachbarten Elemente vom Typ \texttt{type} zurück, die über eine Kante mit entsprechender Semantik (\texttt{semantic}) erreicht werden.
+
+\hinweis{Die Zugriffsmethoden für referenzierte Elemente schließen Eltern und Kinder grundsätzlich aus!}
+
+
+\paragraph{Geschwister}
+Die Geschwister eines Elements sind die Elemente, die sich im gleichen Container befinden.
+
+Mit \texttt{EMFModelAccess.getSiblings(EObject eObject)} lassen sich die Geschwister abfragen.
+
+\texttt{EMFModelAccess.getLeftSibling(EObject eObject)} und \texttt{EMFModelAccess.getRightSibling(EObject eObject)} geben jeweils
+das linke bzw. rechte Geschwisterelement zurück. Ist ein Element das erste bzw. letzte Element in einem Container, wird \texttt{null} zurückgegeben.
+
+
+\paragraph{Nachbarelemente}
+Benachbarte Elemente sind all diejenigen Elemente, die über irgendeine Kante (Referenz oder Container/Containment) verbunden sind.
+
+Mit \texttt{EMFModelAccess.getNodeNeighbors(EObject object)} werden alle benachbarten Element abgefragt.
+
+\texttt{EMFModelAccess.getNodeNeighbors(EObject object, EReference... types)} gibt nur solche Nachbarn zurück, die über einen der gegeben Referenztypen (\texttt{types}) erreichbar sind.
+
+\texttt{EMFModelAccess.getNodeNeighbors(EObject object, EClass... types)} gibt nur solche Nachbarn zurück, die einem der gegeben Typen (Metaklassen) (\texttt{types}) entsprechen.
+
+\texttt{EMFModelAccess.getNodeNeighbors(EObject object, EdgeSemantic semantic)} gibt nur solche Nachbarn zurück, die über eine Referenz mit der gegeben Semantic (\texttt{semantic}) erreichbar sind.
+
+\texttt{EMFModelAccess.getNodeNeighbors(EObject object, EdgeSemantic semantic, EClass... types)} gibt nur solche Nachbarn zurück, die über eine Referenz mit der gegeben Semantic (\texttt{semantic}) erreichbar sind und  die einem der gegeben Typen (Metaklassen) (\texttt{types}) entsprechen.
+
+
+\subsubsection{EMFPath}
+Oftmals werden nicht direkt benachbarte Elemente benötigt, sondern entfernte. Hierzu gibt es Zugriffsmethoden, die Pfade benutzen:
+
+Pfade können als String definiert werden. Der String enthält dann eine Liste von Referenznamen, die durch ``/'' getrennt werden.
+\hinweis{Derzeit können Pfade nur konkrete Referenznamen enthalten. Navigationselemente wie ``..'' werden noch nicht untersützt.}
+Programmatisch werden Pfade durch \texttt{EMFPath}-Objekte repräsentiert. Diese können mittels \texttt{EMFMetaAccess.translatePath(EClass eClass, String path)} aus einem String erzeugt werden.
+
+\paragraph{Abfragen mit Pfaden}
+
+\texttt{EMFModelAccess.computeTargets(EObject start, EMFPath path)} gibt alle Knoten zurück, die über den angegeben Pfad erreicht werden.
+
+\texttt{EMFModelAccess.computeTargetsWithoutBackStepping(EObject start, EMFPath path)} gibt alle Knoten zurück, die über den angegeben Pfad erreicht werden. Hierbei wird sichergestellt, dass beim Entlanglaufen des Pfades keine direkten Rückwärtsschritte erfolgen.
+
+\texttt{EMFModelAccess.getElementPaths(EObject start, EMFPath path)} liefert eine Menge von Elementlisten, die entlang des Pfades liegen. Dabei entspricht eine Elementliste (\texttt{List<EObject>}) genau einem möglichen Weg entlang des gegeben Pfades. Alle möglichen Wege werden zurückgegeben (\texttt{List<List<EObject>>}).
+
+\texttt{EMFModelAccess.getRemoteAttributeValue(EObject object, EMFPath path, EAttribute attribute)} kann einen Attributwert auf einem entfernten Objekt abfragen.
+\end{document}

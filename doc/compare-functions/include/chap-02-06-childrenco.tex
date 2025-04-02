@@ -1,0 +1,126 @@
+%
+% Vergleichsfunktionen: Children Considering Order
+% ===========================================================================
+%
+
+\section{\texttt{ChildrenCO}...}
+\label{strct:spec:childrenco}
+Dieser Abschnitt behandelt Vergleichsfunktionen des Typs \texttt{ChildrenCO}, mit denen sich die Eingabeknoten anhand ihrer Kindknoten unter \emph{Beachtung} der Reihenfolge vergleichen lassen.
+
+\subsubsection*{Allgemeine Vorbedingungen}
+Die zu vergleichenden Eingabeknoten sollten Kindknoten besitzen, damit nicht-triviale Ähnlichkeitswerte ermittelbar sind. Mehr zu trivialen Ähnlichkeiten unter \textcrosslink{Allgemeiner Rückgabewert}.
+
+\subsubsection*{Allgemeine Semantik}
+Diese Gruppe von Vergleichsfunktionen vergleicht die Eingabeknoten anhand spezifischer Merkmale ihrer Kindknoten miteinander. Bereits anmerkbar ist, dass sämtliche Vergleiche die Reihenfolge der Kindknoten berücksichtigen. Mehr zur genauen Semantik und auch Rückgabewert ist in den Dokumentationen der spezifischen Vergleichsfunktionen weiter unten in diesem Abschnitt einsehbar.
+
+\subsubsection*{Allgemeiner Rückgabewert}
+Die Bestimmung der Rückgabewerte der spezifischen implementierenden Vergleichsfunktionen unterscheidet sich unterschiedlich stark. Daher sei an dieser Stelle auf die Dokumentationen der spezifischen Vergleichsfunktionen weiter unten in diesem Abschnitt verwiesen.
+
+Allgemein lassen sich jedoch bereits folgende triviale Ähnlichkeitsbeziehungen und deren Rückgabewerte bestimmen:
+\begin{itemize}
+	\item Existiert für lediglich einen der beiden Eingabeknoten keine Kindknoten, so beträgt die resultierende Ähnlichkeit $0$.
+	\item In dem Fall, dass \emph{beide} Eingabeknoten keine Kindknoten besitzen, lösen Vergleichsfunktionen dieses Typs eine Ausnahme des Typs \texttt{NothingToCompareException} aus.
+\end{itemize}
+
+\subsubsection*{Allgemeine Parameter}
+Zu den Parametern der einzelnen Vergleichsfunktionen kann an dieser Stelle keine genaue Aussage gemacht werden. Die Mehrheit der Vergleichsfunktionen dieses Typs benötigt keinen Parameter, während Vergleichsfunktion, die sich u.a. auf Ähnlichkeiten stützen, einen sog. Schwellwert zu Erkennung hinreichend genauer Korrelationen benötigen.
+
+Beachten Sie bitte die jeweiligen spezifischen Angaben im Abschnitt \textcrosslink{Spezifische Parameter} einer jeden Vergleichsfunktion.
+
+
+
+\newpage
+%
+% --> ChildrenMatchedOrSimilarCO
+%
+\subsection{\texttt{ChildrenMatchedOrSimilarCO}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter \structgetfullref{strct:spec:childrenco} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die Kindknotenmengen werden bei dieser Vergleichsfunktion anhand von sowohl Übereinstimmungen als auch Ähnlichkeiten miteinander verglichen. Die Reihenfolge der Knoten ist dabei von Belang, sodass der LCS-Algorithmus (Longest Common Subsequence) Anwendung findet. Dazu wird innerhalb der Knotenmengen die längste gemeinsame Teilsequenz gesucht. Genaueres in der folgenden Auflistung.
+\begin{itemize}
+	\item Eine gültige Korrelation zwischen zwei Kindknoten wird erkannt, wenn die beiden Knoten bereits als Übereinstimmung gekennzeichnet sind.
+	\item Liegt keine Übereinstimmung vor, werden die Ähnlichkeiten vom Knoten aus Menge A mit dem gegenüberliegenden Knoten in Menge B betrachtet. Liegt die Ähnlichkeit über dem unter \textcrosslink{Spezielle Parameter} beschriebenen Schwellwert oder entspricht genau diesem, wird auf diese Weise eine Korrelation festgestellt.
+	\item Trifft keine der beiden Bedingungen zu, endet eine längste Teilsequenz an diesem Knotenpaar.
+\end{itemize}
+
+Als Gesamt-Ähnlichkeit wird letztlich der Quotient aus der Länge der längsten gefundenen Teilsequenz und der Anzahl der Kindknoten des Eingabeknotens mit den meisten Kindknoten gebildet und zurückgegeben.
+
+\textnoticesec{Bemerkung:} Diese Vergleichsfunktion ist nicht reflexiv!
+
+\subsubsection*{Spezielle Parameter}
+Diese Vergleichsfunktion benötigt als Parameter einen Schwellwert im Bereich von $0$ bis $1$, der angibt, ab welcher Ähnlichkeit der LCS-Algorithmus gültige Korrelationen beim Ähnlichkeitsvergleich erkennt. Ein gültiger Schwellwert wäre z.B. $0.55$.
+
+
+%
+% --> ChildrenMatchedCO
+%
+\subsection{\texttt{ChildrenMatchedCO}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter \structgetfullref{strct:spec:childrenco} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die Kindknotenmengen werden bei dieser Vergleichsfunktion allein anhand von \emph{Übereinstimmungen} miteinander verglichen. Die Reihenfolge der Knoten ist dabei von Belang, sodass der LCS-Algorithmus (Longest Common Subsequence) Anwendung findet. Dazu wird innerhalb der Knotenmengen die längste gemeinsame Teilsequenz gesucht. Genaueres in der folgenden Auflistung.
+\begin{itemize}
+	\item Eine gültige Korrelation zwischen zwei Kindknoten wird erkannt, wenn die beiden Knoten bereits als Übereinstimmung gekennzeichnet sind.
+	\item Liegt keine Übereinstimmung vor, endet eine längste Teilsequenz an diesem Knotenpaar.
+\end{itemize}
+
+Als Gesamt-Ähnlichkeit wird letztlich der Quotient aus der Länge der längsten gefundenen Teilsequenz und der Anzahl der Kindknoten des Eingabeknotens mit den meisten Kindknoten gebildet und zurückgegeben.
+
+\subsubsection*{Spezielle Parameter}
+Diese Vergleichsfunktion benötigt keine Parameter.
+
+
+\newpage
+%
+% --> ChildrenSimilarCO
+%
+\subsection{\texttt{ChildrenSimilarCO}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter \structgetfullref{strct:spec:childrenco} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die Kindknotenmengen werden bei dieser Vergleichsfunktion allein anhand von \emph{Ähnlichkeiten} miteinander verglichen. Die Reihenfolge der Knoten ist dabei von Belang, sodass der LCS-Algorithmus (Longest Common Subsequence) Anwendung findet. Dazu wird innerhalb der Knotenmengen die längste gemeinsame Teilsequenz gesucht. Genaueres in der folgenden Auflistung.
+\begin{itemize}
+	\item Eine gültige Korrelation zwischen zwei Kindknoten wird erkannt, wenn die Ähnlichkeit des Knotens aus Menge A mit dem gegenüberliegenden Knoten in Menge B über dem unter \textcrosslink{Spezielle Parameter} beschriebenen Schwellwert liegt oder genau diesem entspricht.
+	\item Liegt keine solche Korrelation vor, endet eine mögliche längste Teilsequenz an diesem Knotenpaar.
+\end{itemize}
+
+Als Gesamt-Ähnlichkeit wird letztlich der Quotient aus der Länge der längsten gefundenen Teilsequenz und der Anzahl der Kindknoten des Eingabeknotens mit den meisten Kindknoten gebildet und zurückgegeben.
+
+\textnoticesec{Bemerkung:} Diese Vergleichsfunktion ist nicht reflexiv!
+
+\subsubsection*{Spezielle Parameter}
+Diese Vergleichsfunktion benötigt als Parameter einen Schwellwert im Bereich von $0$ bis $1$, der angibt, ab welcher Ähnlichkeit der LCS-Algorithmus gültige Korrelationen beim Ähnlichkeitsvergleich erkennt. Ein gültiger Schwellwert wäre z.B. $0.55$.
+
+
+%
+% --> ChildrenEqualViewingHashesCO
+%
+\subsection{\texttt{ChildrenEqualViewingHashesCO}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter \structgetfullref{strct:spec:childrenco} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Vorbedingungen}
+Den (Kind-)Knoten müssen bereits Hashwerte in Form von Annotationen zugeordnet sein. Ist dies nicht der Fall oder Hashwerte werden in dem entsprechenden Projekt generell nicht unterstützt, wird eine Ausnahme des Typs \texttt{AnnotationNotExistsException} ausgelöst und der SiDiff-Kern terminiert den Vergleichsauftrag instantan.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die Kindknotenmengen werden bei dieser Vergleichsfunktion anhand der \emph{Hashwerte} der einzelnen Knoten auf vollständige Gleichheit überprüft. Die Reihenfolge der Kindknoten ist dabei von Belang. Besitzen beide Knotenmengen die gleiche Anzahl an Elementen und \emph{jeder} Kindknoten der Menge A hat in der gegenüberliegenden Menge B an gleicher Position ein Äquivalent mit gleichem Hashwert, so beträgt die Ähnlichkeit $1$, ansonsten $0$.
+
+
+%
+% --> ChildrenEqualViewingMatchesCO
+%
+\subsection{\texttt{ChildrenEqualViewingMatchesCO}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter \structgetfullref{strct:spec:childrenco} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die Kindknotenmengen werden bei dieser Vergleichsfunktion anhand von \emph{Übereinstimmungen} der einzelnen Knoten auf vollständige Gleichheit überprüft. Die Reihenfolge der Kindknoten ist dabei von Belang. Besitzen beide Knotenmengen die gleiche Anzahl an Elementen und \emph{jeder} Kindknoten der Menge A hat in der gegenüberliegenden Menge B an gleicher Position ein Äquivalent mit vorliegender Übereinstimmung, so beträgt die Ähnlichkeit $1$, ansonsten $0$.
+
+
+%
+% --> ChildrenEqualViewingTypesCO
+%
+\subsection{\texttt{ChildrenEqualViewingTypesCO}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter \structgetfullref{strct:spec:childrenco} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die Kindknotenmengen werden bei dieser Vergleichsfunktion anhand der \emph{Typen} der einzelnen Knoten auf vollständige Gleichheit überprüft. Die Reihenfolge der Kindknoten ist dabei von Belang. Besitzen beide Knotenmengen die gleiche Anzahl an Elementen und \emph{jeder} Kindknoten der Menge A hat in der gegenüberliegenden Menge B an gleicher Position ein Äquivalent gleichen Knotentyps, so beträgt die Ähnlichkeit $1$, ansonsten $0$.

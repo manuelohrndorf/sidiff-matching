@@ -1,0 +1,5 @@
+Modelmanagement
+
+This bundle provides an EMF-based metamodel for UML models. 
+The current metamodel supports class models and package models.
+XSLTs for importing models are planned to be provided, too.

@@ -1,0 +1,122 @@
+<project name="Code Generation" default="main">
+
+	<target name="main">
+		<echo> SiDiff Model Importer and Code Generator</echo>
+		<echo> *********************************************************</echo>
+		<echo> ** Project : "${projectName}"</echo>	
+		<echo> ** Model   : "${modelName}"</echo>
+		<echo> ** Codepath: "${codePath}"</echo>
+		<echo> *********************************************************</echo>
+		<echo> ** Optional local XSLT : ${localXslt}</echo>
+		<echo> ** Optional local ANT  : ${localAnt}</echo>
+		<echo> *********************************************************</echo>
+ 		
+		<condition property="NonSiDiffModel">
+			<not>
+				<isfileselected file="${modelName}.ecore">
+					<contains text="Genuine-SiDiff-Model" casesensitive="no" />
+				</isfileselected>
+			</not>
+		</condition>
+		
+		<available file="${localAnt}" property="LocalAntEnabled"/>
+		<available file="${localXslt}" property="LocalXSLTEnabled"/>
+
+		
+		<echo>${NonSiDiffModel}</echo>
+		<antcall target="cleanWorkspace"/>
+		<antcall target="tearUp" />
+		<antcall target="doImportTransformation"/>
+		<antcall target="tearDown" />
+		<antcall target="doCodeGeneration"/>
+	</target>
+
+	
+	<target name="tearUp" if="LocalAntEnabled" >
+		<ant antfile="${localAnt}" target="tearUp"/>
+	</target>
+	
+	<target name="tearDown" if="LocalAntEnabled" >
+		<ant antfile="${localAnt}" target="tearDown"/>
+	</target>
+	
+	<target name="localXSLT" if="LocalXSLTEnabled" >
+
+		<!-- refresh project -->
+		<eclipse.refreshLocal resource="${projectName}" depth="infinite"/>			
+		<move file="${modelName}.ecore" tofile="${tempName}"/>			
+		<!-- transforming documentation fields into eAnnotations -->
+		<xslt in="${tempName}" out="${modelName}.ecore" style="${localXslt}"/>
+		<delete file="${tempName}"/>
+		<!-- refresh project -->
+		<eclipse.refreshLocal resource="${projectName}" depth="infinite"/>
+		
+	</target>
+	
+		
+	
+	<target name="cleanWorkspace" >
+		
+		<!-- refresh project -->
+		<eclipse.refreshLocal resource="${projectName}" depth="infinite"/>
+
+		<!-- Delete code which is generated later -->
+		<delete dir="gensrc">
+			<include name="**/*.java"/>
+		</delete>
+
+		<!--delete file="META-INF/MANIFEST.MF"/-->
+		<delete file="build.properties"/>
+		<delete file="plugin.properties"/>
+		<delete file="plugin.xml"/>
+		
+		<!-- refresh project -->
+		<eclipse.refreshLocal resource="${projectName}" depth="infinite"/>
+
+	</target>	
+	
+	<target name="doImportTransformation" if="NonSiDiffModel">	
+		
+		<property name="tempName" value="${modelName}~" />
+		
+		<antcall target="localXSLT" />
+		
+		<!-- refresh project -->
+		<eclipse.refreshLocal resource="${projectName}" depth="infinite"/>
+		
+		<move file="${modelName}.ecore" tofile="${tempName}"/>
+		
+		<!-- manipulate Model, i.e. UMLModel-specific stuff -->
+		
+		<!-- Alle klassen im 'import' Paket auf/als eCore klassen umbiegen -->
+		<replace file="${tempName}" token="#//import/" value="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//"/>		
+		<!-- Namespace URI Projektspezifisch setzen! -->
+		<replace file="${tempName}" token="http:///model.ecore" value="http://www.sidiff.org/${projectName}"/>
+		
+		<!-- transforming documentation fields into eAnnotations -->
+		<xslt in="${tempName}" out="${modelName}.ecore" 
+			style="../SiDiffInternalTools/RSMTransformationen/prepareCodeGeneration.xslt"/>
+		<delete file="${tempName}"/>
+				
+		<!-- refresh project -->
+		<eclipse.refreshLocal resource="${projectName}" depth="infinite"/>
+
+	</target>	
+
+	<target name="doCodeGeneration">
+
+		<!-- refresh project -->
+		<eclipse.refreshLocal resource="${projectName}" depth="infinite"/>
+		
+		<!-- run code generation -->
+		<emf.Ecore2Java model="${modelName}.ecore" genModel="${modelName}.genmodel"
+		 modelProject="${basedir}" modelProjectFragmentPath="${codePath}"
+		 reconcileGenModel="reload"
+	     generateJavaCode="true"/>
+
+		<!-- refresh project -->
+		<eclipse.refreshLocal resource="${projectName}" depth="infinite"/>
+
+	</target>
+
+</project>

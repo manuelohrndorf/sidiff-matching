@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.sidiff.uml.model/gensrc"
+    modelPluginID="org.sidiff.uml.model" modelName="UMLModel" importerID="org.eclipse.emf.importer.ecore"
+    bundleManifest="false" complianceLevel="6.0" copyrightFields="false">
+  <foreignModel>UMLModel.ecore</foreignModel>
+  <genPackages prefix="Model" basePackage="org.sidiff.uml" disposableProviderFactory="true"
+      ecorePackage="UMLModel.ecore#/">
+    <genClasses image="false" ecoreClass="UMLModel.ecore#//Dummy"/>
+    <nestedGenPackages prefix="Classes" basePackage="org.sidiff.uml.model" disposableProviderFactory="true"
+        ecorePackage="UMLModel.ecore#//classes">
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="UMLModel.ecore#//classes/UMLAggregationKind">
+        <genEnumLiterals ecoreEnumLiteral="UMLModel.ecore#//classes/UMLAggregationKind/none"/>
+        <genEnumLiterals ecoreEnumLiteral="UMLModel.ecore#//classes/UMLAggregationKind/shared"/>
+        <genEnumLiterals ecoreEnumLiteral="UMLModel.ecore#//classes/UMLAggregationKind/composite"/>
+      </genEnums>
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="UMLModel.ecore#//classes/UMLParameterKind">
+        <genEnumLiterals ecoreEnumLiteral="UMLModel.ecore#//classes/UMLParameterKind/in"/>
+        <genEnumLiterals ecoreEnumLiteral="UMLModel.ecore#//classes/UMLParameterKind/out"/>
+        <genEnumLiterals ecoreEnumLiteral="UMLModel.ecore#//classes/UMLParameterKind/inout"/>
+      </genEnums>
+      <genClasses ecoreClass="UMLModel.ecore#//classes/UMLAssociation">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference UMLModel.ecore#//classes/UMLAssociation/associationEnds"/>
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference UMLModel.ecore#//classes/UMLAssociation/package"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="UMLModel.ecore#//classes/UMLClassifier">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference UMLModel.ecore#//classes/UMLClassifier/targetedByAssociationEnds"/>
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference UMLModel.ecore#//classes/UMLClassifier/package"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="UMLModel.ecore#//classes/UMLType">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference UMLModel.ecore#//classes/UMLType/usedByElements"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="UMLModel.ecore#//classes/UMLTypedElement">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference UMLModel.ecore#//classes/UMLTypedElement/type"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="UMLModel.ecore#//classes/UMLGeneralizableElement">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference UMLModel.ecore#//classes/UMLGeneralizableElement/specializations"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference UMLModel.ecore#//classes/UMLGeneralizableElement/generalizations"/>
+      </genClasses>
+      <genClasses ecoreClass="UMLModel.ecore#//classes/UMLGeneralization">
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference UMLModel.ecore#//classes/UMLGeneralization/specialElement"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference UMLModel.ecore#//classes/UMLGeneralization/generalElement"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="UMLModel.ecore#//classes/UMLBindingElement">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference UMLModel.ecore#//classes/UMLBindingElement/templateBindings"/>
+      </genClasses>
+      <genClasses ecoreClass="UMLModel.ecore#//classes/UMLTemplateBinding">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference UMLModel.ecore#//classes/UMLTemplateBinding/formalParam"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute UMLModel.ecore#//classes/UMLTemplateBinding/actualParam"/>
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference UMLModel.ecore#//classes/UMLTemplateBinding/binder"/>
+      </genClasses>
+      <genClasses ecoreClass="UMLModel.ecore#//classes/UMLTemplateParameter">
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference UMLModel.ecore#//classes/UMLTemplateParameter/templateableElement"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EAttribute UMLModel.ecore#//classes/UMLTemplateParameter/type"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference UMLModel.ecore#//classes/UMLTemplateParameter/bindings"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="UMLModel.ecore#//classes/UMLTemplateableElement">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference UMLModel.ecore#//classes/UMLTemplateableElement/templateParameters"/>
+      </genClasses>
+      <genClasses ecoreClass="UMLModel.ecore#//classes/UMLAssociationEnd">
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference UMLModel.ecore#//classes/UMLAssociationEnd/association"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute UMLModel.ecore#//classes/UMLAssociationEnd/multiplicity"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute UMLModel.ecore#//classes/UMLAssociationEnd/isNavigable"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute UMLModel.ecore#//classes/UMLAssociationEnd/kind"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute UMLModel.ecore#//classes/UMLAssociationEnd/isOrdered"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference UMLModel.ecore#//classes/UMLAssociationEnd/target"/>
+      </genClasses>
+      <genClasses ecoreClass="UMLModel.ecore#//classes/UMLEnumeration">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference UMLModel.ecore#//classes/UMLEnumeration/literals"/>
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference UMLModel.ecore#//classes/UMLEnumeration/package"/>
+      </genClasses>
+      <genClasses ecoreClass="UMLModel.ecore#//classes/UMLLiteral">
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference UMLModel.ecore#//classes/UMLLiteral/enumeration"/>
+      </genClasses>
+      <genClasses ecoreClass="UMLModel.ecore#//classes/UMLPrimitiveType">
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference UMLModel.ecore#//classes/UMLPrimitiveType/package"/>
+      </genClasses>
+      <genClasses ecoreClass="UMLModel.ecore#//classes/UMLAssociationClass"/>
+      <genClasses ecoreClass="UMLModel.ecore#//classes/UMLClass">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute UMLModel.ecore#//classes/UMLClass/isAbstract"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute UMLModel.ecore#//classes/UMLClass/isFinal"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference UMLModel.ecore#//classes/UMLClass/operations"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference UMLModel.ecore#//classes/UMLClass/attributes"/>
+      </genClasses>
+      <genClasses ecoreClass="UMLModel.ecore#//classes/UMLOperation">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute UMLModel.ecore#//classes/UMLOperation/isAbstract"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute UMLModel.ecore#//classes/UMLOperation/isStatic"/>
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference UMLModel.ecore#//classes/UMLOperation/interface"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference UMLModel.ecore#//classes/UMLOperation/parameters"/>
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference UMLModel.ecore#//classes/UMLOperation/class"/>
+      </genClasses>
+      <genClasses ecoreClass="UMLModel.ecore#//classes/UMLInterface">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference UMLModel.ecore#//classes/UMLInterface/operations"/>
+      </genClasses>
+      <genClasses ecoreClass="UMLModel.ecore#//classes/UMLParameter">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute UMLModel.ecore#//classes/UMLParameter/kind"/>
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference UMLModel.ecore#//classes/UMLParameter/operation"/>
+      </genClasses>
+      <genClasses ecoreClass="UMLModel.ecore#//classes/UMLAttribute">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute UMLModel.ecore#//classes/UMLAttribute/isStatic"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute UMLModel.ecore#//classes/UMLAttribute/isFinal"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute UMLModel.ecore#//classes/UMLAttribute/isReadOnly"/>
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference UMLModel.ecore#//classes/UMLAttribute/class"/>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="Core" basePackage="org.sidiff.uml.model" disposableProviderFactory="true"
+        ecorePackage="UMLModel.ecore#//core">
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="UMLModel.ecore#//core/UMLVisibility">
+        <genEnumLiterals ecoreEnumLiteral="UMLModel.ecore#//core/UMLVisibility/public"/>
+        <genEnumLiterals ecoreEnumLiteral="UMLModel.ecore#//core/UMLVisibility/protected"/>
+        <genEnumLiterals ecoreEnumLiteral="UMLModel.ecore#//core/UMLVisibility/private"/>
+        <genEnumLiterals ecoreEnumLiteral="UMLModel.ecore#//core/UMLVisibility/package"/>
+      </genEnums>
+      <genClasses image="false" ecoreClass="UMLModel.ecore#//core/UMLVisibleElement">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute UMLModel.ecore#//core/UMLVisibleElement/visibility"/>
+      </genClasses>
+      <genClasses ecoreClass="UMLModel.ecore#//core/UMLPackage">
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference UMLModel.ecore#//core/UMLPackage/model"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference UMLModel.ecore#//core/UMLPackage/packages"/>
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference UMLModel.ecore#//core/UMLPackage/superPackage"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference UMLModel.ecore#//core/UMLPackage/classifiers"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference UMLModel.ecore#//core/UMLPackage/storedComments"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference UMLModel.ecore#//core/UMLPackage/associations"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference UMLModel.ecore#//core/UMLPackage/enumerations"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference UMLModel.ecore#//core/UMLPackage/primitiveTypes"/>
+      </genClasses>
+      <genClasses ecoreClass="UMLModel.ecore#//core/UMLStereotypeableElement">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference UMLModel.ecore#//core/UMLStereotypeableElement/stereotypes"/>
+      </genClasses>
+      <genClasses ecoreClass="UMLModel.ecore#//core/UMLStereotype">
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference UMLModel.ecore#//core/UMLStereotype/model"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference UMLModel.ecore#//core/UMLStereotype/stereotypedElements"/>
+      </genClasses>
+      <genClasses ecoreClass="UMLModel.ecore#//core/UMLModel">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference UMLModel.ecore#//core/UMLModel/packages"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference UMLModel.ecore#//core/UMLModel/stereotypes"/>
+      </genClasses>
+      <genClasses ecoreClass="UMLModel.ecore#//core/UMLElement">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute UMLModel.ecore#//core/UMLElement/id"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference UMLModel.ecore#//core/UMLElement/comments"/>
+      </genClasses>
+      <genClasses ecoreClass="UMLModel.ecore#//core/UMLComment">
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference UMLModel.ecore#//core/UMLComment/package"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute UMLModel.ecore#//core/UMLComment/comment"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference UMLModel.ecore#//core/UMLComment/elements"/>
+      </genClasses>
+      <genClasses ecoreClass="UMLModel.ecore#//core/UMLDependency">
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference UMLModel.ecore#//core/UMLDependency/dependee"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference UMLModel.ecore#//core/UMLDependency/supplier"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="UMLModel.ecore#//core/UMLNamedElement">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference UMLModel.ecore#//core/UMLNamedElement/outgoingDependencies"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference UMLModel.ecore#//core/UMLNamedElement/dependees"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute UMLModel.ecore#//core/UMLNamedElement/name"/>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="Packages" basePackage="org.sidiff.uml.model" disposableProviderFactory="true"
+        ecorePackage="UMLModel.ecore#//packages">
+      <genClasses image="false" ecoreClass="UMLModel.ecore#//packages/Dummy"/>
+    </nestedGenPackages>
+  </genPackages>
+</genmodel:GenModel>

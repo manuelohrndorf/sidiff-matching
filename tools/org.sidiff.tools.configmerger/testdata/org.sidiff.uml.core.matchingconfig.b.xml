@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- <!DOCTYPE Matching SYSTEM "http://pi.informatik.uni-siegen.de/SiDiff/org.sidiff.core.matching.iterative.dtd">-->
+
+<Matching>
+	<Settings matcherPrefix="org.sidiff.core.matching.matcher"
+			  documentType="http://www.sidiff.org/org.sidiff.uml.model"
+			  firstPassSequencedMatcher="UniqueSimilarityMatcher"
+			  defaultSequencedMatcher="DefaultMatcher"
+			  defaultTopDownMatcher="Propagation" />
+			  
+	<Configurations>
+		<MatchingConfiguration className="core.UMLModel"
+			threshold="1.0"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="false"
+			independentMatching="true"
+			topDownMatcher="" />
+
+		<MatchingConfiguration className="classes.UMLPrimitiveType"
+			threshold="0.8"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="NoPropagation" />
+
+		<MatchingConfiguration className="core.UMLStereotype"
+			threshold="0.8"
+			allowLocalMove="false"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="NoPropagation" />
+
+		<MatchingConfiguration className="classes.UMLEnumeration"
+			threshold="0.5"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="" />
+
+		<MatchingConfiguration className="classes.UMLLiteral"
+			threshold="0.75"
+			allowLocalMove="true"
+			allowGlobalMove="false"
+			alwaysComputeSimilarity="true"
+			independentMatching="false"
+			topDownMatcher="NoPropagation" />
+
+		<MatchingConfiguration className="core.UMLPackage"
+			threshold="0.5"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="" />
+
+		<MatchingConfiguration className="classes.UMLClass"
+			threshold="0.6"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="" />
+
+		<MatchingConfiguration className="classes.UMLInterface"
+			threshold="0.6"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="" />
+
+		<MatchingConfiguration className="classes.UMLAttribute"
+			threshold="0.6"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="NoPropagation" />
+
+		<MatchingConfiguration className="classes.UMLOperation"
+			threshold="0.6"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="" />
+
+		<MatchingConfiguration className="classes.UMLParameter"
+			threshold="0.6"
+			allowLocalMove="false"
+			allowGlobalMove="false"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="NoPropagation" />
+
+		<MatchingConfiguration className="classes.UMLGeneralization"
+			threshold="0.6"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="NoPropagation" />
+
+		<MatchingConfiguration className="core.UMLDependency"
+			threshold="0.7"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="NoPropagation" />
+
+		<MatchingConfiguration className="classes.UMLAssociation"
+			threshold="0.6"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="" />
+
+		<MatchingConfiguration className="classes.UMLAssociationEnd"
+			threshold="0.4"
+			allowLocalMove="true"
+			allowGlobalMove="false"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="NoPropagation" />
+
+	</Configurations>
+	
+	<Sequence>
+		<Class name="classes.UMLPrimitiveType" />
+		<Class name="core.UMLStereotype" />
+		<Class name="classes.UMLLiteral" />
+		<Class name="classes.UMLEnumeration" />
+		<Class name="classes.UMLAttribute" />
+		<Class name="classes.UMLParameter" />
+		<Class name="classes.UMLOperation" />
+		<Class name="classes.UMLClass" />
+		<Class name="classes.UMLInterface" />
+		<Class name="classes.UMLAssociation" />
+		<Class name="classes.UMLAssociationClass" />
+		<Class name="classes.UMLAssociationEnd" />
+		<Class name="classes.UMLGeneralization" />
+		<Class name="core.UMLDependency" />
+		<Class name="core.UMLPackage" />
+		<Class name="core.UMLModel" />
+		
+	</Sequence>
+	
+</Matching>

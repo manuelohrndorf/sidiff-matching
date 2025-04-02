@@ -1,0 +1,31 @@
+Vorgehen des Algorithmus' zur Berechnung der Sequenzen
+
+1. Zunaechst wird die nested Class ClassCalculator verwendet um eine Liste aller Klassen (abstrakt oder nicht) aufsteigend 
+geordnet nach maximaler Tiefe zu berechnen. Maximale Tiefe deswegen, weil es in einem Modell mehrere Containment-Baeume geben 
+kann mit mehreren Wurzelklassen und jede Klasse prinzipiell in jedem dieser Baeume vorkommen kann.
+
+2. Die Ordnung der Liste wird umgekehrt da wir die tiefsten Klassen zuerst eintragen wollen. 
+Die Berechnung der Liste ist allerdings einfacher in aufsteigender Richtung.
+
+3. Alle Klassen werden in eine zusaetzliche Liste aus Mengen gepackt. 
+Dabei sind in der ersten Menge alle Klassen mit null ausgehenden Referenzen. In der zweiten alle mit einer usw.
+
+4. Nun wird diese Liste mit Mengen sortiert nach Anzahl ausgehender Referenzen verwendet um eine rekursive Methode pro nicht leerer Menge zu starten.
+
+5. Diese Methode bekommt das Sequence Element in dem die Class nodes erzeugt werden sollen, 
+die geordnete Liste aller Klassen sowie eine Menge von Klassen die requiredTargets genannt wird.
+
+6. Fuer jede Klasse in requiredTargets werden alle Klassen gesucht die eine lokale, 
+d.h. nicht vererbte, Referenz auf das requiredTarget oder einen Supertyp dessen haben. 
+Diese gefundenen Klassen werden der uebergebenen Sequence als Class node hinzugefuegt, falls sie nicht abstrakt sind.
+Hier werden allerdings nur die Klassen gefunden die nicht schon einmal gefunden wurden. Dadurch werden Cyclen verhindert.
+
+7. Der naechste Rekursionsschritt wird mit einer subsequence, 
+der unveraenderten geordneten Liste aller Klassen sowie den eben gefundenen Klassen als neue requiredTargets aufgerufen. 
+Wobei die subsequence nur dann der Sequence hinzugefuegt wird, wenn der naechste Rekursionsschritt wenigstens eine Class node erzeugt. 
+Dafuer ist der boolean Returntyp gedacht.
+
+8. Die Rekursion endet, wenn keine requiredTargets mehr vorhanden sind
+
+9. Ist eine Rekursion durchgelaufen, wird aus der Liste mit den Mengen sortiert nach ausgehenden Referenzen 
+die naechste Menge genommen und mit ihr die Rekursion erneut gestarrt. Natürlich werden auch hier vorher die bereits besuchten Klassen entfernt.

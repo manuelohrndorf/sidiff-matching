@@ -1,0 +1,126 @@
+%
+% Vergleichsfunktionen: String-Attribut
+% ===========================================================================
+%
+
+\section{\texttt{StringAttribute}...}
+\label{strct:spec:stringattr}
+Dieser Abschnitt behandelt Vergleichsfunktionen des Typs \texttt{StringAttribute}, mit Hilfe derer sich die Zeichenketten von Attributen der aktuellen Eingabeknoten vergleichen lassen. Allgemein lassen sich bereits folgende Angaben zu dieser Gruppe von Vergleichsfunktionen machen.
+
+\subsubsection*{Allgemeine Vorbedingungen}
+Für den Fall, dass explizit ein einzelnes Attribut zum Vergleich angegeben wird, muss dieses existieren. Ist dies nicht der Fall erfolgt die Auslösung einer Ausnahme des Typs\mylinebreak\texttt{AttributeNotExistsException} oder \texttt{AnnotationNotExistsException} im Fall eines zu vergleichenden virtuellen Attributs. Eine \texttt{AttributeNotExistsException} wird auch ausgelöst, wenn der im Parameter spezifizierte reguläre Ausdruck keine zu vergleichenden Attributnamen liefert.\\
+In jedem der drei oben aufgeführten Fälle terminiert der SiDiff-Kern unverzüglich die Ausführung des Vergleichauftrags.
+
+\subsubsection*{Allgemeine Semantik}
+Die Eingabeknoten werden über ein oder mehrere durch den Parameter definierte Attribute miteinander verglichen. Der Vergleich der Attributwerte erfolgt nach der in der jeweiligen Vergleichsfunktion spezifizierten Methode.\\
+Anzumerken ist, dass sich mittels dieser Klasse von Vergleichsfunktionen auch explizit \emph{virtuelle} Attribute miteinander vergleichen lassen. Mehr dazu unter \textcrosslink{Allgemeiner Parameter}.
+
+Es bestehen zwei grundsätzliche Optionen:
+\begin{enumerate}
+	\item Es wird lediglich ein Attribut zum Vergleich angegeben.
+	\item Mittels eines regulären Ausdrucks werden mehrere Attribute spezifiziert, die für den Vergleich herangezogen oder von diesem ausgeschlossen werden sollen.
+\end{enumerate}
+
+Siehe dazu auch \textcrosslink{Allgemeine Parameter}.
+
+\subsubsection*{Allgemeiner Rückgabewert}
+\begin{enumerate}
+	\item Es werden \emph{keine} regulären Ausdrücke verwendet – also \emph{ein} Attribut soll verglichen werden:
+		\begin{itemize}
+			\item Wenn bei beiden Eingabeknoten das zu vergleichende Attribut nicht vorhanden ist, so wird $1$ zurückgegeben.
+			\item Ist das zu vergleichende Attribut bei lediglich einem Eingabeknoten nicht vorhanden, wird $0$ zurückgegeben.
+			\item Sind beide Attributwerte vorhanden, so wird unter Anwendung der entsprechenden Vergleichsmethode die Ähnlichkeit bestimmt und als Similarity zurückgegeben.
+		\end{itemize}
+	\item Reguläre Ausdrücke werden verwendet (i.d.R. sollen \emph{mehrere} Attribute verglichen werden):
+		\begin{itemize}
+			\item Wenn keines der zu vergleichenden Attribute existiert, wird $1$ als Ähnlichkeit zurückgegeben.
+			\item Sofern zu vergleichende Attribute nach Anwendung des regulären Ausdrucks vorliegen, werden die Attribute einzeln miteinander verglichen und die einzelnen Ähnlichkeiten aufaddiert.\\
+			Zurückgegeben wird der Quotient aus den kumulierten Einzel-Ähnlichkeiten und der Anzahl der durch den regulären Ausdruck gefundenen Anzahl an zu vergleichenden Attributen.\\
+			\textnoticesec{Bemerkung:} Der Vergleich der \emph{einzelnen} Attribute erfolgt nach den gleichen Gesichtspunkten, wie in der Vergleichsoption \emph{ohne} Verwendung regulärer Ausdrücke (s.o.).
+		\end{itemize}
+\end{enumerate}
+
+\subsubsection*{Allgemeine Parameter}
+Als Parameter wird der Namen des zu vergleichenden Attributs übergeben.\\
+Ebenso ist es möglich mittels eines \emph{regulären Ausdrucks} mehrere Attribute explizit zum Vergleich anzugeben oder alle Attribute bis auf eine durch einen regulären Ausdruck definierte Ausschlussliste zum Vergleich zu markieren. Im ersteren Fall wird dem regulären Ausdruck ein "`$+$"' vorangestellt; im Falle einer Ausschlussliste ein "`$-$"'.
+
+Neben den beiden oben genannten Möglichkeiten, besteht auch die Möglichkeit explizit ein \emph{virtuelles} Attribut zum Vergleich zu markieren. Dazu wird dem Attributnamen lediglich ein $\$$ vorangestellt. Für den Vergleich von virtuellen Attributen werden allerdings \emph{keine} regulären Ausdrücke unterstützt, sodass immer nur ein spezielles Attribut vergleichbar ist.
+
+\vskip15pt
+%
+% --> StringAttributeUsingBoyerCI
+%
+\subsection{\texttt{StringAttributeUsingBoyerCI}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter \structgetfullref{strct:spec:stringattr} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Als spezielle Vergleichsmethode wird in diesem Fall der \emph{case-insensitive} Vergleich nach \emph{Boyer} verwendet.
+
+
+%
+% --> StringAttributeUsingBoyerCS
+%
+\subsection{\texttt{StringAttributeUsingBoyerCS}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter \structgetfullref{strct:spec:stringattr} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Als spezielle Vergleichsmethode wird in diesem Fall der \emph{case-sensitive} Vergleich nach \emph{Boyer} verwendet.
+
+
+%
+% --> StringAttributeUsingEqualsCI
+%
+\subsection{\texttt{StringAttributeUsingEqualsCI}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter \structgetfullref{strct:spec:stringattr} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Als spezielle Vergleichsmethode wird in diesem Fall der \emph{case-insensitive Equals}-Vergleich verwendet. Dies bedeutet, dass die Zeichenketten auf Gleichheit -- allerdings nicht im Sinne der Groß- und Kleinschreibung -- verglichen werden.
+
+
+%
+% --> StringAttributeUsingEqualsCS
+%
+\subsection{\texttt{StringAttributeUsingEqualsCS}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter \structgetfullref{strct:spec:stringattr} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Als spezielle Vergleichsmethode wird in diesem Fall der \emph{case-insensitive Equals}-Vergleich verwendet. Dies bedeutet, dass die Zeichenketten auf exakte Gleichheit -- auch im Sinne der Groß- und Kleinschreibung -- verglichen werden.
+
+
+\newpage
+%
+% --> StringAttributeUsingIndexOfCI
+%
+\subsection{\texttt{StringAttributeUsingIndexOfCI}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter \structgetfullref{strct:spec:stringattr} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Als spezielle Vergleichsmethode wird in diesem Fall der \emph{case-insensitive IndexOf}-Vergleich verwendet. Dies bedeutet, dass überprüft wird, ob die Zeichenketten sich gegenseitig beinhalten. Beinhaltet bspw. Zeichenkette A des einen Attributs die Zeichenkette B des Attributs im gegenüberliegenden Knoten, so wird als Ähnlichkeit der Quotient aus der kürzeren Zeichenkette B und der längeren Zeichenkette A zurückgegeben. Die Groß- und Kleinschreibung spielen bei dieser Variante allerdings \emph{keine} Rolle.
+
+
+%
+% --> StringAttributeUsingIndexOfCS
+%
+\subsection{\texttt{StringAttributeUsingIndexOfCS}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter \structgetfullref{strct:spec:stringattr} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Als spezielle Vergleichsmethode wird in diesem Fall der \emph{case-sensitive IndexOf}-Vergleich verwendet. Dies bedeutet, dass überprüft wird, ob die Zeichenketten sich gegenseitig beinhalten. Beinhaltet bspw. Zeichenkette A des einen Attributs die Zeichenkette B des Attributs im gegenüberliegenden Knoten, so wird als Ähnlichkeit der Quotient aus der kürzeren Zeichenkette B und der längeren Zeichenkette A zurückgegeben. Zusätzlich wird bei dieser Variante die Groß- und Kleinschreibung beachtet.
+
+%
+% --> StringAttributeUsingLcsCI
+%
+\subsection{\texttt{StringAttributeUsingLcsCI}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter \structgetfullref{strct:spec:stringattr} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Als spezielle Vergleichsmethode wird in diesem Fall der \emph{case-insensitive LCS}-Vergleich verwendet. Dies bedeutet, dass innerhalb beider Zeichenketten die längste, gemeinsamste Teilsequenz gesucht wird und letztlich der Quotient der Länge dieser und der Länge des längeren Attributwerts als Ähnlichkeit zurückgegeben wird. Bei dieser Variante ist die Groß- und Kleinschreibung allerdings \emph{nicht} von Belang.
+
+%
+% --> StringAttributeUsingLcsCS
+%
+\subsection{\texttt{StringAttributeUsingLcsCS}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter \structgetfullref{strct:spec:stringattr} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Als spezielle Vergleichsmethode wird in diesem Fall der \emph{case-insensitive LCS}-Vergleich verwendet. Dies bedeutet, dass innerhalb beider Zeichenketten die längste, gemeinsamste Teilsequenz gesucht wird und letztlich der Quotient der Länge dieser und der Länge des längeren Attributwerts als Ähnlichkeit zurückgegeben wird. Die Groß- und Kleinschreibung ist bei dieser Variante von Belang!

@@ -1,0 +1,103 @@
+\documentclass[10pt,a4paper]{scrartcl}
+\usepackage[ansi]{umlaute}
+\usepackage{ngerman}
+\usepackage{graphicx}
+\usepackage[final]{listings}
+\lstset{tabsize=2,basicstyle=\ttfamily\small}
+\usepackage[draft]{fixme}
+\usepackage{color}
+\definecolor{LinkColor}{rgb}{0.0,0.0,0.0} 
+\usepackage[
+        bookmarks=true,
+        bookmarksopen=true,
+        bookmarksopenlevel={1},
+        bookmarksnumbered=true,
+        plainpages=false,
+        pdfpagelabels=true,
+        hypertexnames=false,
+        pdftitle={},
+        pdfauthor={Sven Wenzel},
+        pdfcreator={LaTeX with hyperref and KOMA-Script},
+        pdfsubject={},
+        pdfkeywords={},
+        final]{hyperref}
+\hypersetup{colorlinks=true,
+        anchorcolor=LinkColor,
+        linkcolor=LinkColor,
+        citecolor=LinkColor,
+        filecolor=LinkColor,
+        menucolor=LinkColor,
+        pagecolor=LinkColor,
+        urlcolor=LinkColor}
+
+\newcommand{\hinweis}[1]{
+
+\textbf{Hinweis:} #1
+
+}
+
+\title{SiDiff 2.0 -- Bundle-Overview}
+\date{\today}
+\author{Sven Wenzel}
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Introduction}
+The SiDiff project has not been realized as a monolyth in a single Java project.
+It rather consists of many subprojects. Each subproject is a OSGi bundle, which
+provides Java classes and other resources. This document gives an overview over
+the existing bundles.
+
+We differentiate the following kinds of bundles:
+\begin{description}
+ \item [Applications] are applications on basis of the Eclipse OSGi implementation
+\emph{Equinox}. Sie can read command line parameters and execute different services.
+An example is provided by the UML Diff application, which compares two UML models.
+ \item [Library Bundles] provide Java classes and resources that are used in most 
+of the subprojects. They are not active, self-contained, or application-like components,
+but they are only used for outsourcing recurring routines, such as filtering of
+object sets.
+ \item [Interface Bundles] define the components of SiDiff. Such components are realized
+as OSGi service and has a clearly defined function (e.g. the management of similarities).
+Hence, the interface bundle defines the interface of a service. Implementations are not 
+part of such a bundle.
+ \item [Implementation Bundles] provide the concrete implementation of a service. It
+contains the code and the resources needed to realize a service (i.e. a component of
+SiDiff). There can exist several implementation bundles for each interface bundle,
+in that case each implementation provides a different realization. E.g. the storage
+of matchings either in a table or as a graph.
+ \item [Extension Bundles] usually contain sets of classes which are loaded reflectively.
+They are used to extend the functionality of other components. An example is provided
+by the compare functions, which are used to calculate the similarity between pairs of
+model elements. With extension bundles the algorithmics are decoupled from documenttype-specific
+functions.
+ \item [Eclipse Plugins] are applications based on the Eclipse platform. They are 
+complexer applications which usually contain a graphical user interface. Consequently,
+they have many dependencies to Eclipse-specific libraries, which is the reason for
+categorizing them seperately.
+ \item [Test Bundles] are internal bundles, which are used for testing the different
+SiDiff components.
+\end{description}
+
+
+\input{applicationlist.gen.tex}
+
+\input{librarylist.gen.tex}
+
+\input{interfacelist.gen.tex}
+
+\input{implementationlist.gen.tex}
+
+\input{extendlist.gen.tex}
+
+\input{eclipselist.gen.tex}
+
+\input{testslist.gen.tex}
+
+\input{wronglist.gen.tex}
+
+\input{undocumentedlist.gen.tex}
+
+\end{document}

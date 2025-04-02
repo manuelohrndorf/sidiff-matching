@@ -1,0 +1,18 @@
+
+-----------------------------------------
+HOWTO - Zum Build des Kerns
+-----------------------------------------
+
+1. ProjectSet importieren: SiDiff-Core-1.0.0.psf
+
+2. ggf. Versionsnummern in Bundles bzw. in build-core.properties aktualisieren
+
+3. Ant-Skript ausfuehren: build-core.xml
+
+4. Ausgabe liegt im Ordner /output
+
+ACHTUNG!!!
+Das Skript loescht zum Teil aus den Bundles.
+Daher sollten nach dme Skript keine Aenderungen committed werden,
+sondern auf allen Projekten ein Revert durchgefuehrt werden. 
+ 

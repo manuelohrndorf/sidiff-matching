@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.sidiff.feature.consolediff.uml.standalone"
+      label="Standalone Console UML Diff Application"
+      version="0.0.1.qualifier"
+      provider-name="www.sidiff.org">
+
+   <description url="http://www.example.com/description">
+      [Enter Feature Description here.]
+   </description>
+
+   <copyright url="http://www.example.com/copyright">
+      [Enter Copyright Description here.]
+   </copyright>
+
+   <license url="http://www.sidiff.org">
+      These bundles are for internal use only!
+   </license>
+
+   <includes
+         id="org.sidiff.feature.consolediff.uml"
+         version="0.0.0"/>
+
+   <includes
+         id="org.sidiff.feature.runtime"
+         version="0.0.0"/>
+
+</feature>

@@ -1,0 +1,68 @@
+%
+% Vergleichsfunktionen: Verschiedenartig
+% ===========================================================================
+%
+
+\section{Verschiedenartige Vergleichsfunktionen}
+\label{strct:spec:misc}
+In diesem Abschnitt werden verschiedene Vergleichsfunktionen angeführt, die sich keiner größeren allgemeinen Gruppe zuordnen lassen.
+
+
+%
+% --> EqualID
+%
+\subsection{\texttt{EqualID}}
+\subsubsection*{Vorbedingungen}
+Für die Eingabeknoten müssen IDs existieren.
+\subsubsection*{Semantik}
+Die Eingabeknoten werden anhand der ID-Attribute miteinander verglichen.
+\subsubsection*{Rückgabewert}
+Für übereinstimmende IDs wird $1$ und für unterschiedliche $0$ zurückgegeben.
+\subsubsection*{Parameter}
+Keine
+
+
+%
+% --> ExplicitMatch
+%
+\subsection{\texttt{ExplicitMatch}}
+\subsubsection*{Vorbedingungen}
+Keine
+\subsubsection*{Semantik}
+Es wird \emph{kein} expliziter Vergleich durchgeführt. Diese Funktion liefert unabhängig von den übergebenen Eingabeknoten immer $1$.
+\subsubsection*{Rückgabewert}
+Es wird \emph{immer} $1$ als Similarity zurückgegeben.
+\subsubsection*{Parameter}
+Keine
+\subsubsection*{Abgefangene Fehler}
+Sind für den SiDiff-Kern Debug-Ausgaben aktiviert, so kann im Ausnahmefall eine\mylinebreak\textclass{SiDiffRuntimeException} ausgelöst werden.
+
+
+\newpage
+%
+% --> MaximumSimilarity
+%
+\subsection{\texttt{MaximumSimilarity}}
+\subsubsection*{Vorbedingungen}
+Keine
+\subsubsection*{Semantik}
+Es wird \emph{kein} expliziter Vergleich durchgeführt. Diese Funktion liefert unabhängig von den übergebenen Eingabeknoten immer $1$.
+\subsubsection*{Rückgabewert}
+Es wird \emph{immer} $1$ als Similarity zurückgegeben.
+\subsubsection*{Parameter}
+Keine
+
+
+%
+% --> CINoSimilarity
+%
+\subsection{\texttt{NoSimilarity}}
+\subsubsection*{Vorbedingungen}
+Keine
+\subsubsection*{Semantik}
+Es wird \emph{kein} expliziter Vergleich durchgeführt. Diese Funktion liefert unabhängig von den übergebenen Eingabeknoten immer $0$.\\
+Es handelt sich um eine Vergleichsfunktion, mit der sich Knotentypen vom Vergleich ausschließen lassen.
+\subsubsection*{Rückgabewert}
+Es wird \emph{immer} $0$ als Similarity zurückgegeben.
+\subsubsection*{Parameter}
+Keine

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="org.sidiff.comparefunctions.extensionpoint" name="CompareFunction" schema="schema/org.sidiff.comparefunctions.extensionpoint.exsd"/>
+   <extension
+         point="org.sidiff.comparefunctions.extensionpoint">
+      <client
+            class="org.sidiff.comparefunctions.impl.Children">
+      </client>
+      <client
+            class="org.sidiff.comparefunctions.impl.MaximumSimilarity">
+      </client>
+      <client
+            class="org.sidiff.comparefunctions.impl.MinimumSimilarity">
+      </client>
+      <client
+            class="org.sidiff.comparefunctions.impl.Parent">
+      </client>
+      <client
+            class="org.sidiff.comparefunctions.impl.NeighboursSingleReference">
+      </client>
+      <client
+            class="org.sidiff.comparefunctions.impl.MultipleRemoteNodes">
+      </client>
+      <client
+            class="org.sidiff.comparefunctions.impl.RemoteNodes">
+      </client>
+      <client
+            class="org.sidiff.comparefunctions.impl.SingleNeighbour">
+      </client>
+      <client
+            class="org.sidiff.comparefunctions.impl.Self">
+      </client>
+      <client
+            class="org.sidiff.comparefunctions.impl.StereoTypes">
+      </client>
+   </extension>
+
+</plugin>

@@ -1,0 +1,35 @@
+\ProvidesPackageRCS $Header: /cvsroot/latex-beamer/latex-beamer/themes/theme/beamerthemeDarmstadt.sty,v 1.8 2004/10/07 20:53:10 tantau Exp $
+
+% Copyright 2003 by Till Tantau <tantau@users.sourceforge.net>
+%
+% This program can be redistributed and/or modified under the terms
+% of the GNU Public License, version 2.
+
+
+\mode<presentation>
+
+\useoutertheme{split}
+\useinnertheme[shadow=true]{rounded}
+\definecolor[named]{UniBlau}{cmyk}{1,.88,0,.05}
+\definecolor[named]{HeadColor}{cmyk}{.07,.08,0,0}
+\usecolortheme[named=UniBlau]{structure}
+\usecolortheme{rose}
+
+%\setbeamercolor*{separation line}{bg=structure.fg}
+%\setbeamercolor*{author in foot}{parent=author in head/foot,bg=white}
+%\setbeamercolor*{navigation in foot}{parent=title in head/foot,bg=white}
+
+\setbeamerfont{block title}{size={}}
+
+
+\AtBeginDocument{%
+  \pgfdeclareverticalshading{beamer@headfade}{\paperwidth}%
+  	{color(0cm)=(bg);color(1.5cm)=(structure.fg!18!structure.bg)}
+}
+
+%\setbeamersize{text margin left=2em,text margin right=2em}
+
+\addtoheadtemplate{\pgfuseshading{beamer@headfade}\vskip-1.5cm}{}
+
+\mode
+<all>

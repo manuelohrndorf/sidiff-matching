@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Experimental Util
+Bundle-SymbolicName: org.sidiff.common.experimentalutil
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.sidiff.common.experimentalutil.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ org.sidiff.common;bundle-version="1.0.0",
+ org.sidiff.common.chartsutil;bundle-version="1.0.0";visibility:=reexport
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
+Export-Package: org.sidiff.common.experimentalutil

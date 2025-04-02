@@ -1,0 +1,40 @@
+Hinweise zur Erstellung von Metamodellen
+-----------------------------------------
+
+1. Incoming Edges
+
+	EMF-Metamodelle haben leider nur gerichtete Assoziationen (EReference). 
+	Ist für den Vergleich mit Sidiff das Navigieren über eine
+	eingehende Kante notwendig, so ist dies zunächst nicht möglich.
+	Ich empfehle, eine entsprechende EReference in Gegenrichtung anzulegen
+	und als eOpposite der ursprünglichen Association hinzuzufügen.
+	
+	Um diese zusätzliche Kante als Hilfskante zu markieren sollte die mit
+	einer EAnnotation versehen werden. Source der Annotation ist "INCOMING",
+	References der Annotation werden nicht interpretiert.
+	
+	Diese Hilfskanten können mit Hilfe der EdgeSemantic.INCOMING abgefragt werden.
+	
+	
+2. Annotation des Pfads eines Knoten
+
+	Ähnlich zum alten Sidiff-Kern, wird der Pfad als Annotationsinformation berechnet.
+	Standardmäßig wird der "PathAnnotator" verwendet. Ihm kann ein Standard-Attribut
+	als Parameter angegeben werden, um aus diesem Attribut den Pfad zu generieren.
+	Kann er kein solches Attribut finden, nimmt er falls vorhanden, das Attribut "name".
+	
+	Sollte es in einem Metamodell nicht möglich sein, ein einheitlich benanntes
+	Attribut für die Pfadberechnung zu definieren, kann auch für jede Klasse ein
+	eigenes Attribut ausgewählt werden. Hierzu ist das Attribut mit einer EAnnotation
+	zu versehen. Source der Annotation ist "PATH", References der Annotation werden
+	nicht interpretiert.
+
+
+3. Hashalgorithmus
+
+	Der Hashalgorithmus erlaubt, einige Attribute oder Referenzen aus der 
+	Hashwertberechnung auszuschließen. Hierzu ist das Attribut oder die Referenz 
+	mit einer EAnnotation zu versehen. Source der Annotation ist "NOHASH",
+	References der Annotation werden nicht interpretiert.
+
+	

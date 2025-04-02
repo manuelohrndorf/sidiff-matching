@@ -1,0 +1,83 @@
+<project name="Build SiDiff Core" default="main" basedir="../..">
+	
+	<property name="scriptDir" value="SiDiffInternalTools/CoreReleaseBuild"/>
+	<property file="${scriptDir}/build-core.properties"/>
+	
+	<target name="remove_internals">
+		<eclipse.refreshLocal resource="" depth="infinite"/>
+		
+		<!-- Remove "experimental" folders -->
+		<delete includeemptydirs="true">
+			<fileset dir="." includes="*/experimental/**/*" />
+		</delete>
+		
+		<eclipse.refreshLocal resource="" depth="infinite"/>			
+	</target>
+
+	<target name="export">
+    	<pde.exportPlugins 
+    		destination="${exportDir}" 
+    		exportSource="false" 
+    		exportType="zip"
+    		filename="sidiff_${releaseVersion}.zip"
+    		plugins="${commonBundles},${coreBundles}" 
+    		useJARFormat="true"/>
+		<eclipse.refreshLocal resource="" depth="infinite"/>			
+	</target>
+
+	<target name="main">
+		<antcall target="remove_internals"/>
+		<antcall target="export" />
+	</target>
+
+	
+	<!-- Automatischer Checkout (funktioniert nicht bzw. ist unvollstaendig) -->
+	
+	<property name="RepoURL" value="http://svn.informatik.uni-siegen.de/SiDiff/trunk" />
+
+	<path id="project.classpath"  >
+	    <fileset dir="${scriptDir}/lib"  >
+	         <include name="*.jar"  />
+	    </fileset>
+	</path>
+	
+	<taskdef name="svn"   
+	     classname="org.tigris.subversion.svnant.SvnTask"  
+	     classpathref="project.classpath" />
+
+	<target name="checkout">
+		<svn username="build" password="schaffe">
+			<!-- Commons -->
+			<export srcUrl="${RepoURL}/core/org.sidiff.common" destPath="org.sidiff.common"/>
+			<export srcUrl="${RepoURL}/core/org.sidiff.common.eclipse" destPath="org.sidiff.common.eclipse"/>
+			<export srcUrl="${RepoURL}/core/org.sidiff.common.emf" destPath="org.sidiff.common.emf"/>
+			<export srcUrl="${RepoURL}/core/org.sidiff.common.services" destPath="org.sidiff.common.services"/>
+			<!-- Core -->
+			<export srcUrl="${RepoURL}/core/org.sidiff.core.annotation" destPath="org.sidiff.core.annotation"/>
+			<export srcUrl="${RepoURL}/core/org.sidiff.core.annotation.default" destPath="org.sidiff.core.annotation.default"/>
+			<export srcUrl="${RepoURL}/core/org.sidiff.core.annotators.common" destPath="org.sidiff.core.annotators.common"/>
+			<export srcUrl="${RepoURL}/core/org.sidiff.core.annotators.metrics" destPath="org.sidiff.core.annotators.metrics"/>
+			<export srcUrl="${RepoURL}/core/org.sidiff.core.candidates" destPath="org.sidiff.core.candidates"/>
+			<export srcUrl="${RepoURL}/core/org.sidiff.core.candidates.default" destPath="org.sidiff.core.candidates.default"/>
+			<export srcUrl="${RepoURL}/core/org.sidiff.core.candidates.tree" destPath="org.sidiff.core.candidates.tree"/>
+			<export srcUrl="${RepoURL}/core/org.sidiff.core.comparators" destPath="org.sidiff.core.comparators"/>
+			<export srcUrl="${RepoURL}/core/org.sidiff.core.comparefunctions" destPath="org.sidiff.core.comparefunctions"/>
+			<export srcUrl="${RepoURL}/core/org.sidiff.core.conditions" destPath="org.sidiff.core.conditions"/>
+			<export srcUrl="${RepoURL}/core/org.sidiff.core.correspondences" destPath="org.sidiff.core.correspondences"/>
+			<export srcUrl="${RepoURL}/research/pipelining/org.sidiff.core.correspondences.model" destPath="org.sidiff.core.correspondences.model"/>
+			<export srcUrl="${RepoURL}/core/org.sidiff.core.correspondences.pairtable" destPath="org.sidiff.core.correspondences.pairtable"/>
+			<export srcUrl="${RepoURL}/research/pipelining/org.sidiff.core.difference.model" destPath="org.sidiff.core.difference.model"/>
+			<export srcUrl="${RepoURL}/core/org.sidiff.core.matching" destPath="org.sidiff.core.matching"/>
+			<export srcUrl="${RepoURL}/core/org.sidiff.core.matching.hashing" destPath="org.sidiff.core.matching.hashing"/>
+			<export srcUrl="${RepoURL}/core/org.sidiff.core.matching.idbased" destPath="org.sidiff.core.matching.idbased"/>
+			<export srcUrl="${RepoURL}/core/org.sidiff.core.matching.iterative" destPath="org.sidiff.core.matching.iterative"/>
+			<export srcUrl="${RepoURL}/core/org.sidiff.core.similarities" destPath="org.sidiff.core.similarities"/>
+			<export srcUrl="${RepoURL}/core/org.sidiff.core.similarities.default" destPath="org.sidiff.core.similarities.default"/>
+			<export srcUrl="${RepoURL}/core/org.sidiff.core.similaritiescalculator" destPath="org.sidiff.core.similaritiescalculator"/>
+			<export srcUrl="${RepoURL}/core/org.sidiff.core.similaritiescalculator.default" destPath="org.sidiff.core.similaritiescalculator.default"/>
+		</svn>
+		<eclipse.refreshLocal resource="" depth="infinite"/>			
+	</target>
+
+
+</project>

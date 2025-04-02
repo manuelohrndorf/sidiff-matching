@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- <!DOCTYPE Preprocessing SYSTEM "http://pi.informatik.uni-siegen.de/SiDiff/core.annotations.dtd" >-->
+<Annotations 
+	documentType="http://www.eclipse.org/emf/jcrm/samples/emf/sample/Library" >
+
+	<Annotation nodeType="Book">	
+		<SyntheticAttribute 
+			attributeName="HASH" 
+			operation="HashAnnotator" 
+			parameter="globalMoveAllowed=true"/>
+	</Annotation>
+	
+	<Annotation nodeType="Library">
+		<SyntheticAttribute attributeName="DERIVED_ID" operation="DerivedIDAnnotator" parameter="name" />
+	</Annotation>
+	
+	<Annotation nodeType="Writer">		
+		<SyntheticAttribute attributeName="DERIVED_ID" operation="DerivedIDAnnotator" parameter="Parent#Library@name::name" />
+	</Annotation>
+		
+</Annotations>

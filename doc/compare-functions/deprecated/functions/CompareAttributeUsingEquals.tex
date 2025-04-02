@@ -1,0 +1,145 @@
+\comparefunction{CompareAttributeUsingEquals}
+
+\allowedtypes
+numerical Values, eString, eDate, eChar, eCharObject, eBoolean, eBooleanObject,
+Enumeration, datatype, eByteArray
+
+\precondition
+-
+
+\semantics
+Compares two nodes based on the string values of their attributes. 
+
+\returnvalue
+In case the values of the attributes are equal sim = 1 is returned, else sim =
+0.
+
+\parameters
+For eStrings: The name of the attributes and the case-sensitive value
+For other attributes: Only the attribute to be compared by name\\
+
+
+\exceptions
+
+
+\test
+Erste Iteration: \\
+Tests für eString, eInteger, eDouble, eFloat, eBoolean\\
+Identische Tests für eIntegerObject, eDouble, eFloat, eBoolean\\
+
+Zweite Iteration: \\
+Tests für weitere eTypes\\
+
+compareAttributeUsingEqualsTest1\\\\
+	Different Integers (Sim = 0)\\
+	Model 1: eInteger = 1\\
+	Model 2: eInteger = 15\\\\
+
+compareAttributeUsingEqualsTest2\\\\
+	Identical Integers (Sim = 1)\\
+	Model 1: eInteger = 7\\
+	Model 2: eInteger = 7\\\\
+
+compareAttributeUsingEqualsTest3\\\\
+	Different Doubles (Sim = 0)\\
+	Model 1: eDouble = 1.2d\\
+	Model 2: eDouble = 7.3d\\\\
+
+compareAttributeUsingEqualsTest4\\\\
+	Same Doubles (Sim = 1)\\
+	Model 1: eDouble = 1.6d\\
+	Model 2: eDouble = 1.6d\\\
+
+compareAttributeUsingEqualsTest5\\\\
+	Different Floats (Sim = 0)\\
+	Model 1: eFloat = 1.2f\\
+	Model 2: eFloat = 7.3f\\\\
+
+compareAttributeUsingEqualsTest6\\\\
+	Same Floats (Sim = 1)\\
+	Model 1: eFloat = 1.6f\\
+	Model 2: eFloat = 1.6f\\\\
+	
+ compareAttributeUsingEqualsTest7\\\\
+	Same Strings (case-sensitive) (sim = 1)\\
+	case-insensitive test\\
+	Model 1: eString = aaBBaa\\
+	Model 2: eString = aaBBaa\\\\
+
+ compareAttributeUsingEqualsTest8\\\\
+	Same Strings (case-sensitive) (sim = 1)\\
+	case-sensitive test\\
+	Model 1: eString = aaBBaa\\
+	Model 2: eString = aaBBaa\\\\
+
+ compareAttributeUsingEqualsTest9\\\\
+	Same Strings (case-insensitive) (sim = 1)\\
+	case-insensitive test\\
+	Model 1: eString = AAbbAA\\
+	Model 2: eString = aaBBaa\\\\
+		
+compareAttributeUsingEqualsTest10\\\\
+	Same Strings (case-insensitive) (sim = 0)\\
+	case-sensitive test\\
+	Model 1: eString = AAbbAA\\
+	Model 2: eString = aaBBaa\\\\
+
+ compareAttributeUsingEqualsTest11\\\\
+	Same Strings (case-insensitive + case-sensitive) (sim = 1)\\
+	case-insensitive test\\
+	Model 1: eString = AaBbaA\\
+	Model 2: eString = aaBBaa\\\\
+	
+compareAttributeUsingEqualsTest12\\\\
+	Same Strings (case-insensitive + case-sensitive) (sim = 0)\\
+	case-sensitive test\\
+	Model 1: eString = AaBbaA\\
+	Model 2: eString = aaBBaa\\\\
+
+ compareAttributeUsingEqualsTest13\\\\
+	Same Chars (case-sensitive) (sim = 1)\\
+	case-sensitive test\\
+	Model 1: eChar = A\\
+	Model 2: eChar = A\\\\
+	
+ compareAttributeUsingEqualsTest14\\\\
+	Same Chars (case-sensitive) (sim = 1)\\
+	case-insensitive test\\
+	Model 1: eChar = A\\
+	Model 2: eChar = A\\\\
+
+ compareAttributeUsingEqualsTest15\\\\
+	Same Chars (case-insensitive) (sim = 0)\\
+	case-sensitive test\\
+	Model 1: eChar = A\\
+	Model 2: eChar = a\\\\
+	
+ compareAttributeUsingEqualsTest14\\\\
+	Same Chars (case-insensitive) (sim = 1)\\
+	case-insensitive test\\
+	Model 1: eChar = A\\
+	Model 2: eChar = 0\\\\
+	
+ compareAttributeUsingEqualsTest16\\\\
+	Different Chars (sim = 0)\\
+	case-sensitive test\\
+	Model 1: eChar = A\\
+	Model 2: eChar = C\\\\
+	
+ compareAttributeUsingEqualsTest17\\\\
+	Different Chars (sim = 0)\\
+	case-insensitive test\\
+	Model 1: eChar = A\\
+	Model 2: eChar = C\\\\
+	
+ compareAttributeUsingEqualsTest18\\\\
+	Different Boolean (sim = 0)\\
+	Model 1: eBoolean = true\\
+	Model 2: eBoolean = false\\\\
+	
+ compareAttributeUsingEqualsTest19\\\\
+	Same Boolean (sim = 1)\\
+	Model 1: eBoolean = true\\
+	Model 2: eBoolean = true\\\\
+	
+

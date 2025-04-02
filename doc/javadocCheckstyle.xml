@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This configuration file was written by the eclipse-cs plugin configuration editor
+-->
+<!--
+    Checkstyle-Configuration: Checkstyle JavaDoc
+    Description: none
+-->
+<!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.2//EN" "http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
+<module name="Checker">
+    <property name="severity" value="warning"/>
+    <module name="TreeWalker">
+        <property name="cacheFile" value="target/cachefile"/>
+        <module name="JavadocType">
+            <property name="scope" value="protected"/>
+            <property name="authorFormat" value="\S"/>
+        </module>
+        <module name="JavadocMethod">
+            <property name="allowUndeclaredRTE" value="true"/>
+            <property name="allowMissingPropertyJavadoc" value="true"/>
+            <property name="logLoadErrors" value="true"/>
+        </module>
+        <module name="JavadocVariable"/>
+        <module name="JavadocStyle">
+            <property name="checkEmptyJavadoc" value="true"/>
+        </module>
+        <module name="WriteTag">
+            <property name="severity" value="ignore"/>
+            <property name="tag" value="TODO"/>
+            <property name="tagFormat" value="\S"/>
+            <property name="tagSeverity" value="warning"/>
+        </module>
+    </module>
+    <module name="PackageHtml"/>
+</module>

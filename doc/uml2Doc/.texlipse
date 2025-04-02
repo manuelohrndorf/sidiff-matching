@@ -1,0 +1,13 @@
+#TeXlipse project settings
+#Wed Nov 23 09:51:54 CET 2011
+builderNum=2
+outputDir=editoperations-catalog/
+makeIndSty=
+bibrefDir=
+outputFormat=pdf
+tempDir=editoperations-catalog
+mainTexFile=uml-catalog.tex
+outputFile=uml-catalog.pdf
+langSpell=
+markDer=true
+srcDir=editoperations-catalog/

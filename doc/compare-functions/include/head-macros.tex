@@ -1,0 +1,27 @@
+%
+% Spezifische Makros
+% ===========================================================================
+%
+
+
+% ToDo-Markierung
+\newcommand{\texttodo}{\textcolor{red}{\uline{\textbf{!!! ToDo ToDo !!!}}}}
+
+% Manueller Zeilenumbruch (Darstellungsabhängig!)
+\newcommand{\mylinebreak}{\newline}
+
+% Farben
+\definecolor{textnotice}{rgb}{1,0.549,0}
+\definecolor{textimportant}{rgb}{1,0,0}
+
+% Formatierungen
+\newcommand{\textcrosslink}[1]{\dotuline{\textit{#1}}}		% Abschnittsinterne Querverweise
+\newcommand{\textclass}[1]{\texttt{#1}}					% Klassen-Namen (Adressen)
+\newcommand{\textnoticesec}[1]{\textcolor{textnotice}{\dotuline{#1}}}		% Mittelwichtiger Abschnittsbeginn
+\newcommand{\textimportantsec}[1]{\textcolor{textimportant}{\dotuline{#1}}}	% Sehr wichtiger Abschnittsbeginn
+\newcommand{\textnotice}[1]{\textcolor{textnotice}{\textit{#1}}}		% Mittelwichtige Hervorhebung
+\newcommand{\textimportant}[1]{\textcolor{textimportant}{\textit{#1}}}	% Sehr wichtige Hervorhebung
+
+
+% Tabellenüberschrift
+\newcommand{\texttablehead}[1]{\textsf{\small \textbf{#1}}}

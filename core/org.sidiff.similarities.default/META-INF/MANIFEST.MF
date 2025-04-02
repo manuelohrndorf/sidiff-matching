@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: SiDiff Similarities Service - Default
+Bundle-SymbolicName: org.sidiff.similarities.default;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.sidiff.common.emf;visibility:=reexport,
+ org.sidiff.similarities;visibility:=reexport
+Bundle-Vendor: Software Engineering Group, University of Siegen

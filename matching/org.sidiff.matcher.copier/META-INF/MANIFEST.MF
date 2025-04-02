@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: SiDiff Matching Service - Copier-based Matcher
+Bundle-SymbolicName: org.sidiff.matcher.copier;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.sidiff.matcher
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: org.sidiff.matcher.copier
+Bundle-Vendor: Software Engineering Group, University of Siegen

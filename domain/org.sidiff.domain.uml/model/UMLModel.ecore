@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="model"
+    nsURI="http://www.sidiff.org/org.sidiff.uml.model" nsPrefix="model">
+  <eClassifiers xsi:type="ecore:EClass" name="Dummy" abstract="true"/>
+  <eSubpackages name="classes" nsURI="http://www.sidiff.org/org.sidiff.uml.model/classes"
+      nsPrefix="model.classes">
+    <eClassifiers xsi:type="ecore:EClass" name="UMLAssociation" eSuperTypes="#//core/UMLNamedElement #//classes/UMLGeneralizableElement #//core/UMLStereotypeableElement">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="associationEnds" ordered="false"
+          upperBound="-1" eType="#//classes/UMLAssociationEnd" containment="true"
+          eOpposite="#//classes/UMLAssociationEnd/association"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="package" ordered="false"
+          lowerBound="1" eType="#//core/UMLPackage" eOpposite="#//core/UMLPackage/associations"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UMLClassifier" abstract="true" eSuperTypes="#//classes/UMLType #//classes/UMLGeneralizableElement #//classes/UMLBindingElement #//core/UMLStereotypeableElement #//classes/UMLTemplateableElement #//core/UMLVisibleElement">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="targetedByAssociationEnds"
+          ordered="false" upperBound="-1" eType="#//classes/UMLAssociationEnd" eOpposite="#//classes/UMLAssociationEnd/target">
+        <eAnnotations source="INCOMING"/>
+        <eAnnotations source="IGNOREDIFF"/>
+      </eStructuralFeatures>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="package" ordered="false"
+          lowerBound="1" eType="#//core/UMLPackage" eOpposite="#//core/UMLPackage/classifiers"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UMLType" abstract="true" eSuperTypes="#//core/UMLNamedElement">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="usedByElements" ordered="false"
+          upperBound="-1" eType="#//classes/UMLTypedElement" eOpposite="#//classes/UMLTypedElement/type">
+        <eAnnotations source="INCOMING"/>
+        <eAnnotations source="IGNOREDIFF"/>
+      </eStructuralFeatures>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UMLTypedElement" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="type" ordered="false"
+          eType="#//classes/UMLType" eOpposite="#//classes/UMLType/usedByElements"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UMLGeneralizableElement" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="specializations" ordered="false"
+          upperBound="-1" eType="#//classes/UMLGeneralization" eOpposite="#//classes/UMLGeneralization/generalElement">
+        <eAnnotations source="INCOMING"/>
+        <eAnnotations source="IGNOREDIFF"/>
+      </eStructuralFeatures>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="generalizations" ordered="false"
+          upperBound="-1" eType="#//classes/UMLGeneralization" containment="true"
+          eOpposite="#//classes/UMLGeneralization/specialElement"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UMLGeneralization" eSuperTypes="#//core/UMLElement">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="specialElement" ordered="false"
+          lowerBound="1" eType="#//classes/UMLGeneralizableElement" eOpposite="#//classes/UMLGeneralizableElement/generalizations"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="generalElement" ordered="false"
+          lowerBound="1" eType="#//classes/UMLGeneralizableElement" eOpposite="#//classes/UMLGeneralizableElement/specializations"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UMLBindingElement" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="templateBindings" ordered="false"
+          upperBound="-1" eType="#//classes/UMLTemplateBinding" containment="true"
+          eOpposite="#//classes/UMLTemplateBinding/binder"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UMLTemplateBinding" eSuperTypes="#//core/UMLElement">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="formalParam" ordered="false"
+          lowerBound="1" eType="#//classes/UMLTemplateParameter" eOpposite="#//classes/UMLTemplateParameter/bindings"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="actualParam" ordered="false"
+          lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="binder" ordered="false"
+          lowerBound="1" eType="#//classes/UMLBindingElement" eOpposite="#//classes/UMLBindingElement/templateBindings"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UMLTemplateParameter" eSuperTypes="#//core/UMLElement">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="templateableElement"
+          ordered="false" lowerBound="1" eType="#//classes/UMLTemplateableElement"
+          eOpposite="#//classes/UMLTemplateableElement/templateParameters"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" ordered="false"
+          lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="bindings" ordered="false"
+          upperBound="-1" eType="#//classes/UMLTemplateBinding" eOpposite="#//classes/UMLTemplateBinding/formalParam"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UMLTemplateableElement" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="templateParameters" upperBound="-1"
+          eType="#//classes/UMLTemplateParameter" containment="true" eOpposite="#//classes/UMLTemplateParameter/templateableElement">
+        <eAnnotations source="AbsolutePosition"/>
+      </eStructuralFeatures>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UMLAssociationEnd" eSuperTypes="#//core/UMLNamedElement #//core/UMLStereotypeableElement">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="association" ordered="false"
+          lowerBound="1" eType="#//classes/UMLAssociation" eOpposite="#//classes/UMLAssociation/associationEnds"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="multiplicity" ordered="false"
+          lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="isNavigable" ordered="false"
+          lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="kind" ordered="false"
+          lowerBound="1" eType="#//classes/UMLAggregationKind"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="isOrdered" ordered="false"
+          lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="target" ordered="false"
+          lowerBound="1" eType="#//classes/UMLClassifier" eOpposite="#//classes/UMLClassifier/targetedByAssociationEnds"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EEnum" name="UMLAggregationKind">
+      <eLiterals name="none"/>
+      <eLiterals name="shared" value="1"/>
+      <eLiterals name="composite" value="2"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UMLEnumeration" eSuperTypes="#//classes/UMLType #//core/UMLNamedElement #//core/UMLVisibleElement">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="literals" ordered="false"
+          upperBound="-1" eType="#//classes/UMLLiteral" containment="true" eOpposite="#//classes/UMLLiteral/enumeration"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="package" ordered="false"
+          lowerBound="1" eType="#//core/UMLPackage" eOpposite="#//core/UMLPackage/enumerations"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UMLLiteral" eSuperTypes="#//core/UMLNamedElement">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="enumeration" ordered="false"
+          lowerBound="1" eType="#//classes/UMLEnumeration" eOpposite="#//classes/UMLEnumeration/literals"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UMLPrimitiveType" eSuperTypes="#//classes/UMLType">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="package" ordered="false"
+          lowerBound="1" eType="#//core/UMLPackage" eOpposite="#//core/UMLPackage/primitiveTypes"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UMLAssociationClass" eSuperTypes="#//classes/UMLAssociation"/>
+    <eClassifiers xsi:type="ecore:EClass" name="UMLClass" eSuperTypes="#//classes/UMLClassifier">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="isAbstract" ordered="false"
+          lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="isFinal" ordered="false"
+          lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="operations" ordered="false"
+          upperBound="-1" eType="#//classes/UMLOperation" containment="true" eOpposite="#//classes/UMLOperation/class"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" ordered="false"
+          upperBound="-1" eType="#//classes/UMLAttribute" containment="true" eOpposite="#//classes/UMLAttribute/class"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UMLOperation" eSuperTypes="#//core/UMLNamedElement #//core/UMLStereotypeableElement #//classes/UMLTypedElement #//core/UMLVisibleElement">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="isAbstract" ordered="false"
+          lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="isStatic" ordered="false"
+          lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="interface" ordered="false"
+          eType="#//classes/UMLInterface" eOpposite="#//classes/UMLInterface/operations"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" ordered="false"
+          upperBound="-1" eType="#//classes/UMLParameter" containment="true" eOpposite="#//classes/UMLParameter/operation"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="class" ordered="false"
+          eType="#//classes/UMLClass" eOpposite="#//classes/UMLClass/operations"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UMLInterface" eSuperTypes="#//classes/UMLClassifier">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="operations" ordered="false"
+          upperBound="-1" eType="#//classes/UMLOperation" containment="true" eOpposite="#//classes/UMLOperation/interface"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UMLParameter" eSuperTypes="#//core/UMLNamedElement #//core/UMLStereotypeableElement #//classes/UMLTypedElement">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="kind" ordered="false"
+          lowerBound="1" eType="#//classes/UMLParameterKind"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="operation" ordered="false"
+          lowerBound="1" eType="#//classes/UMLOperation" eOpposite="#//classes/UMLOperation/parameters"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EEnum" name="UMLParameterKind">
+      <eLiterals name="in"/>
+      <eLiterals name="out" value="1"/>
+      <eLiterals name="inout" value="2"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UMLAttribute" eSuperTypes="#//core/UMLNamedElement #//core/UMLStereotypeableElement #//classes/UMLTypedElement #//core/UMLVisibleElement">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="isStatic" ordered="false"
+          lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="isFinal" ordered="false"
+          lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="isReadOnly" ordered="false"
+          lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="class" ordered="false"
+          eType="#//classes/UMLClass" eOpposite="#//classes/UMLClass/attributes"/>
+    </eClassifiers>
+  </eSubpackages>
+  <eSubpackages name="core" nsURI="http://www.sidiff.org/org.sidiff.uml.model/core"
+      nsPrefix="model.core">
+    <eClassifiers xsi:type="ecore:EClass" name="UMLVisibleElement" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="visibility" ordered="false"
+          lowerBound="1" eType="#//core/UMLVisibility"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EEnum" name="UMLVisibility">
+      <eLiterals name="public"/>
+      <eLiterals name="protected" value="1"/>
+      <eLiterals name="private" value="2"/>
+      <eLiterals name="package" value="3"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UMLPackage" eSuperTypes="#//core/UMLNamedElement #//core/UMLStereotypeableElement #//core/UMLVisibleElement">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="model" ordered="false"
+          eType="#//core/UMLModel" eOpposite="#//core/UMLModel/packages"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="packages" ordered="false"
+          upperBound="-1" eType="#//core/UMLPackage" containment="true" eOpposite="#//core/UMLPackage/superPackage"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="superPackage" ordered="false"
+          eType="#//core/UMLPackage" eOpposite="#//core/UMLPackage/packages"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="classifiers" ordered="false"
+          upperBound="-1" eType="#//classes/UMLClassifier" containment="true" eOpposite="#//classes/UMLClassifier/package"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="storedComments" ordered="false"
+          upperBound="-1" eType="#//core/UMLComment" containment="true" eOpposite="#//core/UMLComment/package"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="associations" ordered="false"
+          upperBound="-1" eType="#//classes/UMLAssociation" containment="true" eOpposite="#//classes/UMLAssociation/package"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="enumerations" ordered="false"
+          upperBound="-1" eType="#//classes/UMLEnumeration" containment="true" eOpposite="#//classes/UMLEnumeration/package"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="primitiveTypes" ordered="false"
+          upperBound="-1" eType="#//classes/UMLPrimitiveType" containment="true" eOpposite="#//classes/UMLPrimitiveType/package"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UMLStereotypeableElement">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="stereotypes" ordered="false"
+          upperBound="-1" eType="#//core/UMLStereotype" eOpposite="#//core/UMLStereotype/stereotypedElements"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UMLStereotype" eSuperTypes="#//core/UMLNamedElement">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="model" ordered="false"
+          lowerBound="1" eType="#//core/UMLModel" eOpposite="#//core/UMLModel/stereotypes"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="stereotypedElements"
+          ordered="false" upperBound="-1" eType="#//core/UMLStereotypeableElement"
+          eOpposite="#//core/UMLStereotypeableElement/stereotypes">
+        <eAnnotations source="INCOMING"/>
+        <eAnnotations source="IGNOREDIFF"/>
+      </eStructuralFeatures>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UMLModel" eSuperTypes="#//core/UMLNamedElement">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="packages" ordered="false"
+          upperBound="-1" eType="#//core/UMLPackage" containment="true" eOpposite="#//core/UMLPackage/model"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="stereotypes" ordered="false"
+          upperBound="-1" eType="#//core/UMLStereotype" containment="true" eOpposite="#//core/UMLStereotype/model"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UMLElement" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" ordered="false" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+          iD="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="comments" ordered="false"
+          upperBound="-1" eType="#//core/UMLComment" eOpposite="#//core/UMLComment/elements"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UMLComment">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="package" ordered="false"
+          lowerBound="1" eType="#//core/UMLPackage" eOpposite="#//core/UMLPackage/storedComments"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="comment" ordered="false"
+          lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="elements" ordered="false"
+          upperBound="-1" eType="#//core/UMLElement" eOpposite="#//core/UMLElement/comments">
+        <eAnnotations source="INCOMING"/>
+        <eAnnotations source="IGNOREDIFF"/>
+      </eStructuralFeatures>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UMLDependency" eSuperTypes="#//core/UMLNamedElement #//core/UMLStereotypeableElement">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="dependee" ordered="false"
+          lowerBound="1" eType="#//core/UMLNamedElement" eOpposite="#//core/UMLNamedElement/outgoingDependencies"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="supplier" ordered="false"
+          lowerBound="1" eType="#//core/UMLNamedElement" eOpposite="#//core/UMLNamedElement/dependees"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UMLNamedElement" abstract="true" eSuperTypes="#//core/UMLElement">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="outgoingDependencies"
+          ordered="false" upperBound="-1" eType="#//core/UMLDependency" containment="true"
+          eOpposite="#//core/UMLDependency/dependee"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="dependees" ordered="false"
+          upperBound="-1" eType="#//core/UMLDependency" eOpposite="#//core/UMLDependency/supplier">
+        <eAnnotations source="INCOMING"/>
+        <eAnnotations source="IGNOREDIFF"/>
+      </eStructuralFeatures>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" ordered="false"
+          lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eClassifiers>
+  </eSubpackages>
+  <eSubpackages name="packages" nsURI="http://www.sidiff.org/org.sidiff.uml.model/packages"
+      nsPrefix="model.packages">
+    <eClassifiers xsi:type="ecore:EClass" name="Dummy" abstract="true"/>
+  </eSubpackages>
+</ecore:EPackage>

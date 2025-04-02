@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.sidiff.domain.extensionpoint">
+      <client
+            nsUri="http://www.eclipse.org/uml2/4.0.0/UML">
+      </client>
+      <client
+            nsUri="http://www.eclipse.org/uml2/3.0.0/UML">
+      </client>
+      <client
+            nsUri="http://www.eclipse.org/uml2/5.0.0/UML">
+      </client>
+   </extension>
+   <extension
+         point="org.sidiff.domain.modelloader.extensionpoint">
+      <client class="org.sidiff.domain.uml2.UML2Loader" ></client>
+   </extension>
+
+</plugin>

@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Configurator
+Bundle-SymbolicName: org.sidiff.core.configurator;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.sidiff.core.configurator.impl.Activator
+Import-Package: org.osgi.framework;version="1.3.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.sidiff.common;bundle-version="1.0.0",
+ org.sidiff.common.emf;bundle-version="1.0.0",
+ org.sidiff.common.services;bundle-version="1.0.0",
+ org.eclipse.core.runtime;bundle-version="3.5.0",
+ org.sidiff.core.similaritiescalculator.default;bundle-version="1.0.0",
+ org.sidiff.core.matching.iterative;bundle-version="1.0.0"
+Bundle-ActivationPolicy: lazy
+Export-Package: org.sidiff.core.configurator

@@ -1,0 +1,5 @@
+org.sidiff.feature.runtime
+org.sidiff.feature.consolediff.uml
+org.sidiff.feature.consolediff.uml.standalone
+org.sidiff.feature.coreall
+

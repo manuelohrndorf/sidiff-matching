@@ -1,0 +1,92 @@
+Chapter 1: Id-based matching
+============================
+
+Lesson 1 (Using Surrogates):
+- We compare the models with then use of "empty" configuration files.
+- Provided that, in our library meta model, the attribute "isbn" is set to ecoreID=true, the ID-Matcher will find matches for books
+- You can inspect the matches (and also the unmatched elements in left and right model) by using the SiDiff debugger (see slides)
+
+Lesson 2 (Building Signatures: Specify how to derive IDs):
+- As Library and Writer do not have any natural ID attribute which is declared to ecoreID=true, we have to derive IDs for instances of these classes. Sometimes, we call these IDs signatures.
+- We get in contact with the SiDiff annotation mechanism (see slides) and configure the DerivedIdAnnotator (in the annotations configuration XML)
+- Now the ID-matcher can use these derived IDs in order to find more matchings
+- We inspect the matches by
+	a) Just importing the models (import launch), which creates another annotations XML
+	b) with the help of the SiDiff debugger
+
+Lesson 3 (Building Signatures cont'd):
+- We can not be sure that isbn numbers are always provided for books
+- Thus we change our library meta model and set the isbn attribute to ecoreID=false
+- As a consequence, we have to provide a derived ID annotation for books as well which we configure in the annotations XML
+
+
+Chapter 2: Hash-based Matching
+==============================
+
+Lesson 1 (Specify how to build hash values):
+- Look at the input models of this lesson. You will see that the derived IDs are not unique, because non of the books has a valid isbn. So the ID-based matcher is not able to match books
+- As a solution, we introduce the Hash-Matcher.
+- The Hash-Matcher is configured via the annotations XML. Here, we can specify how hash values shall be build, i.e. which values should be included in order to build the message digest.
+- See the slides which parameters can influence the HashAnnotator.
+
+Lesson 2 (Getting in touch with the problem of duplicate hash values):
+- Here we first get in touch with the duplicate problem
+-> Inspect the annotations in order to see which hash values are duplicates. Why are they duplicates?
+- We extend the Hash value with some annotation value of referenced objects in order to resolve the duplictes
+- However, our solution still does not work, why? (have a look at the annotated values)
+
+Lesson 3 (Polymorphic annotations):
+- As a solution to the still existing duplicate problem, we introduce the AttributePathAnnotator for class writer (see annotations XML)
+- Now, we have different PATH values and, as a consequence, different HASH values.
+- Thus we have finally solved the duplicate problem for the kinds of duplicates.
+- Please note that duplicates are a general problem when working with signatures such as hash values. The configuration of the HashAnnotator is always a trade-off between 
+a) including many local and remote features into the hash value
+b) including just a few featues.
+In case of a), you get few duplicates but you might also get few matches, because a single change even in the neighborhood or at the children of an element influence the hash value. In case of b), you have to deal with the problem of many duplicates which of course should not be matched as long as we have no further information about the elements.
+
+
+Chapter 3: Iterative Matching based on Similarities
+===================================================
+
+Lesson 1 (Similarity based on local properties):
+- In our models, we renamed our writer Shakespeare to W. Shakespeare in the right model (model2) 
+- So, matching based in derived IDs will not work any more.
+- We use the similarity of writers!
+- Here, the local property name is the only criterion in our similarity configuration.
+
+Lesson 2 (The limitations of local properties):
+- Also the hash value the MacBeth book will be influenced by the changed writer name (why?)
+- Thus, books can't be matched by the hash matcher any more
+- We add our books to the similarity and the matching configuration
+- But as we see, only the local properties are not sufficient for our similarity based matching, because we have two books with a similarity of 1.0. You can see this when using the SiDiff debugger to inspect the similarity table (see slides).
+- Here, we need to integrate the similarities of a book's neighbours into the similarity calculation. We do this in Lesson 3.
+=> Lesson 3
+
+Lesson 3 (Similarity influenced by neighbours):
+- Now we integrate the similarity of the author that has written a book as a criterion for book's similarities (see configuration file)
+- For now, everything is fine
+
+Lesson 4 (Zyklische Abhängigkeiten entfernter Ähnlichkeitswerte -> Similarity Flooding):
+- We change "W. Shakespeare" to "William Shakespeare"
+-> Now writers are not similar enough any more and will not be matched
+-> Thus, no books will be matched too.
+==> Solution: Also for writers we need to integrate remote information of the neighborhood similarity. In our case, the books that an author has written.
+- Here you will get in touch with the similarity flooding ("alwaysComputeSimilarity"). 
+- Have a close look at the console output of sidiff and try to explain the proceeding
+
+Lesson 5 (Similarity Flooding in containment hierarchies, learn how to control the matching sequences):
+- We now have models where the books do also have chapters
+- Thus, we introduce chapters as a criterion for the similarity of books.
+- Of course, the local features are not that important any more
+- See that chapters also include the similarity of their parents (i.e. books).
+- Furthermore, chapters will only be matched in the context of matched parents (i.e. books)
+-> independentMatching="false"
+- Run the example. See how the similarities increase from round to round.
+- After some rounds, the books will match.
+- But the chapter still remain unmatched, why? We will give an answer to this question in Lesson 6
+==> Lesson 6
+
+Lesson 6 (Propagation und Top-Down Matching):
+- We have forgotton one thing: Our chapter should not be matched independently, but when shall we match them? We have to tell that to the iterative matcher. Here, we propagate the match of books to their children (topDownMatcher="Propagation").
+- During that top-down phase, chapters of books that are alredy matched can be also matched (provided they exceed the required similarity, of course)
+- Run the example and have again a look at the console output of SiDiff. Can you see where the top down propagation takes place?

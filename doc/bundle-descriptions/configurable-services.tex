@@ -1,0 +1,53 @@
+Konfigurierbare Services wie z.B. Annotation, Matching, etc. werden ueber sogenannte ServiceManager verwaltet.
+
+Beispiel:
+-----------------------------------------------------------------------
+public class Activator implements BundleActivator {
+
+	FunctionServiceManager reg;
+	/*
+	 * (non-Javadoc)
+	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
+	 */
+	public void start(BundleContext context) throws Exception {
+		reg = new FunctionServiceManager(context);
+		context.registerService(new String[]{FunctionServiceManager.class.getName()}, reg, null);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
+	 */
+	public void stop(BundleContext context) throws Exception {
+		reg.unregister(null);
+	}
+}
+
+-----------------------------------------------------------------------
+
+
+public class FunctionServiceManager {
+	
+	private BundleContext context;
+	
+	public FunctionServiceManager(BundleContext context) {
+		this.context = context;
+	}
+
+	public void register(String variant, String configdata) {
+		// konfigurieren
+		Function function = new Function();
+		function.config(variant, configdata);
+		// registrieren
+		context.registerService(Function.class.getName(), function, function.getProperties());
+	}
+	
+	public void unregister(String filter) throws InvalidSyntaxException {
+		ServiceReference[] refs = context.getAllServiceReferences(Function.class.getName(), filter);
+		for (ServiceReference reference : refs)
+			context.ungetService(reference);
+	}
+}
+
+
+

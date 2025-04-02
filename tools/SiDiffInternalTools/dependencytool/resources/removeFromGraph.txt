@@ -1,0 +1,12 @@
+org\.sidiff\.common.*
+PV4E.*
+VisCore
+org\.sidiff\.clones.*
+org\.sidiff\.fame
+org\.sidiff\.tracing
+org\.sidiff\.java.*
+org\.sidiff\.app.*
+org\.sidiff\.ascet.*
+org\.sidiff\.uml.*
+org\.sidiff\.seeme.*
+org\.sidiff\.test.*

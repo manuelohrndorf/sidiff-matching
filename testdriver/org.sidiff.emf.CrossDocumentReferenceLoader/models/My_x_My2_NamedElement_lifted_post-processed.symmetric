@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="ASCII"?>
+<symmetric:SymmetricDifference xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:symmetric="http://www.sidiff.org/difference/symmetric/1.0" xmi:id="_-q47EJgxEeWGdoV6RBigvA" uriModelA="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/My.ecore" uriModelB="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/My2.ecore" notOverlappings="_-q47FJgxEeWGdoV6RBigvA">
+  <changes xsi:type="symmetric:AddObject" xmi:id="_-q47EZgxEeWGdoV6RBigvA">
+    <obj href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/My2.ecore#//B"/>
+  </changes>
+  <changes xsi:type="symmetric:AddReference" xmi:id="_-q47EpgxEeWGdoV6RBigvA">
+    <src href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/My2.ecore#/"/>
+    <tgt href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/My2.ecore#//B"/>
+    <type href="http://www.eclipse.org/emf/2002/Ecore#//EPackage/eClassifiers"/>
+  </changes>
+  <changes xsi:type="symmetric:AddReference" xmi:id="_-q47E5gxEeWGdoV6RBigvA">
+    <src href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/My2.ecore#//B"/>
+    <tgt href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/My2.ecore#/"/>
+    <type href="http://www.eclipse.org/emf/2002/Ecore#//EClassifier/ePackage"/>
+  </changes>
+  <changeSets xmi:id="_-q47FJgxEeWGdoV6RBigvA" changes="_-q47EZgxEeWGdoV6RBigvA _-q47EpgxEeWGdoV6RBigvA _-q47E5gxEeWGdoV6RBigvA" name="CreateEClassInEPackage" recognitionRName="RR: CreateEClassInEPackage" refinementLevel="7" editRName="CreateEClassInEPackage" description="Creates one EClass in EPackage" numberOfParams="7"/>
+  <correspondences xmi:id="_-q47FZgxEeWGdoV6RBigvA">
+    <objA href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/My.ecore#/"/>
+    <objB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/My2.ecore#/"/>
+  </correspondences>
+  <correspondences xmi:id="_-q47FpgxEeWGdoV6RBigvA">
+    <objA href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/My.ecore#//A"/>
+    <objB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/My2.ecore#//A"/>
+  </correspondences>
+</symmetric:SymmetricDifference>

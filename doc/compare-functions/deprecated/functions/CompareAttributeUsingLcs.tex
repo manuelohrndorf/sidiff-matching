@@ -1,0 +1,109 @@
+\comparefunction{CompareAttributeUsingLcs}
+
+\allowedtypes
+eString
+
+\precondition
+-
+
+\semantics
+Compares two nodes based on the string values of their attributes.
+
+\returnvalue
+This compare functions the string-values of two attributes based on their Longest Common Subsequence (LCS). 
+The similarity is the ratio of the LCS and the length of the longer attribute.		
+
+\parameters
+The Attribute to be compared 
+The case-sensitive value
+
+\exceptions
+
+
+\test	
+Allgemeine Testaquivalenzklasse
+
+
+compareAttributeUsingLcsTest1\\\\
+Zeichenketten ohne gemeinsame Zeichen\\
+case-insensitive test (sim = 0)\\
+Model1: eString = aabbaa\\
+Model2: eString = ccddcc\\\\
+
+compareAttributeUsingLcsTest2\\\\
+Zeichenketten ohne gemeinsame Zeichen\\
+case-sensitive test (sim = 0)\\
+Model1: eString = aabbaa\\
+Model2: eString = ccddcc\\\\
+
+compareAttributeUsingLcsTest3\\\\
+Zeichenketten mit case-sensitive gemeinsamen Zeichen\\
+case-insensitive test (sim = 0.75)\\
+Model1: eString = aaBBaa\\
+Model2: eString = aacBBcaa\\\\
+
+compareAttributeUsingLcsTest4\\\\
+Zeichenketten mit case-sensitive gemeinsamen Zeichen\\
+case-sensitive test (sim = 0.75)\\
+Model1: eString = aadBBaa\\
+Model2: eString = aacBBaad\\\\
+
+compareAttributeUsingLcsTest5\\\\
+Zeichenketten mit case-insensitive gemeinsamen Zeichen\\
+case-insensitive test (sim = 0.75)\\
+Model1: eString = AAbbAA\\
+Model2: eString = aacBBcaa\\\\
+
+compareAttributeUsingLcsTest6\\\\
+Zeichenketten mit case-insensitive gemeinsamen Zeichen\\
+case-sensitive test (sim = 0)\\
+Model1: eString = AAbbAA\\
+Model2: eString = aacBBcaa\\\\
+
+compareAttributeUsingLcsTest7\\\\
+Zeichenketten mit case-insensitive + case sensitive gemeinsamen Zeichen\\
+case-insensitive test (sim = 0.75)\\
+Model1: eString = aAbbAa\\
+Model2: eString = aacBBcaa\\\\
+
+compareAttributeUsingLcsTest8\\\\
+Zeichenketten mit case-insensitive + case sensitive gemeinsamen Zeichen\\
+case-sensitive test (sim = 0.25)\\
+Model1: eString = aAbbAa\\
+Model2: eString = aacBBcaa\\\\
+
+compareAttributeUsingLcsTest9\\\\
+identische Zeichenketten case-sensitive\\
+case-sensitive test (sim = 1)\\
+Model1: eString = aAABA\\
+Model2: eString = aAABA\\\\
+
+compareAttributeUsingLcsTest10\\\\
+identische Zeichenketten case-sensitive\\
+case-insensitive test (sim = 1)\\
+Model1: eString = aAABA\\
+Model2: eString = aAABA\\\\
+
+compareAttributeUsingLcsTest11\\\\
+identische Zeichenketten case-insensitive\\
+case-insensitive test (sim = 1)\\
+Model1: eString = Aaaba\\
+Model2: eString = aAABA\\\\
+
+compareAttributeUsingLcsTest12\\\\
+identische Zeichenketten case-insensitive\\
+case-insensitive test (sim = 0)\\
+Model1: eString = Aaaba\\
+Model2: eString = aAABA\\\\
+
+compareAttributeUsingLcsTest13\\\\
+null-Werte\\
+case-insensitive test\\
+Model1: eString = null\\
+Model2: eString = aAABA\\\\
+
+compareAttributeUsingLcsTest14\\\\
+null-Werte\\
+case-sensitive test\\
+Model1: eString = null\\
+Model2: eString = aAABA\\

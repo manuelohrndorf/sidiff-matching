@@ -1,0 +1,195 @@
+%
+% Vergleichsfunktionen: Remote Nodes Considering Order
+% ===========================================================================
+%
+
+\section{\texttt{RemoteNodesCO}...}
+\label{strct:spec:remotenodesco}
+Dieser Abschnitt behandelt Vergleichsfunktionen des Typs \texttt{RemoteNodesCO}, mit denen sich die Eingabeknoten anhand von Knotenmengen, die sich durch Abarbeitung von Typpfaden ergeben, unter \emph{Nichtbeachtung} der Reihenfolge vergleichen lassen.
+
+\subsubsection*{Allgemeine Vorbedingungen}
+Die im Pfadausdruck spezifizierten Kantentypen müssen existieren, da ansonsten eine Ausnahme des Typs \texttt{UnknownTypeException} ausgelöst wird. Ferner sollten die sich ergebenden Knotenmengen Elemente beeinhalten, damit nicht-triviale Ähnlichkeitswerte ermittelbar sind. Mehr zu trivialen Ähnlichkeiten unter \textcrosslink{Allgemeiner Rückgabewert}.
+
+\subsubsection*{Allgemeine Semantik}
+Die Eingabeknoten werden über eine durch den Parameter indirekt bestimmte Knotenmenge verglichen. Dabei wird im Parameter über einen Pfadausdruck ein Kantenzug festgelegt, aus dessen Abarbeitung sich am Zielpunkt letztlich die zu vergleichenden Knotenmengen ergeben (siehe dazu auch \textcrosslink{Allgemeine Parameter}). Mehr zur genauen Semantik und auch Rückgabewert ist in den Dokumentationen der spezifischen Vergleichsfunktionen weiter unten in diesem Abschnitt einsehbar. Allgemein ist jedoch an dieser Stelle noch festzuhalten, dass Vergleichsfunktionen dieser Klasse im Gegensatz zu \structgetref{strct:spec:remotenodesio} die Reihenfolge der gefundenen Knoten beachten.
+
+\subsubsection*{Allgemeiner Rückgabewert}
+Die Bestimmung der Rückgabewerte der spezifischen implementierenden Vergleichsfunktionen unterscheidet sich unterschiedlich stark. Daher sei an dieser Stelle auf die Dokumentationen der spezifischen Vergleichsfunktionen weiter unten in diesem Abschnitt verwiesen.
+
+Allgemein lassen sich jedoch bereits folgende triviale Ähnlichkeitsbeziehungen und deren Rückgabewerte bestimmen:
+\begin{itemize}
+	\item Existieren für lediglich eine der sich ergebenden Knotemengen keine Elemente, so beträgt die resultierende Ähnlichkeit $0$.
+	\item In dem Fall, dass \emph{beide} resultierenden Knotenmengen keine Elemente beinhalten, lösen Vergleichsfunktionen dieses Typs eine Ausnahme des Typs \texttt{NothingToCompareException} aus.
+\end{itemize}
+
+\subsubsection*{Allgemeine Parameter}
+Als Parameter wird ein XPath-ähnlicher Pfadausdruck übergeben, der vom Eingabeknoten aus beginnend die Knotenmenge spezifiziert, die verglichen werden soll. Der Pfadausdruck setzt sich dabei aus mehreren Navigationsschritten zusammen, die über \texttt{/} konkateniert werden. Jeder einzelne Navigationsschritt wiederum besteht aus drei Teilangaben.
+\begin{enumerate}
+	\item Zunächst wird mittels eines einer speziellen Referenzangabe angegeben, welche Menge an Knoten über den Navigationsschritt im Graph bzw. Baum angesteuert werden soll -- bspw. steht \texttt{C} dafür, dass nur Kindknoten betrachtet werden sollen.
+	
+	Eine Tabelle mit einer Auflistung und Erläuterung der möglichen Referenzangaben kann folgend eingesehen werden. In der letzten Spalte ist zusätzlich vermerkt, ob die mit dieser Dokumentation einhergehende Version des SiDiff-Kerns bereits die beschriebene Funktionalität unterstützt -- das Feature also implementiert ist. Da bereits teilweise Bezug auf die in einem Navigationsschritt zu definierende Navigationsachse Bezug genommen wird, lesen Sie bitte auch den unter Punkt 2. zu findenden (s.u.) zugehörigen Abschnitt.
+	
+	\vfill\newpage
+	
+	\begin{tabularx}{0.95\textwidth}{|c|X|l|}
+		\hline
+		\texttablehead{\#} & \texttablehead{Bedeutung der Navigationsangabe} & \texttablehead{Impl.}\\\hline\hline
+		\texttt{O} & \emph{(Outgoing)} Alle von den Kontextknoten \emph{ausgehenden} Kanten bzw. deren Zielknoten betrachten, die über den im Navigationsschritt angegebenen Kantentyp erreicht werden. & Ja\\\hline
+		\texttt{I} & \emph{(Incoming)} Alle zu den Kontextknoten \emph{eingehenden} Kanten bzw. deren Quellknoten betrachten, die über den im Navigationsschritt angegebenen Kantentyp erreicht werden. & Ja\\\hline
+		\texttt{U} & \emph{(Undirected)} Alle vom aktuellen Knoten \emph{ausgehenden} und zum aktuellen Knoten \emph{eingehenden} Kanten verfolgen, die über den im Navigationsschritt angegebenen Kantentyp erreicht werden. & Ja\\\hline
+		\texttt{P} & \emph{(Parent)} Im aktuellen Navigationsschritt nur zu jenen \emph{Elternknoten} der vorliegenden Kontextknotenmenge übergehen, die über den im Navigationsschritt angegebenen Kantentyp mit einem der Kontextknoten verbunden sind. & Nein\\\hline
+		\texttt{C} & \emph{(Children)} Im aktuellen Navigationsschritt zu allen \emph{Kindknoten} der vorliegenden Kontextknotenmenge übergehen, die über den angegebenen Kantentyp erreicht werden können. & Nein\\\hline
+		\texttt{S} & \emph{(Siblings)} Alle \emph{Geschwisterknoten} selektieren, wobei nur diejenigen Kontextknoten berücksichtigt werden, deren Kantentyp zum Elternknoten dem in der Navigationsachse Angegebenen entspricht.\newline
+		Geschwisterknoten sind derart definiert, dass der Kantentyp zum entsprechenden Elternknoten mit dem Kantentyp des Kontextknoten zum Elternelement identisch sein muss.\newline
+		Das für die Navigationsachse erlaubte Wildcard-Zeichen \texttt{*} bedeutet bei dieser Option, dass im aktuellen Navigationsschritt für \emph{alle} vorliegenden Kontextknoten die Geschwisterknoten selektiert werden. & Nein\\\hline
+		\texttt{D} & \emph{(Depth)} Alle Knoten, die sich in der \emph{Baum}struktur auf gleicher Hierarchieebene wie die Kontextknoten befinden, selektieren. & Nein\\\hline
+		\texttt{A} & \emph{(All)} Alle Knoten im gesamten Dokument selektieren. & Nein\\\hline
+	\end{tabularx}
+	\vskip10pt
+	\item Im Anschluss daran wird -- separiert durch \texttt{:} -- die \emph{Navigationsachse} definiert. Die Navigationsachse wird durch einen Kantentyp beschrieben, über den die aus dem vorherigen Navigationsschritt vorliegenden Kontextknoten mit der unter 1. (s.o.) definierten Zielmenge verbunden sein müssen, um in die neue Kontextknotenmenge aufgenommen zu werden. An dieser Stelle wird also eine Selektion nach Kantentyp getroffen.
+	
+	Ferner ist es möglich anstatt eines fixen Kantentyps einen regulären Ausdruck zu definieren und somit eine Menge von Kantentypen zu spezifizieren. Dabei können zum einen \emph{positive} reguläre Ausdrücke definiert werden, die explizit eine zu betrachtenden Menge an Kantentypen festlegen, als auch \emph{negative} reguläre Ausdrücke, die Ausschlusslisten definieren -- also festlegen, welche Kantentypen \emph{nicht} betrachtet und verfolgt werden sollen.
+	
+	Damit für die Auswertungslogik erkennbar ist, ob der Benutzer einen solchen (positiven bzw. negativen) regulären Ausdruck definiert oder einen fixen Kantentyp angegeben hat, wird im Falle eines regulären Ausdrucks vor selbigen ein weiteres Steuerzeichen gesetzt. Der Vorrat an solch gültigen Präfixen und deren Semantik ist dabei folgender Tabelle zu entnehmen.
+	
+	\textit{\small Bitte umblättern.}
+\vfill\newpage
+	\begin{tabularx}{0.95\textwidth}{|c|X|}
+		\hline
+		\texttablehead{Präfix} & \texttablehead{Bedeutung des Steuerzeichens}\\\hline\hline
+		\emph{(kein)} & Angabe eines fixen Kantentyps.\\\hline
+		\texttt{\texttt{+}} & Angabe eines regulären Ausdrucks: Alle auf den Ausdruck zutreffenden Kantentypen werden berücksichtigt (\emph{positiver} regulärer Ausdruck).\\\hline
+		\texttt{\texttt{-}} & Angabe eines regulären Ausdrucks: Alle Kantentypen, die \emph{nicht} dem regulären Ausdruck entsprechen, werden verfolgt (\emph{negativer} regulärer Ausdruck).\\\hline
+	\end{tabularx}
+	\vskip4pt
+	\textnoticesec{Bemerkung:} Beachten Sie bitte, dass die Verwendung regulärer Ausdrücke den Vergleich bei größeren zu Grunde liegenden Eingabe-Modellen \emph{erheblich} verlangsamt!
+	\item An letzter Position wird dem Benutzer eine weitere Möglichkeit eingeräumt \emph{optional} Selektionsbedingungen in Form eines aus XPath bekannten \emph{Prädikats} zu definieren. Das Prädikat muss dabei von eckigen Klammern umschlossen werden und unmittelbar mit der vorherigen Kantentypdefinition kontateniert sein, sofern eines definiert und angegeben werden soll. Der Prädikatsausdruck sähe syntaktisch also folgendermaßen aus: \texttt{[}\emph{Prädikat}\texttt{]}
+	
+	Zum derzeitigen Zeitpunkt werden vom SiDiff-Kern allerdings noch keine auswertbaren Prädikate angeboten. Daher sei diese Definition an dieser Stelle nur aufgezeigt, um kenntlich zu machen, welche Mächtigkeit für diese Klasse an Vergleichsfunktionen unterstellt werden kann. Der mögliche Funktionsumfang an Prädikaten ist dabei annähernd unbegrenzt. Beispielsweise könnte in späteren SiDiff-Versionen dem Benutzer die Option eingeräumt werden mittels Prädikaten zusätzlich auch Selektionen nach \emph{Knotentypen} vorzunehmen.
+	
+	Sofern in nachfolgenden Versionen des SiDiff-Kerns Prädikatsausdrücke implementiert sind, werden solche in der entsprechend zugehörigen Dokumentation an dieser Stelle dokumentiert sein.
+\end{enumerate}
+
+Folgend einige Beispiele für gültige Pfadausdrücke. Unterstellt seien dabei die existenten Kantentypen \texttt{typA} und \texttt{typB}. Aufgrund der Tatsache, dass Prädikatsausdrücke bisher nicht im SiDiff-Kern implementiert sind, werden solche Ausdrücke nicht in den folgenden Beispielen verwendet.
+
+\begin{tabularx}{0.97\textwidth}{|l|X|}
+	\hline
+	\texttablehead{Beispiel} & \texttablehead{Bemerkung}\\\hline\hline
+	\texttt{I:typA/O:typB/L:typA} & Typpfad ohne reguläre Ausdrücke\\\hline
+	\texttt{A:typB/O:+[typA|typB]/L:typA} & \emph{Positiver} regulärer Ausdruck an 2. Position\\\hline
+	\texttt{D:-[typA]/I:typB} & \emph{Negativer} regulärer Ausdruck an 1. Position\\\hline
+	\texttt{C:-[typA]/I:typB/L:+[typA|typB]} & Anwendung von zwei regulären Ausdrücken\\\hline
+\end{tabularx}
+\vskip6pt
+
+\textnoticesec{Bemerkung:} Explizit definierte Kantentypen müssen existieren, da ansonsten eine Ausnahme ausgelöst wird.
+
+\subsubsection*{Siehe auch}
+Beachten Sie auch die Vergleichsfunktionen des Typs \structgetref{strct:spec:outrefsco} und\mylinebreak\structgetref{strct:spec:inrefsco}, die sich bei aus- oder eingehenden Kanten \emph{eines einzelnen} Typs performanter erweisen, als Funktionen der Klasse \structgetref{strct:spec:remotenodesco}, die auf zu parsende \emph{Pfad}ausdrücke zurückgreifen müssen.
+
+
+\newpage
+%
+% --> RemoteNodesMatchedOrSimilarCO
+%
+\subsection{\texttt{RemotesNodesMatchedOrSimilarCO}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter \structgetfullref{strct:spec:remotenodesco} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die resultierenden Knotenmengen werden bei dieser Vergleichsfunktion anhand von sowohl Übereinstimmungen als auch Ähnlichkeiten miteinander verglichen. Die Reihenfolge der Knoten ist dabei von Belang, sodass der LCS-Algorithmus (Longest Common Subsequence) Anwendung findet. Dazu wird innerhalb der Knotenmengen die längste gemeinsame Teilsequenz gesucht. Genaueres in der folgenden Auflistung.
+\begin{itemize}
+	\item Eine gültige Korrelation zwischen zwei Knoten wird erkannt, wenn die beiden Knoten bereits als übereinstimmend gekennzeichnet sind.
+	\item Liegt keine Übereinstimmung vor, werden die Ähnlichkeiten vom Knoten aus Menge A mit dem gegenüberliegenden Knoten in Menge B betrachtet. Liegt die Ähnlichkeit über dem unter \textcrosslink{Spezielle Parameter} beschriebenen Schwellwert oder entspricht genau diesem, wird auf diese Weise eine Korrelation festgestellt.
+	\item Trifft keine der beiden Bedingungen zu, endet eine längste Teilsequenz an diesem Knotenpaar.
+\end{itemize}
+
+Als Gesamt-Ähnlichkeit wird letztlich der Quotient aus der Länge der längsten gefundenen Teilsequenz und der Größe der resultierenden Knotenmenge mit den meisten Elementen gebildet und zurückgegeben.
+
+\textnoticesec{Bemerkung:} Diese Vergleichsfunktion ist nicht reflexiv!
+
+\subsubsection*{Spezielle Parameter}
+Diese Vergleichsfunktion benötigt neben dem abzuarbeitenden Typpfad als Parameter auch einen Schwellwert im Bereich von $0$ bis $1$, der angibt, ab welcher Ähnlichkeit der LCS-Algorithmus gültige Korrelationen beim Ähnlichkeitsvergleich erkennt. Ein gültiger Schwellwert wäre z.B. $0.55$. Mehr zur genauen Syntax des Parameters ist unter \textcrosslink{Allgemeine Parameter} einsehbar.
+
+
+%
+% --> RemoteNodesMatchedCO
+%
+\subsection{\texttt{RemotesNodesMatchedCO}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter \structgetfullref{strct:spec:remotenodesco} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die resultierenden Knotenmengen werden bei dieser Vergleichsfunktion allein anhand von \emph{Übereinstimmungen} miteinander verglichen. Die Reihenfolge der Knoten ist dabei von Belang, sodass der LCS-Algorithmus (Longest Common Subsequence) Anwendung findet. Dazu wird innerhalb der Knotenmengen die längste gemeinsame Teilsequenz gesucht. Genaueres in der folgenden Auflistung.
+\begin{itemize}
+	\item Eine gültige Korrelation zwischen zwei Knoten wird erkannt, wenn die beiden Knoten bereits als übereinstimmend gekennzeichnet sind.
+	\item Liegt keine Übereinstimmung vor, endet eine längste Teilsequenz an diesem Knotenpaar.
+\end{itemize}
+
+Als Gesamt-Ähnlichkeit wird der Quotient aus der Länge der längsten gefundenen Teilsequenz und der Größe der resultierenden Knotenmenge mit den meisten Elementen zurückgegeben.
+
+\subsubsection*{Spezielle Parameter}
+Diese Vergleichsfunktion benötigt als Parameter lediglich den abzuarbeitenden Typpfad. Siehe dazu auch \textcrosslink{Allgemeine Parameter}.
+
+
+\newpage
+%
+% --> RemoteNodesSimilarCO
+%
+\subsection{\texttt{RemotesNodesSimilarCO}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter \structgetfullref{strct:spec:remotenodesco} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die resultierenden Knotenmengen werden bei dieser Vergleichsfunktion allein anhand von \emph{Ähnlichkeiten} miteinander verglichen. Die Reihenfolge der Knoten ist dabei von Belang, sodass der LCS-Algorithmus (Longest Common Subsequence) Anwendung findet. Dazu wird innerhalb der Knotenmengen die längste gemeinsame Teilsequenz gesucht. Genaueres in der folgenden Auflistung.
+\begin{itemize}
+	\item Eine gültige Korrelation zwischen zwei Knoten wird erkannt, wenn die Ähnlichkeit des Knotens aus Menge A mit dem gegenüberliegenden Knoten in Menge B über dem unter \textcrosslink{Spezielle Parameter} beschriebenen Schwellwert liegt oder genau diesem entspricht.
+	\item Liegt keine solche Korrelation vor, endet eine mögliche längste Teilsequenz an diesem Knotenpaar.
+\end{itemize}
+
+Als Gesamt-Ähnlichkeit wird letztlich der Quotient aus der Länge der längsten gefundenen Teilsequenz und der Größe der resultierenden Knotenmenge mit den meisten Elementen gebildet und zurückgegeben.
+
+\textnoticesec{Bemerkung:} Diese Vergleichsfunktion ist nicht reflexiv!
+
+\subsubsection*{Spezielle Parameter}
+Diese Vergleichsfunktion benötigt neben dem abzuarbeitenden Typpfad als Parameter auch einen Schwellwert im Bereich von $0$ bis $1$, der angibt, ab welcher Ähnlichkeit der LCS-Algorithmus gültige Korrelationen beim Ähnlichkeitsvergleich erkennt. Ein gültiger Schwellwert wäre z.B. $0.55$. Mehr zur genauen Syntax des Parameters ist unter \textcrosslink{Allgemeine Parameter} zu Beginn dieses Abschnitts einsehbar.
+
+
+%
+% --> RemoteNodesEqualViewingHashesCO
+%
+\subsection{\texttt{RemotesNodesEqualViewingHashesCO}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter \structgetfullref{strct:spec:remotenodesco} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Vorbedingungen}
+Den Knoten müssen bereits Hashwerte in Form von Annotationen zugeordnet sein. Ist dies nicht der Fall oder Hashwerte werden in dem entsprechenden Projekt generell nicht unterstützt, wird eine Ausnahme des Typs \texttt{AnnotationNotExistsException} ausgelöst und der SiDiff-Kern terminiert den Vergleichsauftrag instantan.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die resultierenden Knotenmengen werden bei dieser Vergleichsfunktion anhand der \emph{Hashwerte} der einzelnen Knoten auf vollständige Gleichheit überprüft. Die Reihenfolge der Knoten ist dabei von Belang. Besitzen beide Knotenmengen die gleiche Anzahl an Elementen und \emph{jeder} Knoten der Menge A hat in der gegenüberliegenden Menge B an gleicher Position ein Äquivalent mit gleichem Hashwert, so beträgt die Ähnlichkeit $1$, ansonsten $0$.
+
+\subsubsection*{Spezielle Parameter}
+Diese Vergleichsfunktion benötigt als Parameter lediglich den abzuarbeitenden Typpfad. Siehe dazu auch \textcrosslink{Allgemeine Parameter}.
+
+
+\newpage
+%
+% --> RemoteNodesEqualViewingMatchesCO
+%
+\subsection{\texttt{RemotesNodesEqualViewingMatchesCO}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter \structgetfullref{strct:spec:remotenodesco} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die resultierenden Knotenmengen werden bei dieser Vergleichsfunktion anhand von \emph{Übereinstimmungen} der einzelnen Knoten auf vollständige Gleichheit überprüft. Die Reihenfolge der Knoten ist dabei von Belang. Besitzen beide Knotenmengen die gleiche Anzahl an Elementen und \emph{jeder} Knoten der Menge A hat in der gegenüberliegenden Menge B an gleicher Position ein Äquivalent mit vorliegender Übereinstimmung, so beträgt die Ähnlichkeit $1$, ansonsten $0$.
+
+\subsubsection*{Spezielle Parameter}
+Diese Vergleichsfunktion benötigt als Parameter lediglich den abzuarbeitenden Typpfad. Siehe dazu auch \textcrosslink{Allgemeine Parameter}.
+
+
+%
+% --> RemoteNodesEqualViewingTypesCO
+%
+\subsection{\texttt{RemotesNodesEqualViewingTypesCO}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter \structgetfullref{strct:spec:remotenodesco} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die resultierenden Knotenmengen werden bei dieser Vergleichsfunktion anhand der \emph{Knotentypen} der einzelnen Knoten auf vollständige Gleichheit überprüft. Die Reihenfolge der Knoten ist dabei von Belang. Besitzen beide Knotenmengen die gleiche Anzahl an Elementen und \emph{jeder} Knoten der Menge A hat in der gegenüberliegenden Menge B an gleicher Position ein Äquivalent gleichen Knotentyps, so beträgt die Ähnlichkeit $1$, ansonsten $0$.
+
+\subsubsection*{Spezielle Parameter}
+Diese Vergleichsfunktion benötigt als Parameter lediglich den abzuarbeitenden Typpfad. Siehe dazu auch \textcrosslink{Allgemeine Parameter}.

@@ -1,0 +1,217 @@
+\documentclass[a4paper]{article}
+\usepackage{multirow}
+\usepackage{longtable}
+
+\begin{document}
+
+\subsubsection{CompareAttributeUsingEquals}
+
+\begin{longtable}{|l|l|l|l|l|}
+\hline
+\textbf{Testcase} & \textbf{Models} & \textbf{Attributes} & \textbf{Similarity} & \textbf{Regular Expression}\\
+\hline
+\hline
+testcase\_01 & model1 & eInt=1 & 0 & \\
+\hline
+ 						 & model2 & eInt=15 & & \\
+\hline
+\hline
+testcase\_02 & model1 & eInt=7 & 1 &\\
+\hline
+						 & model2 & eInt=7 & & \\
+\hline
+\hline
+testcase\_03 & model1 & eDouble=1.2d & 0 &\\
+\hline
+             & model2 & eDouble=7.3d & &\\
+\hline
+\hline
+testcase\_04 & model1 & eDouble=1.6d & 1 &\\
+\hline
+             & model2 & eDouble=1.6d & &\\
+\hline
+\hline
+testcase\_05 & model1 & eFloat=1.2f & 0 &\\
+\hline
+             & model2 & eFloat=7.3f & &\\
+\hline
+\hline
+testcase\_06 & model1 & eFloat=1.6f & 1& \\
+\hline
+             & model2 & eFloat=1.6f & &\\
+\hline
+\hline
+testcase\_07 & model1 & eString=aaBBaa & 1 & Case-Insensitive\\
+\hline
+             & model2 & eString=aaBBaa & &\\
+\hline
+\hline
+testcase\_08 & model1 & eString=aaBBaa & 1 & Case-Sensitive\\
+\hline
+             & model2 & eString=aaBBaa & &\\
+\hline
+\hline
+testcase\_09 & model1 & eString=AAbbAA & 1 & Case-Insensitive\\
+\hline
+             & model2 & eString=aaBBaa & &\\
+\hline
+\hline
+testcase\_10 & model1 & eString=AAbbAA & 0 & Case-Sensitive\\
+\hline
+             & model2 & eString=aaBBaa & &\\
+\hline
+\hline
+testcase\_11 & model1 & eString=AaBbaA & 1 & Case-Insensitive\\
+\hline
+             & model2 & eString=aaBBaa & &\\
+\hline
+\hline
+testcase\_12 & model1 & eString=AaBbaA & 0 & Case-Sensitive\\
+\hline
+             & model2 & eString=aaBBaa & &\\
+\hline
+\hline
+testcase\_13 & model1 & eChar=A & 1 & Case-Sensitive\\
+\hline
+             & model2 & eChar=A & &\\
+\hline
+\hline
+testcase\_14 & model1 & eChar=A & 1 & Case-Insensitive\\
+\hline
+             & model2 & eChar=A & &\\
+\hline
+\hline
+testcase\_15 & model1 & eChar=A & 0 & Case-Sensitive\\
+\hline
+             & model2 & eChar=a & &\\
+\hline
+\hline
+testcase\_16 & model1 & eChar=A & 1 & Case-Insensitive\\
+\hline
+             & model2 & eChar=a & &\\
+\hline
+\hline
+testcase\_17 & model1 & eChar=A & 0 & Case-Sensitive\\
+\hline
+             & model2 & eChar=C & &\\
+\hline
+\hline
+testcase\_18 & model1 & eChar=A & 0 & Case-Insensitive\\
+\hline
+             & model2 & eChar=C & &\\
+\hline
+\hline
+testcase\_19 & model1 & eBoolean=true & 0 &\\
+\hline
+             & model2 & eBoolean=false & &\\
+\hline
+\hline
+testcase\_20 & model1 & eBoolean=true & 1 &\\
+\hline
+             & model2 & eBoolean=true & &\\
+\hline
+\hline
+testcase\_21 & model1 & eBigInteger=100 & 1 &\\
+\hline
+             & model2 & eBigInteger=100 & &\\
+\hline
+\hline
+testcase\_22 & model1 & eBigInteger=100 & 0 &\\
+\hline
+             & model2 & eBigInteger=200 & &\\
+\hline
+\hline
+testcase\_23 & model1 & eBigDecimal=300000.01 & 1 &\\
+\hline
+             & model2 & eBigDecimal=300000.01 & &\\
+\hline
+\hline
+testcase\_24 & model1 & eBigDecimal=300000.01 & 0 &\\
+\hline
+             & model2 & eBigDecimal=300000.02 & &\\
+\hline
+\hline
+testcase\_25 & model1 & eByte=1 & 1 &\\
+\hline
+             & model2 & eByte=1 & &\\
+\hline
+\hline
+testcase\_26 & model1 & eByte=1 & 0 &\\
+\hline
+             & model2 & eByte=2 & &\\
+\hline
+\hline
+testcase\_27 & model1 & eByteObject=1 & 1 &\\
+\hline
+             & model2 & eByteObject=1 & &\\
+\hline
+\hline
+testcase\_28 & model1 & eByteObject=1 & 0 &\\
+\hline
+             & model2 & eByteObject=2 & &\\
+\hline
+\hline
+testcase\_29 & model1 & eDoubleObject=10.0d & 1 &\\
+\hline
+             & model2 & eDoubleObject=10.0d & &\\
+\hline
+\hline
+testcase\_30 & model1 & eDoubleObject=10.0d & 0 &\\
+\hline
+             & model2 & eDoubleObject=10.1d & &\\
+\hline
+\hline
+testcase\_31 & model1 & eFloatObject=10.0f & 1 &\\
+\hline
+             & model2 & eFloatObject=10.0f & &\\
+\hline
+\hline
+testcase\_32 & model1 & eFloatObject=10.0f & 0 &\\
+\hline
+             & model2 & eFloatObject=10.1f & &\\
+\hline
+\hline
+testcase\_33 & model1 & eIntegerObject=1 & 1 &\\
+\hline
+             & model2 & eIntegerObject=1 & &\\
+\hline
+\hline
+testcase\_34 & model1 & eIntegerObject=1 & 0 &\\
+\hline
+             & model2 & eIntegerObject=2 & &\\
+\hline
+\hline
+testcase\_35 & model1 & eLongObject=1 & 1 &\\
+\hline
+             & model2 & eLongObject=1 & &\\
+\hline
+\hline
+testcase\_36 & model1 & eLongObject=1 & 0 &\\
+\hline
+             & model2 & eLongObject=2 & &\\
+\hline
+\hline
+testcase\_37 & model1 & eShortObject=1 & 1 \\
+\hline
+             & model2 & eShortObject=1 & &\\
+\hline
+\hline
+testcase\_38 & model1 & eShortObject=1 & 0 &\\
+\hline
+             & model2 & eShortObject=2 & &\\
+\hline
+\hline
+testcase\_39 & model1 & eBooleanObject=true & 1 &\\
+\hline
+             & model2 & eBooleanObject=true & &\\
+\hline
+\hline
+testcase\_40 & model1 & eBooleanObject=true & 0 &\\
+\hline
+             & model2 & eBooleanObject=false & &\\
+\hline
+
+\end{longtable}
+
+
+\end{document}

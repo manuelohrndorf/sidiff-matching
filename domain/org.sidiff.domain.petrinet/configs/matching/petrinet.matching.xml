@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Matching>
+<Settings defaultSequencedMatcher="DefaultMatcher" defaultTopDownMatcher="Propagation" documentType="http://www.uni-stuttgart.de/ensure/petrinet" firstPassSequencedMatcher="UniqueSimilarityMatcher" matcherPrefix="org.sidiff.core.matching.matcher"/>
+<Configurations>
+<MatchingConfiguration allowGlobalMove="true" allowLocalMove="true" alwaysComputeSimilarity="true" className="PetriNet" independentMatching="true" threshold="0.1" topDownMatcher=""/>
+<MatchingConfiguration allowGlobalMove="true" allowLocalMove="true" alwaysComputeSimilarity="true" className="Place" independentMatching="true" threshold="0.1" topDownMatcher=""/>
+<MatchingConfiguration allowGlobalMove="true" allowLocalMove="true" alwaysComputeSimilarity="true" className="Transition" independentMatching="true" threshold="0.1" topDownMatcher=""/>
+<MatchingConfiguration allowGlobalMove="true" allowLocalMove="true" alwaysComputeSimilarity="true" className="PlaceToTransition" independentMatching="true" threshold="0.1" topDownMatcher=""/>
+<MatchingConfiguration allowGlobalMove="true" allowLocalMove="true" alwaysComputeSimilarity="true" className="TransitionToPlace" independentMatching="true" threshold="0.1" topDownMatcher=""/>
+<MatchingConfiguration allowGlobalMove="true" allowLocalMove="true" alwaysComputeSimilarity="true" className="Token" independentMatching="true" threshold="0.1" topDownMatcher="Propagation"/>
+<MatchingConfiguration allowGlobalMove="true" allowLocalMove="true" alwaysComputeSimilarity="true" className="SignalNormalDistribution" independentMatching="true" threshold="0.1" topDownMatcher=""/>
+<MatchingConfiguration allowGlobalMove="true" allowLocalMove="true" alwaysComputeSimilarity="true" className="IdentificationTriple" independentMatching="true" threshold="0.1" topDownMatcher="Propagation"/>
+</Configurations>
+<Sequence initial="5">
+<Class name="IdentificationTriple"/>
+<Class name="SignalNormalDistribution"/>
+<Class name="PetriNet"/>
+<Class name="Token"/>
+<Class name="Transition"/>
+<Class name="TransitionToPlace"/>
+<Class name="Place"/>
+<Class name="PlaceToTransition"/>
+</Sequence>
+</Matching>

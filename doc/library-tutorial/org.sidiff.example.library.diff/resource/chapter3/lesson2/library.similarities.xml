@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Comparison>
+	<Settings documentType="http://www.eclipse.org/emf/jcrm/samples/emf/sample/Library"
+		normalizeWeights="true" />
+	
+	<Configurations>
+		<Class name="Writer" threshold="0.6">
+			<CompareFunction class="Self"
+				parameter="ECAttributeStatic[VCStringLCS[ci];name]" weight="1.0" />			
+		</Class>
+		<Class name="Book" threshold="0.7">
+			<CompareFunction class="Self"
+				parameter="ECAttributeStatic[VCStringLCS[ci];title]" weight="0.5" />
+			<CompareFunction class="Self"
+				parameter="ECAttributeStatic[VCGauss[0.7f];pages]" weight="0.5" />			
+		</Class>
+	</Configurations>
+</Comparison>

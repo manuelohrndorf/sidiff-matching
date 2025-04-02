@@ -1,0 +1,227 @@
+\documentclass[a4paper]{article}
+\usepackage{multirow}
+\usepackage{longtable}
+
+\begin{document}
+
+\subsubsection{CompareAttributeUsingGauss}
+
+\begin{longtable}{|l|l|l|l|l|}
+\hline
+\textbf{Testcase} & \textbf{Models} & \textbf{Attributes} & \textbf{Similarity} & \textbf{Regular Expression}\\
+\hline
+\hline
+testcase\_01 & model1 & eBigDecimal=13 & 1 & \\
+\hline
+ 						 & model2 & eBigDecimal=13 & & \\
+\hline
+\hline
+testcase\_02 & model1 & eBigInteger=-5 & 1 &\\
+\hline
+						 & model2 & eBigInteger=-5 & & \\
+\hline
+\hline
+testcase\_03 & model1 & eByte=127 & 1 &\\
+\hline
+             & model2 & eByte=127 & &\\
+\hline
+\hline
+testcase\_04 & model1 & eByteObject=0 & 1 &\\
+\hline
+             & model2 & eByteObject=0 & &\\
+\hline
+\hline
+testcase\_05 & model1 & eDouble=0.00011d & 1 &\\
+\hline
+             & model2 & eDouble=0.00011d & &\\
+\hline
+\hline
+testcase\_06 & model1 & eDoubleObject=265853.03d & 1& \\
+\hline
+             & model2 & eDoubleObject=265853.03d & &\\
+\hline
+\hline
+testcase\_07 & model1 & eFloat=48.6f & 1 &\\
+\hline
+             & model2 & eFloat=48.6f & &\\
+\hline
+\hline
+testcase\_08 & model1 & eFloatObject=0.00000001f & 1 &\\
+\hline
+             & model2 & eFloatObject=0.00000001f & &\\
+\hline
+\hline
+testcase\_09 & model1 & eInt=1 & 1 &\\
+\hline
+             & model2 & eInt=1 & &\\
+\hline
+\hline
+testcase\_10 & model1 & eIntegerObject=-13 & 1 &\\
+\hline
+             & model2 & eIntegerObject=-13 & &\\
+\hline
+\hline
+testcase\_11 & model1 & eLong=837438284757398495 & 1 &\\
+\hline
+             & model2 & eLong=837438284757398495 & &\\
+\hline
+\hline
+testcase\_12 & model1 & eLongObject=13 & 1 &\\
+\hline
+             & model2 & eLongObject=13 & &\\
+\hline
+\hline
+testcase\_13 & model1 & eShort=1 & 1 &\\
+\hline
+             & model2 & eShort=1 & &\\
+\hline
+\hline
+testcase\_14 & model1 & eShortObject=12 & 1 &\\
+\hline
+             & model2 & eShortObject=12 & &\\
+\hline
+\hline
+testcase\_15 & model1 & eBigDecimal=13 & 0 &\\
+\hline
+             & model2 & eBigDecimal=5 & &\\
+\hline
+\hline
+testcase\_16 & model1 & eBigInteger=27 & 0 &\\
+\hline
+             & model2 & eBigInteger=-5 & &\\
+\hline
+\hline
+testcase\_17 & model1 & eByte=0 & 0 &\\
+\hline
+             & model2 & eByte=127 & &\\
+\hline
+\hline
+testcase\_18 & model1 & eByteObject=0 & 0 &\\
+\hline
+             & model2 & eByteObject=97 & &\\
+\hline
+\hline
+testcase\_19 & model1 & eDouble=0.00011d & 0 &\\
+\hline
+             & model2 & eDouble=5d & &\\
+\hline
+\hline
+testcase\_20 & model1 & eDoubleObject=265853.03d & 0 &\\
+\hline
+             & model2 & eDoubleObject=1d & &\\
+\hline
+\hline
+testcase\_21 & model1 & eFloat=48.6f & 0 &\\
+\hline
+             & model2 & eFloat=-0.1f & &\\
+\hline
+\hline
+testcase\_22 & model1 & eFloatObject=0.00000001f & 0 &\\
+\hline
+             & model2 & eFloatObject=73849593f & &\\
+\hline
+\hline
+testcase\_23 & model1 & eInt=1 & 0 &\\
+\hline
+             & model2 & eInt=11 & &\\
+\hline
+\hline
+testcase\_24 & model1 & eIntegerObject=-13 & 0 &\\
+\hline
+             & model2 & eIntegerObject=22 & &\\
+\hline
+\hline
+testcase\_25 & model1 & eLong=837438284757398495 & 0 &\\
+\hline
+             & model2 & eLong=0 & &\\
+\hline
+\hline
+testcase\_26 & model1 & eLongObject=13 & 0 &\\
+\hline
+             & model2 & eLongObject=130 & &\\
+\hline
+\hline
+testcase\_27 & model1 & eShort=1 & 0 &\\
+\hline
+             & model2 & eShort=11 & &\\
+\hline
+\hline
+testcase\_28 & model1 & eShortObject=12 & 0 &\\
+\hline
+             & model2 & eShortObject=1221 & &\\
+\hline
+\hline
+testcase\_29 & model1 & eBigDecimal=8 & 0 &\\
+\hline
+             & model2 & eBigDecimal=null & &\\
+\hline
+\hline
+testcase\_30 & model1 & eBigInteger=null & 0 &\\
+\hline
+             & model2 & eBigInteger=6 & &\\
+\hline
+\hline
+testcase\_31 & model1 & eByte=0 & 0 &\\
+\hline
+             & model2 & eByte=null & &\\
+\hline
+\hline
+testcase\_32 & model1 & eByteObject=null & 0 &\\
+\hline
+             & model2 & eByteObject=86 & &\\
+\hline
+\hline
+testcase\_33 & model1 & eDouble=0.00011d & 0 &\\
+\hline
+             & model2 & eDouble=null & &\\
+\hline
+\hline
+testcase\_34 & model1 & eDoubleObject=null & 0 &\\
+\hline
+             & model2 & eDoubleObject=2d & &\\
+\hline
+\hline
+testcase\_35 & model1 & eFloat=null & 0 &\\
+\hline
+             & model2 & eFloat=-0.1f & &\\
+\hline
+\hline
+testcase\_36 & model1 & eFloatObject=0.00000001f & 0 &\\
+\hline
+             & model2 & eFloatObject=null & &\\
+\hline
+\hline
+testcase\_37 & model1 & eInt=null & 0 \\
+\hline
+             & model2 & eInt=10 & &\\
+\hline
+\hline
+testcase\_38 & model1 & eIntegerObject=null & 0 &\\
+\hline
+             & model2 & eIntegerObject=-6 & &\\
+\hline
+\hline
+testcase\_39 & model1 & eLong=null & 0 &\\
+\hline
+             & model2 & eLong=0 & &\\
+\hline
+\hline
+testcase\_40 & model1 & eLongObject=null & 0 &\\
+\hline
+             & model2 & eLongObject=1 & &\\
+\hline
+\hline
+testcase\_41 & model1 & eShort=111 & 0 &\\
+\hline
+             & model2 & eShort=null & &\\
+\hline
+\hline
+testcase\_42 & model1 & eShortObject=null & 0 &\\
+\hline
+             & model2 & eShortObject=100 & &\\
+\hline
+
+\end{longtable}
+
+
+\end{document}

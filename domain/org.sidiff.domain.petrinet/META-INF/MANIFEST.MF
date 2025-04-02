@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Petrinet
+Bundle-SymbolicName: org.sidiff.domain.petrinet;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.sidiff.domain;bundle-version="1.0.0",
+ org.eclipse.emf.ecore,
+ de.uni-stuttgart.ensure.petrinet;bundle-version="0.1.0",
+ org.sidiff.common.emf,
+ org.sidiff.common,
+ org.sidiff.service;bundle-version="1.0.0"

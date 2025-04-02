@@ -1,0 +1,70 @@
+%
+% Aufbau und Validierung einer Konfigurationsdatei
+% ===========================================================================
+%
+
+\chapter*{TODOs and Comments}
+\label{chap:todos-comments}
+
+\begin{itemize}
+
+\item Strengere Konventionen für die Bezeichnung von CompareFunctions?\\
+Bsp.: ParentsEqualType und ChildrenEqualViewingTypes. Beide Compare-Functionen meinen doch dasselbe, oder? Entweder mit oder ohne Viewing (ganz generell). (tk)
+
+\item ValueAdmeasue aufräumen (pp)
+
+\item Warum existiert compareStringViewingSimilarityUsingLCSIgnoringCase/...ConsideringCase
+aber keine vergleichbare trennung bei IndexOf? (pp)
+
+\item Wir sollten spezifizieren und überprüfen (und dokumentieren) für welche eTypes eine
+comparefunction anwendbar ist (daraus ergeben sich ja auch die aequivalenzklassen 
+zum testen). die NumericAttributEquals...-funktionen haben
+einen derartigen mechanismus bereits hartverdrahtet implementiert. (pp)\\
+tk kümmert sich darum (tk)\\
+Zusätzliche Anmerkung (tk): Eine, wie ursprünglich angedacht, einfache Matrix (CompareFunktion X AttributTyp) ist unter Umständen nicht ausreichend. Im Prinzip müssen hier auch noch die Parameter als 3.te Dimension aufgenommen werden. Oder sollen wir eben eine solche Kompatibilitäts-Matrix auch noch für Parameter erstellen?
+
+\item Was passiert bei fehlerhaften regulaeren Ausdruecken? Gibt es die ueberhaupt, 
+oder heisst falsch lediglich, dass der RegEx nicht der Intention des 
+Benutzers entspricht? (tk)
+
+\item macht es sinn neben den aequvialenzklassen die im moment die ausgangsituation für 
+die testergebnisse festlegt auch ergebnissorientierte aequivalenzklassen zu definieren? 
+beispielsweise: erzeuge eine similarity von 0.5 mit vergleichsfunktion x,y? (pp)
+
+\item ExplicitMatch/MaximumSimilarity: brauchen wir beide, oder kann explicitMatch
+nicht einfach auch weg? (pp)\\
+ExplicitMatch wird rausgenommen. Evtl späters name-refactoring (pp/tk)\\
+-erledigt\\
+Vorschlag für Name-Refactoring: Maximum-Similarity und MinimumSimilarity evtl. nicht sofort intuitiv einleuchtend? 
+Wie wäre es mit ExplicitMatch und ExplicitDismatch? (tk)
+
+\item Vergleich von Attributen: Wird hier schon unterstellt, dass die beiden zu 
+vergleichenden Elemente vom selben Typ sind? Haette Auswirkungen auf die 
+Aequivalenzklassen...(tk)\\ typgleichheit ist über die dedicatedClass 
+sichergestellt.(pp)\\
+-erledigt
+
+\item equalID kann als comparefunction doch eigentlich entfallen: spezialfall von
+compareAttributeUsingEquals? (pp)\\
+equalID wird rausgenommen (pp/tk)\\
+-erledigt
+
+\item parameter: der inhalt eines parameter-strings ist abhängig von dem typ des zu
+vergleichenden attributs. die verarbeitung des parameters wird in der
+abstracten typ oberklasse definiert. \\
+beispiel: StringAttributeUsingEquals erbt
+das wissen um die Verarbeitung von abstractStringAttribute, wo festgelegt wird,
+wie der Parameter auszulesen ist. dieser mechanismus steht ja bei unser idee so
+nicht mehr zur verfügung... gleiches gilt für den boolean parameter
+sensitive.\\
+evtl. auslagern der parameterfunktionalität? eine utilklasse der man parameter
++ eType übergibt, die ihn entsprechend zerlegt und das Ergebniss zurückliefert?
+(pp)\\
+
+lösung: AbstractAttribute zerlegt parameter und behandelt alle parameter die 
+auf dieser ebene relevant sind. weitere parameter werden in einer liste gespeichert
+und können in der implementierenden klasse abgefragt werden (pp/tk)\\
+--erledigt\\ 
+
+
+\end{itemize}

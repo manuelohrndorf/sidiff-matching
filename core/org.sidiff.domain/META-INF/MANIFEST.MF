@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: SiDiff Domain Configuration Service
+Bundle-SymbolicName: org.sidiff.domain;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.eclipse.core.runtime,
+ org.sidiff.common.emf;visibility:=reexport,
+ org.sidiff.service;visibility:=reexport
+Export-Package: org.sidiff.domain,
+ org.sidiff.domain.modelloader,
+ org.sidiff.domain.util
+Bundle-Vendor: Software Engineering Group, University of Siegen

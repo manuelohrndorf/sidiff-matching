@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: SysMLAnalyzer
+Bundle-SymbolicName: org.sidiff.sysml.testdata.analyzer
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.sidiff.sysml.testdata.analyzer.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.papyrus.sysml;bundle-version="0.9.2",
+ org.eclipse.emf;bundle-version="2.6.0",
+ org.eclipse.gmf.runtime.notation;bundle-version="1.5.0",
+ org.sidiff.common.emf;bundle-version="1.0.0"
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

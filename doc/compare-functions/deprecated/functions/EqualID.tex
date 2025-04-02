@@ -1,0 +1,38 @@
+\comparefunction{EqualID}
+
+\precondition
+Requires that the ID attribute exists.
+
+\semantics
+Compares two nodes based on their ID.
+
+\returnvalue
+In case the IDs are equal the similarity is 1,
+otherwise it is 0. 
+
+\parameters
+-
+
+\exceptions
+\fxnote{Was passiert, wenn ID-Attribut nicht existiert?}
+
+\test	
+% 
+%   
+% 	failed test (sim = 0)
+%   
+% 	NodeA
+% 		ID = "abba"
+% 
+% 	NodeB
+% 		ID = "dccd"
+% 	
+% 	
+% 	
+% 	successful test (sim 1)
+% 	
+% 	NodeA
+% 		ID = "abba"
+% 	
+% 	NodeB 
+% 		ID = "abba"

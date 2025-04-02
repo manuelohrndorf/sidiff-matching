@@ -1,0 +1,128 @@
+%
+% Vergleichsfunktionen: Incoming References Ignoring Order
+% ===========================================================================
+%
+
+\section{\texttt{IncomingReferencesIO}...}
+\label{strct:spec:inrefsio}
+Dieser Abschnitt behandelt Vergleichsfunktionen des Typs \texttt{IncomingReferencesIO}, mit denen sich die Eingabeknoten anhand eingehender Kanten eines bestimmten Typs oder alternativ anhand allen eingehenden Kanten unter \emph{Nichtbeachtung} der Reihenfolge vergleichen lassen.
+
+\subsubsection*{Allgemeine Vorbedingungen}
+Der im Parameter spezifizierte Kantentyp muss existieren, da ansonsten eine Ausnahme des Typs \texttt{UnknownTypeException} ausgelöst wird. Ferner sollten die sich ergebenden Knotenmengen Elemente beeinhalten, damit nicht-triviale Ähnlichkeitswerte ermittelbar sind. Mehr zu trivialen Ähnlichkeiten unter \textcrosslink{Allgemeiner Rückgabewert}.
+
+\subsubsection*{Allgemeine Semantik}
+Die Eingabeknoten werden über eine durch den Parameter indirekt bestimmte Knotenmenge verglichen. Dabei wird die Knotenmenge zum Vergleich herangezogen, die sich aus Abarbeitung der vom Eingabeknoten eingehenden Kanten des im Parameter spezifizierten Typs ergeben. Es besteht auch die Möglichkeit \emph{alle} eingehenden Kanten auszuwählen. Mehr zum genauen Semantik und auch Rückgabewert ist in den Dokumentationen der spezifischen Vergleichsfunktionen weiter unten in diesem Abschnitt einsehbar. Allgemein ist jedoch an dieser Stelle noch festzuhalten, dass Vergleichsfunktionen dieser Klasse im Gegensatz zu \structgetref{strct:spec:inrefsco} die Reihenfolge der gefundenen Knoten \emph{nicht} beachten.
+
+\subsubsection*{Allgemeiner Rückgabewert}
+Die Bestimmung der Rückgabewerte der spezifischen implementierenden Vergleichsfunktionen unterscheidet sich unterschiedlich stark. Daher sei an dieser Stelle auf die Dokumentationen der spezifischen Vergleichsfunktionen weiter unten in diesem Abschnitt verwiesen.
+
+Allgemein lassen sich jedoch bereits folgende triviale Ähnlichkeitsbeziehungen und deren Rückgabewerte bestimmen:
+\begin{itemize}
+	\item Existiert für lediglich eine der sich ergebenden Knotemengen keine Elemente, so beträgt die resultierende Ähnlichkeit $0$.
+	\item In dem Fall, dass \emph{beide} resultierenden Knotenmengen keine Elemente beinhalten, lösen Vergleichsfunktionen dieses Typs eine Ausnahme des Typs \texttt{NothingToCompareException} aus.
+\end{itemize}
+
+\subsubsection*{Allgemeine Parameter}
+Als Parameter wird der Name des zu betrachtenden, eingehenden Kantentyps angegeben. Ferner ist es durch Verwendung eines \texttt{*} möglich, \emph{alle} eingehenden Kanten und somit letztlich alle Quellknoten zum Vergleich heranzuziehen.
+
+Folgend zwei Beispiele für gültige Parameterwerte:
+\begin{itemize}
+	\item Eingehende Kanten des Typs \texttt{typA} betrachten:  \texttt{typA}
+	\item Alle eingehenden Kanten bzw. Quellknoten heranziehen:  \texttt{*}
+\end{itemize}
+
+\textnoticesec{Bemerkung:} Sofern ein spezieller Kantentyp angegeben wird, muss dieser existent sein, da ansonsten eine Ausnahme ausgelöst wird.
+
+\newpage
+%
+% --> IncomingReferencesMatchedOrSimilarIO
+%
+\subsection{\texttt{IncomingReferencesMatchedOrSimilarIO}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter\mylinebreak\structgetfullref{strct:spec:inrefsio} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die aus Abarbeitung des im Parameter angegebenen eingehenden Kantentyps resultierenden Knotenmengen werden bei dieser Vergleichsfunktion anhand von sowohl Übereinstimmungen als auch Ähnlichkeiten miteinander verglichen.
+\begin{itemize}
+	\item Wird bei einem Knoten eine Übereinstimmung in der gegenüberliegenden Menge gefunden, geht dies anteilig mit dem Wert $1$ in den Vergleich ein.
+	\item Wenn keine Übereinstimmung für einen Kindknoten gefunden wurde, so geht der Knoten mit der höchsten Ähnlichkeit in den Vergleich ein.
+\end{itemize}
+
+Als Gesamt-Ähnlichkeit wird letztlich der Quotient aus den kumulierten Einzel-Ähnlichkeiten und der Größe der Knotenmenge mit den meisten Elementen zurückgegeben.
+
+\textnoticesec{Bemerkungen:}
+\begin{itemize}
+	\item Diese Vergleichsfunktion ist nicht reflexiv!
+	\item Die Knoten ermittelter Korrelationen werden vom weiteren Vergleich ausgeschlossen, sodass diese nicht ein weiteres mal anderen Knoten zugeordnet werden können.
+	\item Da es sich lediglich um Vergleichs-\emph{Heuristiken} handelt, besteht bei Anwendung von Ähnlich\-keits-Korrelationen ebenfalls die Möglichkeit von suboptimalen Zuordnungen von Knotenpaaren -- also dass bspw. ein Knoten A mit einem Knoten B als korrelierend betrachtet wird, obwohl er im weiteren Vergleich einem Knoten C wesentlich besser entsprechen würde.
+\end{itemize}
+
+
+%
+% --> IncomingReferencesMatchedIO
+%
+\subsection{\texttt{IncomingReferencesMatchedIO}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter\mylinebreak\structgetfullref{strct:spec:inrefsio} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die aus dem Pfadausdruck resultierenden Knotenmengen werden bei dieser Vergleichsfunktion allein anhand von \emph{Übereinstimmungen} miteinander verglichen.
+\begin{itemize}
+	\item Wird bei einem Knoten eine Übereinstimmung in der gegenüberliegenden Menge gefunden, geht dies anteilig mit dem Wert $1$ in den Vergleich ein.
+	\item Ist für einen Knoten allerdings eine Übereinstimmung \emph{außerhalb} der anderen Knotenmenge existent, so geht dies anteilig mit $-1$ in die Gesamt-Ähnlichkeit ein. Eine "`fehlerhafte"' Übereinstimmung resultiert also in einer \emph{Minderung} der Ähnlichkeit.
+	\item Wenn keine Übereinstimmung für einen Knoten gefunden wurde, so geschieht nichts.
+\end{itemize}
+
+Als Gesamt-Ähnlichkeit wird letztlich der Quotient aus den kumulierten Einzel-Ähnlichkeiten und der Größe der resultierenden Knotenmenge mit den meisten Elementen zurückgegeben. Sofern der Betrag der kumulierten Einzel-Ähnlichkeiten aufgrund vieler "`fehlerhafter"' Übereinstimmungen allerdings negativ ist, beträgt die Gesamtähnlichkeit $0$.
+
+\textnoticesec{Bemerkung:} Diese Vergleichsfunktion ist nicht reflexiv!
+
+\newpage
+%
+% --> IncomingReferencesSimilarIO
+%
+\subsection{\texttt{IncomingReferencesSimilarIO}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter\mylinebreak\structgetfullref{strct:spec:inrefsio} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die resultierenden Knotenmengen werden bei dieser Vergleichsfunktion allein anhand von bereits bekannten \emph{Ähnlichkeiten} miteinander verglichen. Dabei wird für jeden Knoten der Menge A die beste Übereinstimmung in der gegenüberliegen Knotenmenge B gesucht und die Ähnlichkeiten von der Knoten von Menge A zu Menge B kumuliert.
+
+Als Gesamt-Ähnlichkeit wird letztlich der Quotient aus den kumulierten Einzel-Ähnlichkeiten und der Größe der resultierenden Knotenmenge mit den meisten Elementen zurückgegeben.
+
+\textnoticesec{Bemerkungen:}
+\begin{itemize}
+	\item Diese Vergleichsfunktion ist nicht reflexiv!
+	\item Die Knoten ermittelter Korrelationen werden vom weiteren Vergleich ausgeschlossen, sodass diese nicht ein weiteres mal anderen Knoten zugeordnet werden können.
+	\item Da es sich lediglich um Vergleichs-\emph{Heuristiken} handelt, besteht ebenfalls die Möglichkeit von suboptimalen Zuordnungen von Knotenpaaren -- also dass bspw. ein Knoten A mit einem Knoten B als korrelierend betrachtet wird, obwohl er im weiteren Vergleich einem Knoten C wesentlich besser entsprechen würde.
+\end{itemize}
+
+
+%
+% --> IncomingReferencesEqualViewingHashesIO
+%
+\subsection{\texttt{IncomingReferencesEqualViewingHashesIO}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter\mylinebreak\structgetfullref{strct:spec:inrefsio} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Vorbedingungen}
+Den Knoten müssen bereits Hashwerte in Form von Annotationen zugeordnet sein. Ist dies nicht der Fall oder Hashwerte werden in dem entsprechenden Projekt generell nicht unterstützt, wird eine Ausnahme des Typs \texttt{AnnotationNotExistsException} ausgelöst und der SiDiff-Kern terminiert den Vergleichsauftrag instantan.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die resultierenden Knotenmengen werden bei dieser Vergleichsfunktion anhand der \emph{Hashwerte} der einzelnen Knoten auf vollständige Gleichheit überprüft. Besitzen beide Knotenmengen die gleiche Anzahl an Elementen und \emph{jeder} Knoten hat in der gegenüberliegen Knotenmenge ein Äquivalent mit gleichem Hashwert, so beträgt die Ähnlichkeit $1$, ansonsten $0$.
+
+
+%
+% --> IncomingReferencesEqualViewingMatchesIO
+%
+\subsection{\texttt{IncomingReferencesEqualViewingMatchesIO}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter\mylinebreak\structgetfullref{strct:spec:inrefsio} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die resultierenden Knotenmengen werden bei dieser Vergleichsfunktion anhand von bereits gefundenen \emph{Übereinstimmungen} der einzelnen Knoten auf vollständige Übereinstimmung überprüft. Besitzen beide Knotenmengen die gleiche Anzahl an Elementen und \emph{jeder} Knoten hat in der gegenüberliegen Knotenmenge eine Übereinstimmung, so beträgt die Ähnlichkeit $1$, ansonsten $0$.
+
+\newpage
+%
+% --> IncomingReferencesEqualViewingTypesIO
+%
+\subsection{\texttt{IncomingReferencesEqualViewingTypesIO}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter\mylinebreak\structgetfullref{strct:spec:inrefsio} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die resultierenden Knotenmengen werden bei dieser Vergleichsfunktion anhand der \emph{Typen} der einzelnen Knoten auf vollständige Gleichheit überprüft. Besitzen beide Knotenmengen die gleiche Anzahl an Elementen und \emph{jeder} Knoten hat in der gegenüberliegen Knotenmenge ein Äquivalent mit gleichem Knotentyp, so beträgt die Ähnlichkeit $1$, ansonsten $0$.

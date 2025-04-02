@@ -1,0 +1,97 @@
+%
+% Vergleichsfunktionen: Outgoing Reference
+% ===========================================================================
+%
+
+\section{\texttt{IncomingReference}...}
+\label{strct:spec:inref}
+Dieser Abschnitt behandelt Vergleichsfunktionen des Typs \texttt{IncomingReferenceIO}, mit denen sich die Eingabeknoten anhand \emph{einer} eingehenden Kante eines bestimmtem Typs vergleichen lassen.
+
+\subsubsection*{Allgemeine Vorbedingungen}
+Der im Parameter spezifizierte Kantentyp muss existieren, da ansonsten eine Ausnahme des Typs \texttt{UnknownTypeException} ausgelöst wird. Ferner dürfen die betreffenden Eingabeknoten nicht mehr als eine eingehende Kante des entsprechenden Typs besitzen, da ansonsten eine Ausnahme vom Typ \texttt{NonUniqueException} ausgelöst wird. Damit ebenfalls nicht-triviale Ähnlichkeitswerte ermittelbar sind, sollten die Eingabeknoten eine eingehende Kante des angegebenen Typs besitzen. Mehr zu trivialen Ähnlichkeiten unter \textcrosslink{Allgemeiner Rückgabewert}.
+
+\subsubsection*{Allgemeine Semantik}
+Die Eingabeknoten werden über den Quellknoten \emph{genau einer} eingehenden Referenz miteinander verglichen. Der Typ der eingehenden Kante wird dabei im Parameter festgelegt. Mehr zur genauen Semantik und auch dem Rückgabewert ist in den Dokumentationen der spezifischen Vergleichsfunktionen weiter unten in diesem Abschnitt einsehbar.
+
+\subsubsection*{Allgemeiner Rückgabewert}
+Die Bestimmung der Rückgabewerte der spezifischen implementierenden Vergleichsfunktionen unterscheidet sich unterschiedlich stark. Daher sei an dieser Stelle auf die Dokumentationen der spezifischen Vergleichsfunktionen weiter unten in diesem Abschnitt verwiesen.
+
+Allgemein lassen sich jedoch bereits folgende triviale Ähnlichkeitsbeziehungen und deren Rückgabewerte bestimmen:
+\begin{itemize}
+	\item Existiert für lediglich einen der Eingabeknoten keine eingehende Kante des spezifizierten Typs, so beträgt die resultierende Ähnlichkeit $0$.
+	\item In dem Fall, dass \emph{beide} Eingabeknoten keine eingehende Kante des entsprechenden Typs beinhalten, liefern Vergleichsfunktionen dieses Typs $1$ als Ähnlichkeit.
+\end{itemize}
+
+\subsubsection*{Allgemeine Parameter}
+Als Parameter wird bei dieser Gruppe von Vergleichsfunktionen allein der Name des eingehenden Kantentyps, dessen Quellknoten zum Vergleich herangezogen werden sollen, übergeben.
+
+\textnoticesec{Bemerkungen:} Der Kantentyp muss existieren, da ansonsten eine Ausnahme ausgelöst wird. Ebenfalls dürfen die Eingabeknoten nicht mehr als eine eingehende Kante des entsprechenden Typs vorweisen. Siehe dazu auch \textcrosslink{Allgemeine Vorbedingungen}.
+
+
+\newpage
+%
+% --> IncomingReferenceMatchedOrSimilar
+%
+\subsection{\texttt{IncomingReferenceMatchedOrSimilar}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter\mylinebreak\structgetfullref{strct:spec:inref} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die Eingabeknoten werden anhand der direkten Übereinstimmung bzw. der Ähnlichkeit der sich ergebenden Quellknoten miteinander verglichen. Zunächst wird also geprüft, ob die Quellknoten bereits übereinstimmen -- ist dies nicht der Fall, so erfolgt der Vergleich anhand der Ähnlichkeiten der Quellknoten untereinander.
+
+Als Ähnlichkeit wird also letztlich bei Übereinstimmung der Quellknoten $1$, andernfalls die bekannte Ähnlichkeit der beiden Quellknoten zurückgegeben.
+
+\textnoticesec{Bemerkung:} Diese Vergleichsfunktion ist nicht reflexiv.
+
+
+%
+% --> IncomingReferenceMatched
+%
+\subsection{\texttt{IncomingReferenceMatched}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter\mylinebreak\structgetfullref{strct:spec:inref} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die Eingabeknoten werden anhand der sich ergebenden Quellknoten miteinander verglichen. Dabei werden allein \emph{Übereinstimmungen} berücksichtigt. Es erfolgt also \emph{kein} Vergleich aufgrund von Ähnlichkeiten.
+
+Bei Übereinstimmung der Quellknoten wird $1$, andernfalls $0$ als Ähnlichkeit zurückgegeben.
+
+
+%
+% --> IncomingReferenceSimilar
+%
+\subsection{\texttt{IncomingReferenceSimilar}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter\mylinebreak\structgetfullref{strct:spec:inref} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die Eingabeknoten werden anhand der sich ergebenden Quellknoten miteinander verglichen. Dabei werden allein die bekannten \emph{Ähnlichkeitswerte} der Quellknoten berücksichtigt. Es erfolgt also \emph{kein} Vergleich aufgrund von Übereinstimmungen.
+
+Als Ähnlichkeit der beiden Eingabeknoten wird somit die Ähnlichkeit der beiden Quellknoten zurückgegeben.
+
+\textnoticesec{Bemerkung:} Diese Vergleichsfunktion ist nicht reflexiv.
+
+
+\newpage
+%
+% --> IncomingReferenceEqualHash
+%
+\subsection{\texttt{IncomingReferenceEqualHash}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter\mylinebreak\structgetfullref{strct:spec:inref} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Vorbedingungen}
+Den (Ziel-)Knoten müssen bereits Hashwerte in Form von Annotationen zugeordnet sein. Ist dies nicht der Fall oder Hashwerte werden in dem entsprechenden Projekt generell nicht unterstützt, wird eine Ausnahme des Typs \texttt{AnnotationNotExistsException} ausgelöst und der SiDiff-Kern terminiert den Vergleichsauftrag instantan.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die Eingabeknoten werden anhand der sich ergebenden Quellknoten miteinander verglichen. Dabei wird der Vergleich auf die Identität der ermittelten \emph{Hashwerte} der Quellknoten zurückgeführt.
+
+Sind die Hashwerte der Quellknoten identisch, so beträgt die Ähnlichkeit der Eingabeknoten $1$, ansonsten $0$.
+
+
+%
+% --> IncomingReferenceEqualType
+%
+\subsection{\texttt{IncomingReferenceEqualType}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter\mylinebreak\structgetfullref{strct:spec:inref} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die Eingabeknoten werden anhand der sich ergebenden Quellknoten miteinander verglichen. Dabei wird der Vergleich auf Identität der \emph{Typen} der Quellknoten zurückgeführt.
+
+Sind die Typen der Quellknoten gleich, so beträgt die Ähnlichkeit der Eingabeknoten $1$, ansonsten $0$.

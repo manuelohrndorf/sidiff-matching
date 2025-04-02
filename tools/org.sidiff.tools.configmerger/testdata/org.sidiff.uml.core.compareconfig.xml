@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Comparison>
+<Settings documentType="http://www.sidiff.org/org.sidiff.uml.model" normalizeWeights="true"/>
+<Configurations>
+<Class name="core.UMLModel" threshold="1.0">
+			<!-- Nur einmal vorhanden, direkt Matchen -->
+			<!--<CompareFunction class="SelfCF" weight="1.0" parameter="CMaximumSimilarity"/> -->  
+			<!-- parameter a must?-->
+			 <CompareFunction class="MaximumSimilarityCF" weight="1.0"/>
+
+		</Class>
+<Class name="classes.UMLLiteral" threshold="0.5">
+			<CompareFunction class="SelfCF" parameter="ECAttributeStatic[VCStringLCS[cs];UMLLiteral;name]" weight="0.5"/> 
+			<CompareFunction class="ParentCF" parameter="ECMatched" weight="0.5"/>
+		</Class>
+<Class name="core.UMLPackage" threshold="0.5">
+			<CompareFunction class="SelfCF" parameter="CHeavisideReverse[ECAttributeStatic[VCStringLCS[cs];UMLPackage;name];0.1]" weight="0.35"/>
+			<CompareFunction class="SelfCF" parameter="ECAttributeStatic[CEquals;UMLPackage;visibility]" weight="0.045"/>
+			<CompareFunction class="NeighboursSingleReferenceCF" parameter="SCGreedyMatchedOrSimilar[0.5];packages" policy="fulfilled" weight="0.1"/>
+			<CompareFunction class="NeighboursSingleReferenceCF" parameter="SCGreedyMatchedOrSimilar[0.5];classifiers" policy="fulfilled" weight="0.5"/>
+			<CompareFunction class="ParentCF" parameter="ECMatched" weight="0.05"/>
+		</Class>
+<Class name="classes.UMLClass" threshold="0.45">
+			<CompareFunction class="SelfCF" parameter="CHeavisideReverse[ECAttributeStatic[VCStringLCS[cs];UMLClass;name];0.25]" weight="0.4"/>
+			<CompareFunction class="SelfCF" parameter="ECAttributeStatic[CEquals;UMLClass;visibility]" weight="0.04"/>
+			<CompareFunction class="SelfCF" parameter="ECAttributeStatic[CEquals;UMLClass;isAbstract]" weight="0.02"/>
+			<CompareFunction class="SelfCF" parameter="ECAttributeStatic[CEquals;UMLClass;isFinal]" weight="0.02"/>
+			<CompareFunction class="NeighboursSingleReferenceCF" parameter="SCGreedyMatchedOrSimilar[0.5];attributes" policy="fulfilled" weight="0.2"/>			
+			<CompareFunction class="NeighboursSingleReferenceCF" parameter="SCGreedyMatchedOrSimilar[0.5];operations" policy="fulfilled" weight="0.2"/>
+			<CompareFunction class="RemoteNodesCF" parameter="SCMatched;Outgoing.generalizations#*/Outgoing.generalElement#*" policy="unfulfilled" weight="0.05"/> 
+			<CompareFunction class="RemoteNodesCF" parameter="SCMatched;Outgoing.specializations#*/Outgoing.specialElement#*" policy="unfulfilled" weight="0.05"/>
+			<CompareFunction class="ParentCF" parameter="ECMatched" weight="0.01"/>
+			<CompareFunction class="RemoteNodesCF" parameter="SCSize;Outgoing.targetedByAssociationEnds#*" policy="unfulfilled" weight="0.01"/>
+		</Class>
+<Class name="classes.UMLInterface" threshold="0.45">
+			<CompareFunction class="SelfCF" parameter="CHeavisideReverse[ECAttributeStatic[VCStringLCS[cs];UMLClass;name];0.25]" weight="0.5"/>
+			<CompareFunction class="SelfCF" parameter="ECAttributeStatic[CEquals;UMLClass;visibility]" weight="0.05"/>
+			<CompareFunction class="NeighboursSingleReferenceCF" parameter="SCGreedyMatchedOrSimilar[0.5];operations" policy="fulfilled" weight="0.3"/>
+			<CompareFunction class="RemoteNodesCF" parameter="SCMatched;Outgoing.generalizations#*/Outgoing.generalElement#*" policy="fulfilled" weight="0.05"/> 
+			<CompareFunction class="RemoteNodesCF" parameter="SCMatched;Outgoing.specializations#*/Outgoing.specialElement#*" policy="fulfilled" weight="0.05"/>
+			<CompareFunction class="ParentCF" parameter="ECMatched" weight="0.05"/>
+		</Class>
+<Class name="classes.UMLAttribute" threshold="0.4">
+			<CompareFunction class="SelfCF" parameter="CHeavisideReverse[ECAttributeStatic[VCStringLCS[cs];UMLAttribute;name];0.25]" weight="0.5"/>
+			<CompareFunction class="SelfCF" parameter="ECAttributeStatic[CEquals;UMLAttribute;visibility]" weight="0.05"/>	
+			<CompareFunction class="SelfCF" parameter="ECAttributeStatic[CEquals;UMLAttribute;isStatic]" weight="0.05"/>
+			<CompareFunction class="SelfCF" parameter="ECAttributeStatic[CEquals;UMLAttribute;isReadOnly]" weight="0.05"/>
+			<CompareFunction class="NeighboursSingleReferenceCF" parameter="SCGreedyMatchedOrSimilar[0.5];type" policy="unfulfilled" weight="0.2"/>			
+			<CompareFunction class="ParentCF" parameter="ECMatched" weight="0.15"/>
+		</Class>
+<Class name="classes.UMLOperation" threshold="0.4">
+			<If condition="NoChildrenCondition" weight="1.0">
+				<Then>
+					<CompareFunction class="SelfCF" parameter="CHeavisideReverse[ECAttributeStatic[VCStringLCS[cs];UMLOperation;name];0.25]" weight="0.5"/>
+					<CompareFunction class="SelfCF" parameter="ECAttributeStatic[CEquals;UMLOperation;visibility]" weight="0.015"/>
+					<CompareFunction class="SelfCF" parameter="ECAttributeStatic[CEquals;UMLOperation;isStatic]" weight="0.015"/>
+					<CompareFunction class="SelfCF" parameter="ECAttributeStatic[CEquals;UMLOperation;isAbstract]" weight="0.015"/>
+					<CompareFunction class="NeighboursSingleReferenceCF" parameter="SCGreedyMatchedOrSimilar[0.5];type" policy="unfulfilled" weight="0.205"/>
+					<CompareFunction class="ParentCF" parameter="ECMatched" weight="0.25"/>
+				</Then>
+				<Else>
+					<CompareFunction class="SelfCF" parameter="CHeavisideReverse[ECAttributeStatic[VCStringLCS[cs];UMLOperation;name];0.25]" weight="0.4"/>
+					<CompareFunction class="SelfCF" parameter="ECAttributeStatic[CEquals;UMLOperation;visibility]" weight="0.025"/>
+					<CompareFunction class="SelfCF" parameter="ECAttributeStatic[CEquals;UMLOperation;isStatic]" weight="0.025"/>
+					<CompareFunction class="SelfCF" parameter="ECAttributeStatic[CEquals;UMLOperation;isAbstract]" weight="0.025"/>
+					<CompareFunction class="ChildrenCF" parameter="LCLongestCommonSubsequence[ECMatchedOrSimilar[0.0];0.25]" policy="fulfilled" weight="0.15"/>			
+					<CompareFunction class="NeighboursSingleReferenceCF" parameter="SCGreedyMatchedOrSimilar[0.5];type" policy="unfulfilled" weight="0.175"/>
+					<CompareFunction class="ParentCF" parameter="ECMatched" weight="0.20"/>
+				</Else>
+			</If>
+		</Class>
+<Class name="classes.UMLParameter" threshold="0.5">
+			<CompareFunction class="SelfCF" parameter="ECAttributeStatic[VCStringLCS[cs];UMLParameter;name]" weight="0.395"/>
+			<CompareFunction class="SelfCF" parameter="ECAttributeStatic[CEquals;UMLParameter;kind]" weight="0.005"/>
+			<CompareFunction class="NeighboursSingleReferenceCF" parameter="SCGreedyMatchedOrSimilar[0.5];type" weight="0.45"/>
+			<CompareFunction class="ParentCF" parameter="ECMatched" weight="0.15"/>
+		</Class>
+<Class name="classes.UMLGeneralization" threshold="0.6">
+			<CompareFunction class="NeighboursSingleReferenceCF" parameter="SCGreedyMatchedOrSimilar[0.5];generalElement" weight="0.5"/>
+			<CompareFunction class="NeighboursSingleReferenceCF" parameter="SCGreedyMatchedOrSimilar[0.5];specialElement" weight="0.5"/>
+		</Class>
+<Class name="core.UMLDependency" threshold="0.7">
+			<CompareFunction class="SelfCF" parameter="ECAttributeStatic[VCStringLCS[cs];UMLDependency;name]" weight="0.35"/>
+			<CompareFunction class="NeighboursSingleReferenceCF" parameter="SCGreedyMatchedOrSimilar[0.5];dependee" weight="0.325"/>
+			<CompareFunction class="NeighboursSingleReferenceCF" parameter="SCGreedyMatchedOrSimilar[0.5];supplier" weight="0.325"/>
+		</Class>
+<Class name="classes.UMLAssociation" threshold="0.6">
+			<CompareFunction class="SelfCF" parameter="ECAttributeStatic[VCStringLCS[cs];UMLAssociation;name]" weight="0.2"/>
+			<CompareFunction class="RemoteNodesCF" parameter="SCMatched;Outgoing.associationEnds#*/Outgoing.target#*" weight="0.8"/>
+		</Class>
+<Class name="classes.UMLAssociationClass" threshold="0.6">
+			<CompareFunction class="SelfCF" parameter="ECAttributeStatic[VCStringLCS[cs];UMLAssociationClass;name]" weight="0.2"/>
+			<CompareFunction class="RemoteNodesCF" parameter="SCMatched;Outgoing.associationEnds#*/Outgoing.target#*" weight="0.6"/>
+			<!-- <CompareFunction class="NeighboursSingleReferenceCF" policy="fulfilled" weight="0.2" parameter="SCGreedyMatchedOrSimilar[0.5];attributes"/>-->			
+		</Class>
+<Class name="classes.UMLAssociationEnd" threshold="0.4">
+			<CompareFunction class="SelfCF" parameter="ECAttributeStatic[VCStringLCS[cs];UMLAssociationEnd;name]" weight="0.20"/>
+			<CompareFunction class="SelfCF" parameter="ECAttributeStatic[CEquals;UMLAssociationEnd;isNavigable]" weight="0.025"/>
+			<CompareFunction class="SelfCF" parameter="ECAttributeStatic[CEquals;UMLAssociationEnd;isOrdered]" weight="0.025"/>
+			<CompareFunction class="SelfCF" parameter="ECAttributeStatic[CEquals;UMLAssociationEnd;multiplicity]" weight="0.025"/>
+			<CompareFunction class="SelfCF" parameter="ECAttributeStatic[CEquals;UMLAssociationEnd;kind]" weight="0.025"/>
+			<CompareFunction class="NeighboursSingleReferenceCF" parameter="SCGreedyMatchedOrSimilar[0.5];target" weight="0.4"/>		
+			<CompareFunction class="ParentCF" parameter="ECMatched" weight="0.3"/> 
+		</Class>
+<Class name="classes.UMLPrimitiveType" threshold="0.8">
+			<CompareFunction class="SelfCF" parameter="ECAttributeStatic[VCStringLCS[cs];UMLPrimitiveType;name]" weight="1.0"/> 
+		</Class>
+<Class name="core.UMLStereotype" threshold="0.8">
+			<CompareFunction class="SelfCF" parameter="ECAttributeStatic[VCStringLCS[cs];UMLStereotype;name]" weight="1.0"/>
+		</Class>
+<Class name="classes.UMLEnumeration" threshold="0.5">
+			<CompareFunction class="SelfCF" parameter="ECAttributeStatic[VCStringLCS[cs];UMLEnumeration;name]" weight="0.5"/> 
+			<CompareFunction class="ChildrenCF" parameter="SCGreedyMatchedOrSimilar[0.5]" weight="0.5"/>
+		</Class>
+</Configurations>
+</Comparison>

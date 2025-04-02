@@ -1,0 +1,44 @@
+\comparefunction{CompareAttributeUsingGauss}
+
+\allowedtypes
+numerical Values
+
+\precondition
+-
+
+\semantics
+Compares a specific attribute of two nodes based on the numeric similarity of
+their values viewed as double with the help of the gauss-distribution. It
+needs two additional parameters: the name of the attribute to be compared and
+a scaling-value.
+
+\returnvalue
+The similarity value is calculated as follows. $exp( - ((value1 - value2)²) /
+scale ) )$
+
+
+\parameters
+The attribute to be compared by name  
+The scale (as double) for the gaussian distribution.
+
+\exceptions
+
+
+\test
+Allgemeine Testaquivalenzklasse \\\\
+
+compareAttributeGaussTest1-15\\\\
+identical values: one test for every numerical eType (sim = 1)\\
+Model1: numValue = identValue\\
+Model2: numValue = identValue\\\\
+
+compareAttributeGaussTest16-30\\\\
+different values: one test for every numerical eType (sim = 0)\\
+Model1: numValue = ValueA\\
+Model2: numValue = ValueB\\\\
+
+compareAttributeGauss30-45\\\\
+test auf null-werte für jeden numerical eType\\
+Model1: numValue = null\\
+Model2: numValue = ValueB\\\\
+

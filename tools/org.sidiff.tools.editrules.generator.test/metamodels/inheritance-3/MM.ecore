@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="mm"
+    nsURI="http://mm/1.0" nsPrefix="mm">
+  <eClassifiers xsi:type="ecore:EClass" name="ModelElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="kommentar" lowerBound="1"
+        eType="#//Kommentar" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Kommentar" abstract="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="MyModel">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="modelElements" upperBound="-1"
+        eType="#//ModelElement" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SpezialKommentarA" eSuperTypes="#//Kommentar">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="anhang" lowerBound="2"
+        upperBound="2" eType="#//Anhang" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SpezialKommentarB" eSuperTypes="#//Kommentar"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Anhang" abstract="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="AnhangA" eSuperTypes="#//Anhang"/>
+  <eClassifiers xsi:type="ecore:EClass" name="AnhangB" eSuperTypes="#//Anhang"/>
+</ecore:EPackage>

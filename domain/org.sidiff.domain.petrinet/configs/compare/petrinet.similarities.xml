@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Comparison>
+<Settings documentType="http://www.uni-stuttgart.de/ensure/petrinet" normalizeWeights="true"/>
+<Configurations>
+<Class name="PetriNet" threshold="0.0">
+<CompareFunction class="Self" parameter="ECAttributeStatic[VCStringLCS[ci];location]" policy="unfulfilled" weight="0.33333334"/>
+<CompareFunction class="Self" parameter="ECAttributeStatic[VCStringLCS[ci];name]" policy="unfulfilled" weight="0.33333334"/>
+<CompareFunction class="NeighboursSingleReference" parameter="SCGreedyMatchedOrSimilar;elements" policy="unfulfilled" weight="0.33333334"/>
+</Class>
+<Class name="Place" threshold="0.0">
+<CompareFunction class="Self" parameter="ECAttributeStatic[VCStringLCS[ci];location]" policy="unfulfilled" weight="0.16666667"/>
+<CompareFunction class="Self" parameter="ECAttributeStatic[VCStringLCS[ci];name]" policy="unfulfilled" weight="0.16666667"/>
+<CompareFunction class="Self" parameter="ECAttributeStatic[VCStringLCS[ci];id]" policy="unfulfilled" weight="0.16666667"/>
+<CompareFunction class="NeighboursSingleReference" parameter="LCLongestCommonSubsequence[ECMatchedOrSimilar;0.5f];metaInformation" policy="unfulfilled" weight="0.16666667"/>
+<CompareFunction class="NeighboursSingleReference" parameter="SCGreedyMatchedOrSimilar;incomingArc" policy="unfulfilled" weight="0.16666667"/>
+<CompareFunction class="NeighboursSingleReference" parameter="SCGreedyMatchedOrSimilar;outgoingArc" policy="unfulfilled" weight="0.16666667"/>
+</Class>
+<Class name="Transition" threshold="0.0">
+<CompareFunction class="Self" parameter="ECAttributeStatic[VCStringLCS[ci];location]" policy="unfulfilled" weight="0.16666667"/>
+<CompareFunction class="Self" parameter="ECAttributeStatic[VCStringLCS[ci];name]" policy="unfulfilled" weight="0.16666667"/>
+<CompareFunction class="Self" parameter="ECAttributeStatic[VCStringLCS[ci];id]" policy="unfulfilled" weight="0.16666667"/>
+<CompareFunction class="NeighboursSingleReference" parameter="LCLongestCommonSubsequence[ECMatchedOrSimilar;0.5f];metaInformation" policy="unfulfilled" weight="0.16666667"/>
+<CompareFunction class="NeighboursSingleReference" parameter="SCGreedyMatchedOrSimilar;incomingArc" policy="unfulfilled" weight="0.16666667"/>
+<CompareFunction class="NeighboursSingleReference" parameter="SCGreedyMatchedOrSimilar;outgoingArc" policy="unfulfilled" weight="0.16666667"/>
+</Class>
+<Class name="PlaceToTransition" threshold="0.0">
+<CompareFunction class="Self" parameter="ECAttributeStatic[VCStringLCS[ci];location]" policy="unfulfilled" weight="0.14285715"/>
+<CompareFunction class="Self" parameter="ECAttributeStatic[VCStringLCS[ci];name]" policy="unfulfilled" weight="0.14285715"/>
+<CompareFunction class="Self" parameter="ECAttributeStatic[VCStringLCS[ci];id]" policy="unfulfilled" weight="0.14285715"/>
+<CompareFunction class="NeighboursSingleReference" parameter="LCLongestCommonSubsequence[ECMatchedOrSimilar;0.5f];metaInformation" policy="unfulfilled" weight="0.14285715"/>
+<CompareFunction class="Self" parameter="ECAttributeStatic[VCGauss[0.7f];weight]" policy="unfulfilled" weight="0.14285715"/>
+<CompareFunction class="SingleNeighbour" parameter="ECMatchedOrSimilar;from" policy="unfulfilled" weight="0.14285715"/>
+<CompareFunction class="SingleNeighbour" parameter="ECMatchedOrSimilar;to" policy="unfulfilled" weight="0.14285715"/>
+</Class>
+<Class name="TransitionToPlace" threshold="0.0">
+<CompareFunction class="Self" parameter="ECAttributeStatic[VCStringLCS[ci];location]" policy="unfulfilled" weight="0.14285715"/>
+<CompareFunction class="Self" parameter="ECAttributeStatic[VCStringLCS[ci];name]" policy="unfulfilled" weight="0.14285715"/>
+<CompareFunction class="Self" parameter="ECAttributeStatic[VCStringLCS[ci];id]" policy="unfulfilled" weight="0.14285715"/>
+<CompareFunction class="NeighboursSingleReference" parameter="LCLongestCommonSubsequence[ECMatchedOrSimilar;0.5f];metaInformation" policy="unfulfilled" weight="0.14285715"/>
+<CompareFunction class="Self" parameter="ECAttributeStatic[VCGauss[0.7f];weight]" policy="unfulfilled" weight="0.14285715"/>
+<CompareFunction class="SingleNeighbour" parameter="ECMatchedOrSimilar;from" policy="unfulfilled" weight="0.14285715"/>
+<CompareFunction class="SingleNeighbour" parameter="ECMatchedOrSimilar;to" policy="unfulfilled" weight="0.14285715"/>
+</Class>
+<Class name="Token" threshold="0.0">
+<CompareFunction class="SingleNeighbour" parameter="ECMatchedOrSimilar;placedAt" policy="unfulfilled" weight="1.0"/>
+</Class>
+<Class name="SignalNormalDistribution" threshold="0.0">
+<CompareFunction class="Self" parameter="ECAttributeStatic[VCGauss[0.7f];minDeviation]" policy="unfulfilled" weight="0.16666667"/>
+<CompareFunction class="Self" parameter="ECAttributeStatic[VCGauss[0.7f];maxDeviation]" policy="unfulfilled" weight="0.16666667"/>
+<CompareFunction class="Self" parameter="ECAttributeStatic[VCGauss[0.7f];mean]" policy="unfulfilled" weight="0.16666667"/>
+<CompareFunction class="Self" parameter="ECAttributeStatic[VCGauss[0.7f];variance]" policy="unfulfilled" weight="0.16666667"/>
+<CompareFunction class="Self" parameter="ECAttributeStatic[VCGauss[0.7f];n]" policy="unfulfilled" weight="0.16666667"/>
+<CompareFunction class="SingleNeighbour" parameter="ECMatchedOrSimilar;config" policy="unfulfilled" weight="0.16666667"/>
+</Class>
+<Class name="IdentificationTriple" threshold="0.0">
+<CompareFunction class="Self" parameter="ECAttributeStatic[VCGauss[0.7f];x]" policy="unfulfilled" weight="0.33333334"/>
+<CompareFunction class="Self" parameter="ECAttributeStatic[VCGauss[0.7f];y]" policy="unfulfilled" weight="0.33333334"/>
+<CompareFunction class="Self" parameter="ECAttributeStatic[VCStringLCS[ci];z]" policy="unfulfilled" weight="0.33333334"/>
+</Class>
+</Configurations>
+</Comparison>

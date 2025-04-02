@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Resource Converter which exchanges relative paths with UUIDs
+Bundle-SymbolicName: org.sidiff.resource.converter.relativePath.to.uuid;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.sidiff.resource.converter.relativepath.to.uuid.Activator
+Bundle-Vendor: www.sidiff.org
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.emf.ecore.xmi;bundle-version="2.9.1",
+ org.eclipse.equinox.console;bundle-version="1.0.100",
+ org.apache.felix.gogo.command;bundle-version="0.10.0",
+ org.apache.felix.gogo.runtime;bundle-version="0.10.0",
+ org.apache.felix.gogo.shell;bundle-version="0.10.0",
+ org.sidiff.common.emf;bundle-version="1.0.0"
+Bundle-ActivationPolicy: lazy

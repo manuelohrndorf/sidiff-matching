@@ -1,0 +1,14 @@
+<project name="Code Generation" default="main">
+
+	<property name="projectName" value="SiDiffInternalTools" />
+
+	<property name="modelName" value="../output/dependencyModel.uml" />
+
+	<target name="main">
+		<eclipse.refreshLocal resource="${projectName}" depth="infinite"/>			
+		<replace file="${modelName}" token="http://www.eclipse.org/uml2/3.0.0/UML" value="http://www.eclipse.org/uml2/2.1.0/UML"/>
+		<eclipse.refreshLocal resource="${projectName}" depth="infinite"/>			
+	</target>
+
+	
+</project>

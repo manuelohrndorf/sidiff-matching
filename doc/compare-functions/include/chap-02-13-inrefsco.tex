@@ -1,0 +1,148 @@
+%
+% Vergleichsfunktionen: Incoming References Considering Order
+% ===========================================================================
+%
+
+\section{\texttt{IncomingReferencesCO}...}
+\label{strct:spec:inrefsco}
+Dieser Abschnitt behandelt Vergleichsfunktionen des Typs \texttt{IncomingReferencesCO}, mit denen sich die Eingabeknoten anhand eingehender Kanten eines bestimmtem Typs oder alternativ anhand allen eingehenden Kanten unter \emph{Beachtung} der Reihenfolge vergleichen lassen.
+
+\subsubsection*{Allgemeine Vorbedingungen}
+Der im Parameter spezifizierte Kantentyp muss existieren, da ansonsten eine Ausnahme des Typs \texttt{UnknownTypeException} ausgelöst wird. Ferner sollten die sich ergebenden Knotenmengen Elemente beeinhalten, damit nicht-triviale Ähnlichkeitswerte ermittelbar sind. Mehr zu trivialen Ähnlichkeiten unter \textcrosslink{Allgemeiner Rückgabewert}.
+
+\subsubsection*{Allgemeine Semantik}
+Die Eingabeknoten werden über eine durch den Parameter indirekt bestimmte Knotenmenge verglichen. Dabei wird die Knotenmenge zum Vergleich herangezogen, die sich aus Abarbeitung der vom Eingabeknoten eingehenden Kanten des im Parameter spezifizierten Typs ergeben. Es besteht auch die Möglichkeit \emph{alle} eingehenden Kanten auszuwählen. Mehr zum genauen Semantik und auch Rückgabewert ist in den Dokumentationen der spezifischen Vergleichsfunktionen weiter unten in diesem Abschnitt einsehbar. Allgemein ist jedoch an dieser Stelle noch festzuhalten, dass Vergleichsfunktionen dieser Klasse im Gegensatz zu \structgetref{strct:spec:inrefsio} die Reihenfolge der gefundenen Knoten mit in den Vergleich einbeziehen.
+
+\subsubsection*{Allgemeiner Rückgabewert}
+Die Bestimmung der Rückgabewerte der spezifischen implementierenden Vergleichsfunktionen unterscheidet sich unterschiedlich stark. Daher sei an dieser Stelle auf die Dokumentationen der spezifischen Vergleichsfunktionen weiter unten in diesem Abschnitt verwiesen.
+
+Allgemein lassen sich jedoch bereits folgende triviale Ähnlichkeitsbeziehungen und deren Rückgabewerte bestimmen:
+\begin{itemize}
+	\item Existiert für lediglich eine der sich ergebenden Knotemengen keine Elemente, so beträgt die resultierende Ähnlichkeit $0$.
+	\item In dem Fall, dass \emph{beide} resultierenden Knotenmengen keine Elemente beinhalten, lösen Vergleichsfunktionen dieses Typs eine Ausnahme des Typs \texttt{NothingToCompareException} aus.
+\end{itemize}
+
+\subsubsection*{Allgemeine Parameter}
+Als Parameter wird der Name des zu betrachtenden, eingehenden Kantentyps angegeben. Ferner ist es durch Verwendung eines \texttt{*} möglich, \emph{alle} eingehenden Kanten und somit letztlich alle Quellknoten zum Vergleich heranzuziehen.
+
+Manche implementierenden Vergleichsfunktionen dieser Kategorie benötigen jedoch ebenfalls einen Schwellwert als zweiten Parameter. Dieser schließt sich an den angegebenen Kantentyp bzw. \texttt{*} an und wird durch ein \texttt{;} von eben jenem abgetrennt. Sofern eine Vergleichsfunktion auf die Angabe dieses Schwellwerts angewiesen ist, wird dieses in der Dokumentation der einzelnen Vergleichsfunktion explizit vermerkt. Weitere Informationen zur Semantik des Schwellwerts sind ebenfalls an dieser Stelle zu finden.
+
+\textit{\small Bitte umblättern.}
+\newpage
+Folgend zwei Beispiele für gültige Parameterwerte mit und ohne Schwellwert:
+
+\begin{tabularx}{0.97\textwidth}{|c|c|X|}
+	\hline
+	\texttablehead{ohne Sw.} & \texttablehead{mit Sw.} & \texttablehead{Bedeutung}\\\hline\hline
+	\texttt{typA} & \texttt{typA;0.3} & Eingehende Kanten des Typs \texttt{typA} betrachten\\\hline
+	\texttt{*} & \texttt{*;0.25} & Alle eingehenden Kanten bzw. Quellknoten heranziehen\\\hline
+\end{tabularx}
+\vskip6pt
+
+\textnoticesec{Bemerkung:} Sofern ein spezieller Kantentyp angegeben wird, muss dieser existent sein, da ansonsten eine Ausnahme ausgelöst wird.
+
+\vskip20pt
+%
+% --> IncomingReferencesMatchedOrSimilarCO
+%
+\subsection{\texttt{IncomingReferencesMatchedOrSimilarCO}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter\mylinebreak\structgetfullref{strct:spec:inrefsco} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die resultierenden Knotenmengen werden bei dieser Vergleichsfunktion anhand von sowohl Übereinstimmungen als auch Ähnlichkeiten miteinander verglichen. Die Reihenfolge der Knoten ist dabei von Belang, sodass der LCS-Algorithmus (Longest Common Subsequence) Anwendung findet. Dazu wird innerhalb der Knotenmengen die längste gemeinsame Teilsequenz gesucht. Genaueres in der folgenden Auflistung.
+\begin{itemize}
+	\item Eine gültige Korrelation zwischen zwei Knoten wird erkannt, wenn die beiden Knoten bereits als übereinstimmend gekennzeichnet sind.
+	\item Liegt keine Übereinstimmung vor, werden die Ähnlichkeiten vom Knoten aus Menge A mit dem gegenüberliegenden Knoten in Menge B betrachtet. Liegt die Ähnlichkeit über dem unter \textcrosslink{Spezielle Parameter} beschriebenen Schwellwert oder entspricht genau diesem, wird auf diese Weise eine Korrelation festgestellt.
+	\item Trifft keine der beiden Bedingungen zu, endet eine längste Teilsequenz an diesem Knotenpaar.
+\end{itemize}
+
+Als Gesamt-Ähnlichkeit wird letztlich der Quotient aus der Länge der längsten gefundenen Teilsequenz und der Größe der resultierenden Knotenmenge mit den meisten Elementen gebildet und zurückgegeben.
+
+\textnoticesec{Bemerkung:} Diese Vergleichsfunktion ist nicht reflexiv!
+
+\subsubsection*{Spezielle Parameter}
+Diese Vergleichsfunktion benötigt neben dem Name des Kantentyps als Parameter auch einen Schwellwert im Bereich von $0$ bis $1$, der angibt, ab welcher Ähnlichkeit der LCS-Algorithmus gültige Korrelationen beim Ähnlichkeitsvergleich erkennt. Ein gültiger Schwellwert wäre z.B. $0.55$. Mehr zur genauen Syntax des Parameters ist unter \textcrosslink{Allgemeine Parameter} zu Beginn dieses Abschnitts einsehbar.
+
+
+\newpage
+%
+% --> IncomingReferencesMatchedCO
+%
+\subsection{\texttt{IncomingReferencesMatchedCO}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter\mylinebreak\structgetfullref{strct:spec:inrefsco} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die resultierenden Knotenmengen werden bei dieser Vergleichsfunktion allein anhand von \emph{Übereinstimmungen} miteinander verglichen. Die Reihenfolge der Knoten ist dabei von Belang, sodass der LCS-Algorithmus (Longest Common Subsequence) Anwendung findet. Dazu wird innerhalb der Knotenmengen die längste gemeinsame Teilsequenz gesucht. Genaueres in der folgenden Auflistung.
+\begin{itemize}
+	\item Eine gültige Korrelation zwischen zwei Knoten wird erkannt, wenn die beiden Knoten bereits als Übereinstimmung gekennzeichnet sind.
+	\item Liegt keine Übereinstimmung vor, endet eine längste Teilsequenz an diesem Knotenpaar.
+\end{itemize}
+
+Als Gesamt-Ähnlichkeit wird letztlich der Quotient aus der Länge der längsten gefundenen Teilsequenz und der Größe der resultierenden Knotenmenge mit den meisten Elementen gebildet und zurückgegeben.
+
+\subsubsection*{Spezielle Parameter}
+Diese Vergleichsfunktion benötigt als Parameter lediglich den Namen des zu verfolgenden Kantentyps oder \texttt{*} als Wildcard. Siehe dazu auch \textcrosslink{Allgemeine Parameter}.
+
+
+%
+% --> IncomingReferencesSimilarCO
+%
+\subsection{\texttt{IncomingReferencesSimilarCO}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter\mylinebreak\structgetfullref{strct:spec:inrefsco} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die resultierenden Knotenmengen werden bei dieser Vergleichsfunktion allein anhand von \emph{Ähnlichkeiten} miteinander verglichen. Die Reihenfolge der Knoten ist dabei von Belang, sodass der LCS-Algorithmus (Longest Common Subsequence) Anwendung findet. Dazu wird innerhalb der Knotenmengen die längste gemeinsame Teilsequenz gesucht. Genaueres in der folgenden Auflistung.
+\begin{itemize}
+	\item Eine gültige Korrelation zwischen zwei Knoten wird erkannt, wenn die Ähnlichkeit des Knotens aus Menge A mit dem gegenüberliegenden Knoten in Menge B über dem unter \textcrosslink{Spezielle Parameter} beschriebenen Schwellwert liegt oder genau diesem entspricht.
+	\item Liegt keine solche Korrelation vor, endet eine mögliche längste Teilsequenz an diesem Knotenpaar.
+\end{itemize}
+
+Als Gesamt-Ähnlichkeit wird letztlich der Quotient aus der Länge der längsten gefundenen Teilsequenz und der Größe der resultierenden Knotenmenge mit den meisten Elementen gebildet und zurückgegeben.
+
+\textnoticesec{Bemerkung:} Diese Vergleichsfunktion ist nicht reflexiv!
+
+\subsubsection*{Spezielle Parameter}
+Diese Vergleichsfunktion benötigt neben dem Name des Kantentyps als Parameter auch einen Schwellwert im Bereich von $0$ bis $1$, der angibt, ab welcher Ähnlichkeit der LCS-Algorithmus gültige Korrelationen beim Ähnlichkeitsvergleich erkennt. Ein gültiger Schwellwert wäre z.B. $0.55$. Mehr zur genauen Syntax des Parameters ist unter \textcrosslink{Allgemeine Parameter} zu Beginn dieses Abschnitts einsehbar.
+
+
+\newpage
+%
+% --> IncomingReferencesEqualViewingHashesCO
+%
+\subsection{\texttt{IncomingReferencesEqualViewingHashesCO}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter\mylinebreak\structgetfullref{strct:spec:inrefsco} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Vorbedingungen}
+Den Knoten müssen bereits Hashwerte in Form von Annotationen zugeordnet sein. Ist dies nicht der Fall oder Hashwerte werden in dem entsprechenden Projekt generell nicht unterstützt, wird eine Ausnahme des Typs \texttt{AnnotationNotExistsException} ausgelöst und der SiDiff-Kern terminiert den Vergleichsauftrag instantan.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die resultierenden Knotenmengen werden bei dieser Vergleichsfunktion anhand der \emph{Hashwerte} der einzelnen Knoten auf vollständige Gleichheit überprüft. Die Reihenfolge der Knoten ist dabei von Belang. Besitzen beide Knotenmengen die gleiche Anzahl an Elementen und \emph{jeder} Knoten der Menge A hat in der gegenüberliegenden Menge B an gleicher Position ein Äquivalent mit gleichem Hashwert, so beträgt die Ähnlichkeit $1$, ansonsten $0$.
+
+\subsubsection*{Spezielle Parameter}
+Diese Vergleichsfunktion benötigt als Parameter lediglich den Namen des zu verfolgenden Kantentyps oder \texttt{*} als Wildcard. Siehe dazu auch \textcrosslink{Allgemeine Parameter}.
+
+
+%
+% --> IncomingReferencesEqualViewingMatchesCO
+%
+\subsection{\texttt{IncomingReferencesEqualViewingMatchesCO}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter\mylinebreak\structgetfullref{strct:spec:inrefsco} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die resultierenden Knotenmengen werden bei dieser Vergleichsfunktion anhand von \emph{Übereinstimmungen} der einzelnen Knoten auf vollständige Gleichheit überprüft. Die Reihenfolge der Knoten ist dabei von Belang. Besitzen beide Knotenmengen die gleiche Anzahl an Elementen und \emph{jeder} Knoten der Menge A hat in der gegenüberliegenden Menge B an gleicher Position ein Äquivalent mit vorliegender Übereinstimmung, so beträgt die Ähnlichkeit $1$, ansonsten $0$.
+
+\subsubsection*{Spezielle Parameter}
+Diese Vergleichsfunktion benötigt als Parameter lediglich den Namen des zu verfolgenden Kantentyps oder \texttt{*} als Wildcard. Siehe dazu auch \textcrosslink{Allgemeine Parameter}.
+
+
+%
+% --> IncomingReferencesEqualViewingTypesCO
+%
+\subsection{\texttt{IncomingReferencesEqualViewingTypesCO}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter\mylinebreak\structgetfullref{strct:spec:inrefsco} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die resultierenden Knotenmengen werden bei dieser Vergleichsfunktion anhand der \emph{Typen} der einzelnen Knoten auf vollständige Gleichheit überprüft. Die Reihenfolge der Knoten ist dabei von Belang. Besitzen beide Knotenmengen die gleiche Anzahl an Elementen und \emph{jeder} Knoten der Menge A hat in der gegenüberliegenden Menge B an gleicher Position ein Äquivalent gleichen Knotentyps, so beträgt die Ähnlichkeit $1$, ansonsten $0$.
+
+\subsubsection*{Spezielle Parameter}
+Diese Vergleichsfunktion benötigt als Parameter lediglich den Namen des zu verfolgenden Kantentyps oder \texttt{*} als Wildcard. Siehe dazu auch \textcrosslink{Allgemeine Parameter}.

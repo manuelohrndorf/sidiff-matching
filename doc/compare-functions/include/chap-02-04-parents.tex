@@ -1,0 +1,94 @@
+%
+% Vergleichsfunktionen: Parents
+% ===========================================================================
+%
+
+\section{\texttt{Parents}...}
+\label{strct:spec:parents}
+Dieser Abschnitt behandelt Vergleichsfunktionen des Typs \texttt{Parents}, mit denen sich die Eingabeknoten anhand ihrer Elternknoten vergleichen lassen.
+
+\subsubsection*{Allgemeine Vorbedingungen}
+Mindestens einer der beiden Eingabeknoten sollte einen Elternknoten besitzen.\\
+Ist dieses nicht der Fall -- z.B. wenn die Eingabeknoten Wurzelelemente darstellen --, wird eine Ausnahme des Typs \texttt{NothingToCompareException} ausgelöst.
+
+\subsubsection*{Allgemeine Semantik}
+Die Eingabeknoten werden anhand ihrer Elternknoten miteinander verglichen. Die genaue Art der Ähnlichkeitsbestimmung ist dabei in den implementierenden Vergleichsfunktionen, die weiter unten im Abschnitt eingesehen werden können, festgelegt.
+
+\subsubsection*{Allgemeiner Rückgabewert}
+\begin{itemize}
+	\item Besitzt genau \emph{einer der beiden} Eingabeknoten keinen Elternknoten, so wird $0$ als Similarity zurückgegeben.
+	\item Besitzen \emph{beide} Eingabeknoten keinen Elternknoten, so wird eine Ausnahme des Typs\mylinebreak\texttt{NothingToCompareException} ausgelöst.
+	\item Für den übrigen Fall -- also wenn für beide Eingabeknoten Elternknoten existieren -- erfolgt die Ähnlichkeitsbestimmung anhand der Semantik der speziellen Vergleichsfunktion (s.u.).
+\end{itemize}
+
+\subsubsection*{Allgemeine Parameter}
+Keine der Vergleichsfunktionen dieses Typs benötigen einen Parameter.
+
+
+
+%
+% --> ParentsMatchedOrSimilar
+%
+\subsection{\texttt{ParentsMatchedOrSimilar}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter \structgetfullref{strct:spec:parents} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die Eingabeknoten werden anhand der direkten Übereinstimmung bzw. der Ähnlichkeit der Elternknoten miteinander verglichen. Zunächst wird also geprüft, ob die Elternknoten bereits übereinstimmen -- ist dies nicht der Fall, so erfolgt der Vergleich aufgrund der Ähnlichkeiten der Elternknoten untereinander.
+
+Als Ähnlichkeit der Eingabeknoten wird also letztlich bei Übereinstimmung der Elternknoten $1$, andernfalls die bekannte Ähnlichkeit der beiden Elternknoten zurückgegeben.
+
+\textnoticesec{Bemerkung:} Diese Vergleichsfunktion ist nicht reflexiv.
+
+
+%
+% --> ParentsMatched
+%
+\subsection{\texttt{ParentsMatched}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter \structgetfullref{strct:spec:parents} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die Eingabeknoten werden anhand ihrer Elternknoten miteinander verglichen. Dabei werden allein \emph{Übereinstimmungen} berücksichtigt. Es erfolgt also \emph{kein} Vergleich aufgrund von Ähnlichkeiten.
+
+Bei Übereinstimmung der Elternknoten wird $1$, andernfalls $0$ als Ähnlichkeit zurückgegeben.
+
+
+\newpage
+%
+% --> ParentsSimilar
+%
+\subsection{\texttt{ParentsSimilar}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter \structgetfullref{strct:spec:parents} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die Eingabeknoten werden anhand ihrer Elternknoten miteinander verglichen. Dabei werden allein die bekannten \emph{Ähnlichkeitswerte} der Eltern berücksichtigt. Es erfolgt also \emph{kein} Vergleich aufgrund von Übereinstimmungen.
+
+Als Ähnlichkeit der beiden Eingabeknoten wird somit die Ähnlichkeit der beiden Elternknoten zurückgegeben.
+
+\textnoticesec{Bemerkung:} Diese Vergleichsfunktion ist nicht reflexiv.
+
+
+%
+% --> ParentsEqualHash
+%
+\subsection{\texttt{ParentsEqualHash}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter \structgetfullref{strct:spec:parents} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Vorbedingungen}
+Den (Eltern-)Knoten müssen bereits Hashwerte in Form von Annotationen zugeordnet sein. Ist dies nicht der Fall oder Hashwerte werden in dem entsprechenden Projekt generell nicht unterstützt, wird eine Ausnahme des Typs \texttt{AnnotationNotExistsException} ausgelöst und der SiDiff-Kern terminiert den Vergleichsauftrag instantan.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die Eingabeknoten werden anhand ihrer Elternknoten miteinander verglichen. Dabei wird der Vergleich auf die Identität der ermittelten \emph{Hashwerte} der Eltern zurückgeführt.
+
+Sind die Hashwerte der Eltern identisch, so beträgt die Ähnlichkeit der Eingabeknoten $1$, ansonsten $0$.
+
+
+%
+% --> ParentsEqualType
+%
+\subsection{\texttt{ParentsEqualType}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter \structgetfullref{strct:spec:parents} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die Eingabeknoten werden anhand ihrer Elternknoten miteinander verglichen. Dabei wird der Vergleich auf Identität der \emph{Typen} der Eltern zurückgeführt.
+
+Sind die Typen der Eltern gleich, so beträgt die Ähnlichkeit der Eingabeknoten $1$, ansonsten $0$.

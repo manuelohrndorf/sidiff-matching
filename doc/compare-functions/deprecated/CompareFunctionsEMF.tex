@@ -1,0 +1,337 @@
+\documentclass[10pt,a4paper]{scrartcl}
+\usepackage{ngerman}
+\usepackage[latin1]{inputenc}
+\usepackage{graphicx}
+\usepackage[final]{listings}
+\lstset{tabsize=2,basicstyle=\ttfamily\small}
+\usepackage[draft]{fixme}
+
+\newcommand{\hinweis}[1]{
+
+\textbf{Hinweis:} #1
+
+}
+
+\newcommand{\comparefunction}[1]{\subsection{#1}}
+\newcommand{\allowedtypes}{\subsubsection*{Allowed eTypes}}
+\newcommand{\precondition}{\subsubsection*{Precondition}}
+\newcommand{\semantics}{\subsubsection*{Semantics}}
+\newcommand{\returnvalue}{\subsubsection*{Return Value}}
+\newcommand{\parameters}{\subsubsection*{Parameters}}
+\newcommand{\exceptions}{\subsubsection*{Exceptions}}
+\newcommand{\test}{\subsubsection*{Tests}}
+\newcommand{\equivalenceclass}{\paragraph{Equivalence Class}}
+\newcommand{\representative}{\paragraph{Representative}}
+
+
+
+\title{SiDiff 2.0 -- Compare-Functions (EMF)}
+\author{Pit Pietsch, Timo Kehrer}
+\begin{document}
+\maketitle
+\tableofcontents
+
+\hfill\\
+\hfill\\
+\begin{Large}
+\textbf{Document Changes}
+\end{Large}
+\hfill\\
+
+\begin{tabular}{|c|p{11cm}|}\hline
+Date & Changes \\\hline\hline
+17.02.09 & Initial Version \\\hline
+02.03.09 & Beschreibung zur Erstellung von Testmodellen hinzugefügt (initial) \\\hline
+08.03.09 & New todos and comments added \\\hline
+\end{tabular}
+\hfill\\
+\hfill\\
+
+\section{todo + comments}
+
+Einige Inhalte dieses Dokuments beziehen sich auf ALLE Compare-Functionen, nicht nur auf EMF-spezifische. Sollen wir in dieses Dokument somit auch alle CFs aufnehmen.!? (tk)\\
+
+Strengere Konventionen für die Bezeichnung von CompareFunctions?\\
+Bsp.: ParentsEqualType und ChildrenEqualViewingTypes. Beide Compare-Functionen meinen doch dasselbe, oder? Entweder mit oder ohne Viewing (ganz generell). (tk)\\
+
+ValueAdmeasue aufräumen (pp)\\
+
+warum existiert compareStringViewingSimilarityUsingLCSIgnoringCase/...ConsideringCase
+aber keine vergleichbare trennung bei IndexOf? (pp)\\
+
+wir sollten spezifizieren und überprüfen (und dokumentieren) für welche eTypes eine
+comparefunction anwendbar ist (daraus ergeben sich ja auch die aequivalenzklassen 
+zum testen). die NumericAttributEquals...-funktionen haben
+einen derartigen mechanismus bereits hartverdrahtet implementiert. (pp)\\
+tk kümmert sich darum (tk)\\
+Zusätzliche Anmerkung (tk): Eine, wie ursprünglich angedacht, einfache Matrix (CompareFunktion X AttributTyp) ist unter Umständen nicht ausreichend. Im Prinzip müssen hier auch noch die Parameter als 3.te Dimension aufgenommen werden. Oder sollen wir eben eine solche Kompatibilitäts-Matrix auch noch für Parameter erstellen?
+
+Was passiert bei fehlerhaften regulaeren Ausdruecken? Gibt es die ueberhaupt, 
+oder heisst falsch lediglich, dass der RegEx nicht der Intention des 
+Benutzers entspricht? (tk)\\
+
+macht es sinn neben den aequvialenzklassen die im moment die ausgangsituation für 
+die testergebnisse festlegt auch ergebnissorientierte aequivalenzklassen zu definieren? 
+beispielsweise: erzeuge eine similarity von 0.5 mit vergleichsfunktion x,y? (pp)\\
+
+ExplicitMatch/MaximumSimilarity: brauchen wir beide, oder kann explicitMatch
+nicht einfach auch weg? (pp)\\
+ExplicitMatch wird rausgenommen. Evtl späters name-refactoring (pp/tk)\\
+-erledigt\\
+Vorschlag für Name-Refactoring: Maximum-Similarity und MinimumSimilarity evtl. nicht sofort intuitiv einleuchtend? 
+Wie wäre es mit ExplicitMatch und ExplicitDismatch? (tk)\\
+
+Vergleich von Attributen: Wird hier schon unterstellt, dass die beiden zu 
+vergleichenden Elemente vom selben Typ sind? Haette Auswirkungen auf die 
+Aequivalenzklassen...(tk)\\ typgleichheit ist über die dedicatedClass 
+sichergestellt.(pp)\\
+-erledigt\\
+
+equalID kann als comparefunction doch eigentlich entfallen: spezialfall von
+compareAttributeUsingEquals? (pp)\\
+equalID wird rausgenommen (pp/tk)\\
+-erledigt\\
+
+parameter: der inhalt eines parameter-strings ist abhängig von dem typ des zu
+vergleichenden attributs. die verarbeitung des parameters wird in der
+abstracten typ oberklasse definiert. \\\\
+beispiel: StringAttributeUsingEquals erbt
+das wissen um die Verarbeitung von abstractStringAttribute, wo festgelegt wird,
+wie der Parameter auszulesen ist. dieser mechanismus steht ja bei unser idee so
+nicht mehr zur verfügung... gleiches gilt für den boolean parameter
+sensitive.\\\\
+evtl. auslagern der parameterfunktionalität? eine utilklasse der man parameter
++ eType übergibt, die ihn entsprechend zerlegt und das Ergebniss zurückliefert?
+(pp)\\
+
+lösung: AbstractAttribute zerlegt parameter und behandelt alle parameter die 
+auf dieser ebene relevant sind. weitere parameter werden in einer liste gespeichert
+und können in der implementierenden klasse abgefragt werden (pp/tk)\\
+--erledigt\\
+
+
+\section{Testdatenerstellung}
+Im Hinblick auf die Testdaten zum Testen der Compare-Funktionen sind zwei Kategorien von Testdaten zu unterscheiden: Testmodelle und Parameter der jeweiligen Compare-Funktion. Die in diesem Abschnitt beschriebene Erstellung von Testdaten bezieht sich dabei auf die Erstellung von Testmodellen. 
+
+\subsection{Testmetamodell}
+Für die Erstellung von Testmodellen wurde ein eigenes Metamodell, im Folgenden als Testmetamodell bezeichnet, entworfen (Bundle  \texttt{org.sidiff.common.testmetamodel}). Das Testmetamodell ist dabei möglichst schlank gehalten, beinhaltet aber dennoch die für reale Metamodelle typischen Strukturen: Komponenten (Blöcke) und gerichtete Beziehungen (Linien) zwischen den Komponenten. Zudem wurde darauf geachtet, alle primitiven EMF-Datentypen zu verwenden. Abbildung \ref{img_testmetamodel} zeigt das Testmetamodell in der bekannten Ecore-Diagramm-Notation.
+
+\begin{figure}
+	\centering	
+ 	\includegraphics[scale=0.8]{img/testmetamodel.png}
+	\label{img_testmetamodel}
+	\caption{Testmetamodell}
+\end{figure}
+
+\subsection{Erstellung von Testmetamodell-Instanzen}
+Für die Erstellung von Testmetamodell-Instanzen exisitieren verschiedene Möglichkeiten, von denen hier zwei näher betrachtet werden sollen:
+\begin{enumerate}
+ \item Mittels des durch EMF bereit gestellten, generischen Ecore-Editors. Hat den Nachteil, dass es teilweise mühsam sein kann, die Graph-Struktur der Modelle zu erfassen. Das gilt sowohl für die Erstellung der Testdaten, als auch für die Nachvollziehbarkeit der einzelnen Testfälle.
+ \item Instanzen werden in UML-Notation mittels eines UML-Tools spezifiziert und über einen Konverter nach EMF transformiert.
+\end{enumerate}
+Aus Gründen der Nachvollziehbarkeit und der leichteren Erstellung von Testmodellen werden wir die 2.te Variante anwenden. Als UML-Werkzeug ist der IBM Rational Software Modeler (RSM) in der Version 7.5 zu benutzen. Im Folgenden werden die einzelnen Schritte zur Erstellung von Testmodellen beschrieben.
+
+
+\subsubsection{Modellerstellung in RSM}
+Alle Testmodelle sind im RSM zu erstellen. Hierzu existieren zwei RSM-Projekte, TestmetamodelProfile und TestModels, welche im Verzeichnis \texttt{rsm/workspace} des Bundles \texttt{org.sidiff.common.testmodels} zu finden sind. Das Projekt TestmetamodelProfile definiert einige zur Identifikation von Komponenten benötigte Stereotypen (s. unten). Die eigentlichen Testmodelle werden im Projekt TestModels spezifiziert. 
+
+\paragraph{Pakethierarchie} 
+Testmodelle werden in einer Pakethierarchie organisiert, welche folgenden Konventionen genügt (s. Abbildung \ref{img_package_hierarchie}):
+
+\begin{itemize}
+ \item Auf oberster Ebene befindet sich das Paket, welches die JUnit-Testfälle beinhaltet. Das Paket heißt wie das jeweilige OSGI-Bundle (z.B. org.sidiff.compare.comparefunctions.emf.test)
+ \item Auf der nächsttieferen Ebene befindet sich das Paket, welche alle Testdaten für eine spezielle Compare-Funktion Test-Suite (z.B. CompareAttributeUsingLCSTest) beinhaltet.
+ \item Auf der nächsten Hierarchie-Ebene befinden sich Pakete für alle Testfälle. Diese Pakete werden entsprechend dem Namensmuster $testcase_<NR.>$ benannt, wobei $<NR.>$ einer sequenziell hochgezählten Nummer entspricht.
+ \item Für jeden Testfall werden schließlich die Eingabemodelle (in der Regel zwei) spezifiziert, welche sich in Unterpakten model-1 bzw. model-2 befinden. 
+\end{itemize}
+
+\begin{figure}
+	\centering
+ 	\includegraphics[scale=0.8]{img/package_hierarchie.png}
+	\label{img_package_hierarchie}
+	\caption{Exemplarische Paket-Hierarchie}
+\end{figure}
+
+\paragraph{Spezifikation der eigentlichen Testmodelle}
+Die eigentlichen Testmodelle werden in den oben beschriebenen Paketen model-1 bzw. model-2 spezifiziert. Zur grafischen Visualisierung ist ein Klassendiagramm zu verwenden. Abbildung \ref{img_sample_instance} zeigt ein Exemplarisches Testmodell in Klassendiagramm-Notation, Abbildung \ref{img_sample_instance_structure} die dazugehörige Modellstruktur, wie sie im RSM im Projekt-Explorer dargestellt wird. 
+
+\begin{figure}
+	\centering
+ 	\includegraphics[scale=0.8]{img/sample_instance.png}
+	\label{img_sample_instance}
+	\caption{Exemplarisches Testmodell in UML-Klassendiagramm Notation}
+\end{figure}
+
+\begin{figure}
+	\centering
+ 	\includegraphics[scale=0.8]{img/sample_instance_structure.png}
+	\label{img_sample_instance_structure}
+	\caption{Exemplarische Modellstruktur}
+\end{figure}
+
+Die im Testmetamodell definierten Metaklassen werden durch folgende UML-Konstrukte umgesetzt:
+\begin{itemize}
+ \item ComponentA: Entspricht einer Klasse mit dem Stereotyp ComponentA (welcher in TestmetamodelProfile als Erweiterung der UML-Metaklasse Class definiert ist).
+ \item ComponentB: Entspricht einer Klasse mit dem Stereotyp ComponentB (welcher in TestmetamodelProfile als Erweiterung der UML-Metaklasse Class definiert ist).
+ \item Composite: Entspricht einer Klasse mit dem Stereotyp Composite (welcher in TestmetamodelProfile als Erweiterung der UML-Metaklasse Class definiert ist). Die Beziehung containsComponent ist durch eine Kompositionsbeziehung umzusetzen.
+ \item Line: Lines werden durch gerichtete Assoziationen abgebildet. Rollennamen und Kardinalitäten brauchen nicht spezifiziert zu werden.
+\end{itemize}
+
+\paragraph{Einschränkungen und Konventionen}
+Folgende Einschränkungen und Konventionen sind zu beachten:
+\begin{itemize}
+ \item Attribute: Die Zuordnung von durch das Testmetamodell definierten Attributen und Attributwerten geschieht über die Benennung eines UML-Attributs nach folgendem Muster: $<attr-name>=<attr-value>$, wobei $<attr-name>$ dem Namen eines Attributs im Testmetamodell und $<attr-value>$ dem dazugehörigen Attributwert entspricht. Für einen Testfall nicht relevante Attribute müssen nicht spezifiziert zu werden. 
+ \item Eindeutige Identifizierer: Modellelemente müssen eindeutig identifizierbar sein. Für alle Komponenten (ComponentA, ComponentB, Composite) ist daher das Attribut name unbedingt anzugeben. Auch Lines müssen identifizierbar sein. Als eindeutiger Identifizierer dient hier der Assoziationsname.
+\end{itemize}
+
+\subsubsection{Modellexport und Generierung von EMF-Modellen}
+Um aus den im RSM erstellten UML-Modellen EMF-Modelle als die eigentlichen Testdaten der JUnit-Testfälle zu erhalten, sind diese zunächst im Eclipse UML2-Format zu exportieren und anschließend durch einen Konverter nach EMF zu transformieren. Beide Schritte werden im Folgenden beschrieben.
+
+\paragraph{Modellexport} Der Modellexport untergliedert sich in die folgenden Schritte:\\
+
+\textbf{Schritt 1:} Rechtsklick auf das RSM-Projekt TestModels $>$ Export.\\
+
+\textbf{Schritt 2:} Auswahl der Kategorie Other $>$ UML 2.1 Model (s. Abb. \ref{img_export_wizard_1}).\\
+\begin{figure}
+	\centering
+ 	\includegraphics[scale=0.6]{img/export_wizard_1.png}
+	\label{img_export_wizard_1}
+	\caption{Export Wizard (1)}
+\end{figure}
+
+\textbf{Schritt 3:} Auswahl des zu exportierenden Modells und des Zielverzeichnisses, für welches das Verzeichnis \texttt{rsm/export} im Bundle \texttt{org.sidiff.common.testmodels} zu wählen ist. \textbf{Wichtig:} Unbedingt die Option Export applied profiles aktivieren! (s. Abb. \ref{img_export_wizard_2}).\\
+\begin{figure}
+	\centering
+ 	\includegraphics[scale=0.6]{img/export_wizard_2.png}
+	\label{img_export_wizard_2}
+	\caption{Export Wizard (2)}
+\end{figure}
+
+
+\paragraph{Generierung von EMF-Modellen}
+Um EMF-Modelle zu generieren, muss eine OSGI-Konsole mit dem Bundle org.sidiff.common.testmodels gestartet werden. Dieses nimmt ein Kommando generate $<WORKSPACE-URI>$ entgegen, wobei $<WORKSPACE-URI>$ den Betriebssystem-absoluten Pfad zu dem für die SiDiff-Entwicklung genutzten Eclipse-Workspace darstellt. Um die ständige Eingabe dieses Parameters zu vermeiden, kann in der Klasse \texttt{TestdataGeneratorCommandProvider} im Bundle und gleichnamigen Paket \texttt{org.sidiff.common.testmodels} ein neues Kommando spezifiziert werden, welches die private Methode generate(String workspaceUri) aufruft. Beispiel: 
+\begin{lstlisting}
+public void _generateTK(CommandInterpreter commandInterpreter) throws Exception {
+	generate("/home/kehrer/projekte/sidiff/workspaces/eclipse-ws-new");
+}
+\end{lstlisting}
+
+Die generierten EMF-Modelle werden in den jeweiligen Bundles zum Testen der Compare-Funktionen abgelegt.
+
+
+
+\section{Einrichten und Ausführen der Unit-Tests}
+
+Checkout der relevanten Bundles. Für die Unit-Tests der EMF Funktionen sind 
+dies beispielsweise
+	
+\begin{itemize}
+	\item org.sidiff.common
+	\item org.sidiff.common.emf
+	\item org.sidiff.common.junit
+	\item org.sidiff.common.services
+	\item org.sidiff.common.testmetamodel
+	\item org.sidiff.core.compare.comparefunctions
+	\item org.sidiff.core.compare.comparefunctions.emf
+	\item org.sidiff.core.compare.comparefunctions.emf.test
+\end{itemize}
+
+Starten des Activators in org.sidiff.common.junit als neue OSGi Framework
+Run-Konfiguration.\\
+
+Reiter Bundles: Auswahl der benötigten bundles (i.d.R. Workspace + required
+Bundles)\\
+		
+Reiter Arguments: Wichtig! Das Working Directory auf den lokalen Workspace
+setzen. Dies ist nötig damit die zu testenden Models später über relative
+Pfade gefunden werden können!\\
+
+Einstellungen übernehmen und starten. In der OSGi Konsole sampleTest zum 
+Starten des Beispiels tippen und Return drücken...
+
+\section{Parameters and Regular Expressions}
+\subsection{Parameter Values}
+\begin{itemize}
+	\item ; : parameter-seperator
+	\item - : indicates a negative regular expression
+	\item + : indicates a positve regular expression
+	\item cs : case-sensitive
+	\item ci : case-insensitive
+	\item auto : viewing order depending on the metamodel
+	\item io: ignore order
+\end{itemize}
+
+\subsection{Using RegularExpressions to specifiy Attributes}
+ If the parameter starts with + or -, it indicates that the usage 
+ of regular expressions. The first character indicates the expected result of the regular expression 
+ which starts from the second character. \\
+ 
+ Examples:
+ \begin{itemize}
+ \item To compare the name attribute the parameter is name
+ \item To compare all attributes the parameter is $+.*$
+ \item To compare the attributes name and visibility use $+name|visibility$
+ \item To compare all attributes except name and visibility use $+.*[^(name|visibility)].*$ or $-name|visibility$
+ \item To compare all attributes starting with a, b or c use $+[abc].*$
+\end{itemize}
+
+\section{Testaequivalenzklassen}
+
+\subsection{General Compare Issues}
+Allgemeine Test-Aequivalenzklassen (Typ-unabhängig):\\
+\begin{enumerate}
+	\item Es werden keine Attribute mit dem gegebenen Namen gefunden
+	\item Es wird genau ein Attribut mit dem gegebenen Namen gefunden
+	\item Es werden mehrere durch einen positiven regulaeren Ausdruck spezifizierte
+Namen gefunden
+	\item Es werden mehrere durch einen negativen regulaeren Ausdruck spezifizierte
+Namen gefunden
+\end{enumerate}
+
+\subsection{Comparing String Values}
+
+String Values: eString\\
+
+Test-Aequivalenzklassen:\\
+\begin{enumerate}
+	\item Zeichenketten ohne gemeinsame Zeichen [aBBa-cddc]
+	\item Zeichenketten mit ausschliesslich case-sensitiv gemeinsamen Zeichen:
+[aBBa-aBcBac]
+	\item Zeichenketten mit ausschliesslich case-insensitiv gemeinsamen Zeichen: 			
+[aBBa-AbcbAc]
+	\item Zeichenketten mit sowohl case-sensitiven, als auch case-insensitiv
+gemeinsamen Zeichen	[aBBa-abcbac]
+	\item identische Strings (CI) [aBBa-AbbA]
+	\item identische Strings (CS) [aBBa-aBBa]
+	\item NULL-Werte
+\end{enumerate}
+
+
+\subsection{Comparing Numerical Values}
+
+Numerical Values: eBigDecimal, eBigInteger, eByte, eByteObject, eDouble, 
+eDoubleObject, eFloat, eFloatObject, eInt, eIntegerObject, eLong, eLongObject,
+eShort, eShortObject\\
+
+Test-Aequivalenzklassen:\\
+\begin{enumerate}
+	\item ungleiche numerische werte [1-2]
+	\item identische numerische werte [1-1]
+	\item NULL-Werte
+\end{enumerate}
+
+
+ 
+ 
+\section{Compare Functions}
+\include{functions/EqualID}
+\include{functions/ExplicitMatch}
+\include{functions/MaximumSimilarity}
+\include{functions/NoSimilarity}
+\include{functions/CompareAttributeUsingEquals}
+\include{functions/CompareAttributeUsingGauss}
+\include{functions/CompareAttributeUsingLcs}
+\include{functions/CompareAttributeUsingIndexOf}
+
+
+\end{document}

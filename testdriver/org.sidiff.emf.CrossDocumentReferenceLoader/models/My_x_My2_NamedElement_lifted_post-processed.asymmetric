@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="ASCII"?>
+<asymmetric:AsymmetricDifference xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:asymmetric="http://www.sidiff.org/difference/asymmetric/1.0" xmi:id="_-q7XUJgxEeWGdoV6RBigvA" uriOriginModel="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/My.ecore" uriChangedModel="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/My2.ecore">
+  <operationInvocations xmi:id="_-q7XUZgxEeWGdoV6RBigvA" name="CreateEClassInEPackage" editRuleName="CreateEClassInEPackage">
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_-q7XUpgxEeWGdoV6RBigvA" formalName="selectedEObject">
+      <actualA href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/My.ecore#/"/>
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/My2.ecore#/"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_-q7XU5gxEeWGdoV6RBigvA" formalName="New">
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/My2.ecore#//B"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_-q7XVJgxEeWGdoV6RBigvA" formalName="Name" actual="B"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_-q7XVZgxEeWGdoV6RBigvA" formalName="InstanceClassName" actual="java.lang.Object"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_-q7XVpgxEeWGdoV6RBigvA" formalName="InstanceTypeName" actual="b"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_-q7XV5gxEeWGdoV6RBigvA" formalName="Abstract" actual="false"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_-q7XWJgxEeWGdoV6RBigvA" formalName="Interface" actual="false"/>
+    <changeSet href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/My_x_My2_NamedElement_lifted_post-processed.symmetric#_-q47FJgxEeWGdoV6RBigvA"/>
+  </operationInvocations>
+  <symmetricDifference href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/My_x_My2_NamedElement_lifted_post-processed.symmetric#_-q47EJgxEeWGdoV6RBigvA"/>
+</asymmetric:AsymmetricDifference>

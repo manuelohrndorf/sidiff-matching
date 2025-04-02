@@ -1,0 +1,111 @@
+<project name="Obfuscate project" default="main">
+
+	<target name="main">
+		
+		<echo> ***********************************************************</echo>
+		<echo>  Obfuscating project and adjusting the configurations	  </echo>
+		<echo> ***********************************************************</echo>
+		
+		
+		<!-- Delete old obfuscated plugins -->
+		<delete dir="${obfuscatedProjectDir}" />
+		<!-- Obfuscating with ProGuard ========================================================-->
+		<taskdef resource="proguard/ant/task.properties" classpath="${proGuardJar}" />
+		<proguard configuration="${proGuardConfiguration}">
+			-injars &lt;user.dir&gt;/${project}
+			-outjars &lt;user.dir&gt;/${obfuscatedProject}
+
+			-libraryjars &lt;java.home&gt;/lib/rt.jar
+			-libraryjars &lt;user.dir&gt;/${runtimeDir}
+			-libraryjars &lt;java.home&gt;/lib/jce.jar
+		</proguard>
+		<!-- ===================================================================================-->
+		
+		
+		<!-- Task definition to use <foreach> tag ==================================================================-->
+		<taskdef resource="net/sf/antcontrib/antlib.xml">
+			<classpath>
+				<pathelement location="./ant-contrib.jar" />
+			</classpath>
+		</taskdef>
+		<!-- ===================================================================================================-->
+
+
+		<!-- Adjusting manifests of all packages ===============================================================-->
+		<foreach param="bundle" target="adjustManifests" inheritall="true" inheritrefs="true">
+			<fileset dir="${obfuscatedProjectDir}">
+			</fileset>
+		</foreach>
+		<!-- ===================================================================================================-->
+		
+		<!-- Filename of umlDiff without .jar -->
+		<basename property="umlDiff" file="${umlDiffJar}" suffix=".jar"/>
+		
+		<!-- Unjar UmlDiff package to adjust files =================-->
+		<unjar src="${obfuscatedProjectDir}/${umlDiffJar}" dest="${obfuscatedProjectDir}/${umlDiff}" />
+		<!-- ==========================================-->
+
+		
+		<!-- Adjusting configuration files ===========================================================================================-->
+		<java classname="org.sidiff.internal.tools.obfuscateTool.ConfigurationAdjuster">
+			<arg value="-UMLCompareConfiguration:${obfuscatedProjectDir}/${umlDiff}/${umlCompareConfiguration}" />
+			<arg value="-UMLMatchingConfiguration:${obfuscatedProjectDir}/${umlDiff}/${umlMatchingConfiguration}" />
+			<arg value="-UMLAnnotations:${obfuscatedProjectDir}/${umlDiff}/${umlAnnotations}" />
+			<classpath>
+				<pathelement path="${java.class.path}" />
+				<pathelement location="../bin" />
+				<pathelement location="." />
+				<pathelement location="${commonBin}" />
+				<pathelement location="${workspaceDir}/org.sidiff.core.annotation.default/bin" />
+				<pathelement location="${runtimeDir}/xml/org.apache.xerces_2.9.0.v200909240008.jar" />
+			</classpath>
+		</java>
+		<!-- ====================================================================================================================-->
+
+
+		<!-- Adjusting plugin file =============================================================================-->
+		<java classname="org.sidiff.internal.tools.obfuscateTool.PluginAdjuster">
+			<arg value="${obfuscatedProjectDir}/org.sidiff.uml.diff_1.0.0/plugin.xml" />
+			<classpath>
+				<pathelement path="${java.class.path}" />
+				<pathelement location="../bin" />
+				<pathelement location="." />
+				<pathelement location="${commonBin}" />
+				<pathelement location="${workspaceDir}/runtime/xml/org.apache.xerces_2.9.0.v200909240008.jar" />
+			</classpath>
+		</java>
+		<!-- ===================================================================================================-->
+
+		
+		<!-- Re-Jar UmlDiff files ==============================================================================-->
+		<!-- Old jar has to be deleted first to avoid errors -->
+		<delete file="${obfuscatedProjectDir}/${umlDiffJar}" />
+		<jar destfile="${obfuscatedProjectDir}/${umlDiffJar}" basedir="${obfuscatedProjectDir}/${umlDiff}" filesetmanifest="merge" />
+		<delete dir="${obfuscatedProjectDir}/${umlDiff}" />
+		<!-- ===================================================================================================-->
+		
+	</target>
+	
+	
+	<target name="adjustManifests">
+		<!-- Filename with .jar -->
+		<basename property="jar.filename" file="${bundle}"/>
+		<!-- Filename without .jar -->
+		<basename property="filename" file="${bundle}" suffix=".jar"/>
+		<unjar src="${bundle}" dest="${obfuscatedProjectDir}/${filename}" />
+		<java classname="org.sidiff.internal.tools.obfuscateTool.ManifestAdjuster">
+			<arg value="${obfuscatedProjectDir}/${filename}/META-INF/MANIFEST.MF" />
+			<classpath>
+				<pathelement path="${java.class.path}" />
+				<pathelement location="../bin" />
+				<pathelement location="." />
+				<pathelement location="${commonBin}" />
+			</classpath>
+		</java>
+		<!-- Old jar has to be deleted first to avoid errors -->
+		<delete file="${obfuscatedProjectDir}/${jar.filename}" />
+		<jar destfile="${obfuscatedProjectDir}/${jar.filename}"  basedir="${obfuscatedProjectDir}/${filename}" filesetmanifest="merge" />
+		<delete dir="${obfuscatedProjectDir}/${filename}" />
+	</target>
+	
+</project>

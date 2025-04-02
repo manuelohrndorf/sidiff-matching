@@ -1,0 +1,45 @@
+<project name="Obfuscate" default="start" basedir=".">
+
+	<!-- Workspace directory -->
+	<property name="workspaceDir" value="../.." />
+
+	<!-- ProGuard jar file -->
+	<property name="proGuardJar" value="../proGuard/proguard.jar" />
+
+	<!-- ProGuard configuration file -->
+	<property name="proGuardConfiguration" value="../proGuard/configuration.pro" />
+
+	<!-- org.sidiff.common binaries directory -->
+	<property name="commonBin" value="${workspaceDir}/org.sidiff.common/bin" />
+
+	<!-- Project directory -->
+	<property name="project" value="../project" />
+
+	<!-- Obfuscated Project directory -->
+	<property name="obfuscatedProject" value="../obfuscatedProject" />
+	
+	<!-- Obfuscated Project directory /plugins -->
+	<property name="obfuscatedProjectDir" value="../obfuscatedProject/plugins" />
+	
+	<!-- Runtime directory /plugins -->
+	<property name="runtimeDir" value="${workspaceDir}/runtime" />
+	
+	<!-- UmlDiff jar -->
+	<property name="umlDiffJar" value="org.sidiff.uml.diff_1.0.0.jar" />
+	
+	<!-- UMLCompareConfiguration file -->
+	<property name="umlCompareConfiguration" value="UMLCompareConfiguration.xml" />
+	
+	<!-- UMLMatchingConfiguration file -->
+	<property name="umlMatchingConfiguration" value="UMLMatchingConfiguration.xml" />
+	
+	<!-- UMLAnnotations file -->
+	<property name="umlAnnotations" value="UMLAnnotations.xml" />
+	
+
+	<target name="start">
+		<!-- call obfuscate script -->
+		<ant antfile="obfuscate.xml"/>
+	</target>
+
+</project>

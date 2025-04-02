@@ -1,0 +1,122 @@
+%
+% Vergleichsfunktionen: Children Ignoring Order
+% ===========================================================================
+%
+
+
+\section{\texttt{ChildrenIO}...}
+\label{strct:spec:childrenio}
+Dieser Abschnitt behandelt Vergleichsfunktionen des Typs \texttt{ChildrenIO}, mit denen sich die Eingabeknoten anhand ihrer Kindknoten unter \emph{Nichtbeachtung} der Reihenfolge vergleichen lassen.
+
+\subsubsection*{Allgemeine Vorbedingungen}
+Die zu vergleichenden Eingabeknoten sollten Kindknoten besitzen, damit nicht-triviale Ähnlichkeitswerte ermittelbar sind. Mehr zu trivialen Ähnlichkeiten unter \textcrosslink{Allgemeiner Rückgabewert}.
+
+\subsubsection*{Allgemeine Semantik}
+Diese Gruppe von Vergleichsfunktionen vergleicht die Eingabeknoten anhand spezifischer Merkmale ihrer Kindknoten miteinander. Bereits anmerkbar ist, dass bei sämtlichen Vergleichen dieser Gruppe die Reihenfolge der Kindknoten nicht von Belang ist. Mehr zur genauen Semantik und auch Rückgabewert ist in den Dokumentationen der spezifischen Vergleichsfunktionen weiter unten in diesem Abschnitt einsehbar.
+
+\subsubsection*{Allgemeiner Rückgabewert}
+Die Bestimmung der Rückgabewerte der spezifischen implementierenden Vergleichsfunktionen unterscheidet sich unterschiedlich stark. Daher sei an dieser Stelle auf die Dokumentationen der spezifischen Vergleichsfunktionen weiter unten in diesem Abschnitt verwiesen.
+
+Allgemein lassen sich jedoch bereits folgende triviale Ähnlichkeitsbeziehungen und deren Rückgabewerte bestimmen:
+\begin{itemize}
+	\item Existieren für lediglich einen der beiden Eingabeknoten keine Kindknoten, so beträgt die resultierende Ähnlichkeit $0$.
+	\item In dem Fall, dass \emph{beide} Eingabeknoten keine Kindknoten besitzen, lösen Vergleichsfunktionen dieses Typs eine Ausnahme des Typs \texttt{NothingToCompareException} aus.
+\end{itemize}
+
+\subsubsection*{Allgemeine Parameter}
+Keine der Vergleichsfunktionen dieses Typs benötigen einen Parameter.
+
+
+\newpage
+%
+% --> ChildrenMatchedOrSimilarIO
+%
+\subsection{\texttt{ChildrenMatchedOrSimilarIO}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter \structgetfullref{strct:spec:childrenio} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die Kindknotenmengen werden bei dieser Vergleichsfunktion anhand von sowohl Übereinstimmungen als auch Ähnlichkeiten miteinander verglichen.
+\begin{itemize}
+	\item Wird bei einem Kindknoten eine Übereinstimmung in der gegenüberliegenden Menge gefunden, geht diese anteilig mit dem Wert $1$ in den Vergleich ein.
+	\item Wenn keine Übereinstimmung für einen Kindknoten gefunden wurde, so geht der Knoten mit der höchsten Ähnlichkeit in den Vergleich ein.
+\end{itemize}
+
+Als Gesamt-Ähnlichkeit wird letztlich der Quotient aus den kumulierten Einzel-Ähnlichkeiten und der Anzahl der Kindknoten des Eingabeknotens mit den meisten Kindknoten zurückgegeben.
+
+\textnoticesec{Bemerkungen:}
+\begin{itemize}
+	\item Diese Vergleichsfunktion ist nicht reflexiv!
+	\item Die Knoten ermittelter Korrelationen werden vom weiteren Vergleich ausgeschlossen, sodass diese nicht ein weiteres mal anderen Knoten zugeordnet werden können.
+	\item Da es sich lediglich um Vergleichs-\emph{Heuristiken} handelt, besteht bei Anwendung von Ähnlich\-keits-Korrelationen ebenfalls die Möglichkeit von suboptimalen Zuordnungen von Knotenpaaren -- also dass bspw. ein Knoten A mit einem Knoten B als korrelierend betrachtet wird, obwohl er im weiteren Vergleich einem Knoten C wesentlich besser entsprechen würde.
+\end{itemize}
+
+%
+% --> ChildrenMatchedIO
+%
+\subsection{\texttt{ChildrenMatchedIO}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter \structgetfullref{strct:spec:childrenio} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die Kindknotenmengen werden bei dieser Vergleichsfunktion allein anhand von \emph{Übereinstimmungen} miteinander verglichen.
+\begin{itemize}
+	\item Wird bei einem Kindknoten eine Übereinstimmung in der gegenüberliegenden Menge gefunden, geht diese anteilig mit dem Wert $1$ in den Vergleich ein.
+	\item Ist für einen Kindknoten allerdings eine Übereinstimmung \emph{außerhalb} der anderen Kindknotenmenge existent, so geht dies anteilig mit $-1$ in die Gesamt-Ähnlichkeit ein. Eine "`fehlerhafte"' Übereinstimmung resultiert also in einer \emph{Minderung} der Ähnlichkeit.
+	\item Wenn keine Übereinstimmung für einen Kindknoten gefunden wurde, so geschieht nichts.
+\end{itemize}
+
+Als Gesamt-Ähnlichkeit wird letztlich der Quotient aus den kumulierten Einzel-Ähnlichkeiten und der Anzahl der Kindknoten des Eingabeknotens mit den meisten Kindknoten zurückgegeben. Sofern der Betrag der kumulierten Einzel-Ähnlichkeiten aufgrund vieler "`fehlerhafter"' Übereinstimmungen allerdings negativ ist, beträgt die Gesamtähnlichkeit $0$.
+
+\textnoticesec{Bemerkung:} Diese Vergleichsfunktion ist nicht reflexiv!
+
+\newpage
+%
+% --> ChildrenSimilarIO
+%
+\subsection{\texttt{ChildrenSimilarIO}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter \structgetfullref{strct:spec:childrenio} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die Kindknotenmengen werden bei dieser Vergleichsfunktion allein anhand von bereits bekannten \emph{Ähnlichkeiten} miteinander verglichen. Dabei wird für jeden Kindknoten der Menge A die beste Übereinstimmung in der gegenüberliegen Kindknoten-Menge B gesucht und die Ähnlichkeiten von der Knoten von Menge A zu Menge B kumuliert.
+
+Als Gesamt-Ähnlichkeit wird letztlich der Quotient aus den kumulierten Einzel-Ähnlichkeiten und der Anzahl der Kindknoten des Eingabeknotens mit den meisten Kindknoten zurückgegeben.
+
+\textnoticesec{Bemerkungen:}
+\begin{itemize}
+	\item Diese Vergleichsfunktion ist nicht reflexiv!
+	\item Die Knoten ermittelter Korrelationen werden vom weiteren Vergleich ausgeschlossen, sodass diese nicht ein weiteres mal anderen Knoten zugeordnet werden können.
+	\item Da es sich lediglich um Vergleichs-\emph{Heuristiken} handelt, besteht ebenfalls die Möglichkeit von suboptimalen Zuordnungen von Knotenpaaren -- also dass bspw. ein Knoten A mit einem Knoten B als korrelierend betrachtet wird, obwohl er im weiteren Vergleich einem Knoten C wesentlich besser entsprechen würde.
+\end{itemize}
+
+
+%
+% --> ChildrenEqualViewingHashesIO
+%
+\subsection{\texttt{ChildrenEqualViewingHashesIO}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter \structgetfullref{strct:spec:childrenio} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Vorbedingungen}
+Den (Kind-)Knoten müssen bereits Hashwerte in Form von Annotationen zugeordnet sein. Ist dies nicht der Fall oder Hashwerte werden in dem entsprechenden Projekt generell nicht unterstützt, wird eine Ausnahme des Typs \texttt{AnnotationNotExistsException} ausgelöst und der SiDiff-Kern terminiert den Vergleichsauftrag instantan.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die Kindknotenmengen werden bei dieser Vergleichsfunktion anhand der \emph{Hashwerte} der einzelnen Knoten auf vollständige Gleichheit überprüft. Besitzen beide Knotenmengen die gleiche Anzahl an Elementen und \emph{jeder} Knoten hat in der gegenüberliegen Knotenmenge ein Äquivalent mit gleichem Hashwert, so beträgt die Ähnlichkeit $1$, ansonsten $0$.
+
+
+%
+% --> ChildrenEqualViewingMatchesIO
+%
+\subsection{\texttt{ChildrenEqualViewingMatchesIO}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter \structgetfullref{strct:spec:childrenio} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die Kindknotenmengen werden bei dieser Vergleichsfunktion anhand von bereits gefundenen \emph{Übereinstimmungen} der einzelnen Knoten auf vollständige Übereinstimmung überprüft. Besitzen beide Knotenmengen die gleiche Anzahl an Elementen und \emph{jeder} Knoten hat in der gegenüberliegen Knotenmenge eine Übereinstimmung, so beträgt die Ähnlichkeit $1$, ansonsten $0$.
+
+
+\newpage
+%
+% --> ChildrenEqualViewingTypesIO
+%
+\subsection{\texttt{ChildrenEqualViewingTypesIO}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter \structgetfullref{strct:spec:childrenio} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Die Kindknotenmengen werden bei dieser Vergleichsfunktion anhand der \emph{Typen} der einzelnen Knoten auf vollständige Gleichheit überprüft. Besitzen beide Knotenmengen die gleiche Anzahl an Elementen und \emph{jeder} Knoten hat in der gegenüberliegen Knotenmenge ein Äquivalent mit gleichem Knotentyp, so beträgt die Ähnlichkeit $1$, ansonsten $0$.

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Matching>
+	<Settings 
+		defaultSequencedMatcher="DefaultMatcher"
+		defaultTopDownMatcher="Propagation"
+		documentType="http://www.eclipse.org/emf/jcrm/samples/emf/sample/Library"
+		firstPassSequencedMatcher="UniqueSimilarityMatcher" 
+		matcherPrefix="org.sidiff.core.matching.matcher" />
+	
+	<Configurations>
+		<MatchingConfiguration 
+			className="Writer"
+			threshold="0.7"
+			allowGlobalMove="true"
+			allowLocalMove="true" 			
+			independentMatching="true" 			 
+			topDownMatcher="NoPropagation" 
+			alwaysComputeSimilarity="true" />
+		<MatchingConfiguration allowGlobalMove="true"
+			allowLocalMove="true" alwaysComputeSimilarity="true" className="Book"
+			independentMatching="true" threshold="0.7" topDownMatcher="NoPropagation" />
+	</Configurations>
+	
+	<Sequence>
+		<Class name="Writer" />
+		<Class name="Book" />
+	</Sequence>	
+	
+</Matching>

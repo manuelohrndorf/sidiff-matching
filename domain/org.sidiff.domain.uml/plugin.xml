@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.sidiff.domain.extensionpoint">
+      <client
+            nsUri="http://www.sidiff.org/org.sidiff.uml.model">
+      </client>
+   </extension>
+   <extension
+         point="org.eclipse.emf.ecore.generated_package">
+      <package
+            class="org.sidiff.uml.model.ModelPackage"
+            uri="http://www.sidiff.org/org.sidiff.uml.model">
+      </package>
+   </extension>
+   <extension
+         point="org.eclipse.emf.ecore.generated_package">
+      <package
+            class="org.sidiff.uml.model.classes.ClassesPackage"
+            uri="http://www.sidiff.org/org.sidiff.uml.model/classes">
+      </package>
+   </extension>
+   <extension
+         point="org.eclipse.emf.ecore.generated_package">
+      <package
+            class="org.sidiff.uml.model.core.CorePackage"
+            uri="http://www.sidiff.org/org.sidiff.uml.model/core">
+      </package>
+   </extension>
+   <extension
+         point="org.eclipse.emf.ecore.generated_package">
+      <package
+            class="org.sidiff.uml.model.packages.PackagesPackage"
+            uri="http://www.sidiff.org/org.sidiff.uml.model/packages">
+      </package>
+   </extension>
+   <extension
+         point="org.sidiff.domain.modelloader.extensionpoint">
+      <client
+            class="org.sidiff.domain.uml.FujabaXMILoader">
+      </client>
+      <client
+            class="org.sidiff.domain.uml.RationalEMXLoader">
+      </client>
+   </extension>
+   <extension
+         point="org.sidiff.domain.extensionpoint">
+      <client
+            nsUri="http://www.sidiff.org/org.sidiff.uml.model/core">
+      </client>
+   </extension>
+
+</plugin>

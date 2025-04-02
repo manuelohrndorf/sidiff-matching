@@ -1,0 +1,106 @@
+%
+% Vergleichsfunktionen: Numerisches Attribut
+% ===========================================================================
+%
+
+\section{\texttt{NumericAttribute}...}
+\label{strct:spec:numattr}
+Dieser Abschnitt behandelt Vergleichsfunktionen des Typs \texttt{NumericAttribute}, mit Hilfe derer sich numerische Attributwerte der aktuellen Eingabeknoten vergleichen lassen. Allgemein lassen sich bereits folgende Angaben zu dieser Gruppe von Vergleichsfunktionen machen.
+
+\subsubsection*{Allgemeine Vorbedingungen}
+Für den Fall, dass explizit ein einzelnes Attribut zum Vergleich angegeben wird, muss dieses existieren. Ist dies nicht der Fall erfolgt die Auslösung einer Ausnahme des Typs\mylinebreak\texttt{AttributeNotExistsException} oder \texttt{AnnotationNotExistsException} im Fall eines zu vergleichenden virtuellen Attributs. Eine \texttt{AttributeNotExistsException} wird auch ausgelöst, wenn der im Parameter spezifizierte reguläre Ausdruck keine zu vergleichenden Attributnamen liefert.\\
+In \emph{jedem} Fall muss das auszuwertende Attribut einen numerischen Wert beinhalten. Ist diese Voraussetzung nicht gegeben, löst die Vergleichsfunktion eine Ausnahme vom Typ\mylinebreak\texttt{InvalidAttributeValue} aus und der SiDiff-Kern terminiert -- wie in den anderen o.g. Szenarien -- unverzüglich die Ausführung des Vergleichauftrags.
+
+\subsubsection*{Allgemeine Semantik}
+Diese Gruppe der Vergleichsfunktionen führt den Vergleich von Eingabeknoten aufgrund eines \emph{numerischen} Attributs durch. Dabei wird im Parameter der Name des zu vergleichenden, numerischen Attributs angegeben. Die spezielle Vergleichsmethode ist in den implementierenden Vergleichsfunktionen, die weiter unten in diesem Abschnitt gefunden werden können, spezifiziert und genauer erläutert.
+
+\subsubsection*{Allgemeiner Rückgabewert}
+\begin{itemize}
+	\item Sofern für beide Eingabeknoten das im Parameter spezifizierte Attribut existiert, wird anhand der entsprechenden Vergleichsmethode die Ähnlichkeit der beiden numerischen Attributwerte bestimmt und zurückgegeben.
+	\item Existiert für einen oder gar beide Eingabeknoten das angegebene Attribut nicht, beträgt die Ähnlichkeit $0$.
+	\item Die Ähnlichkeit beträgt ebenfalls $0$, sofern einer der beiden Attributwerte nicht numerisch ist und somit kein Vergleich durchgeführt werden kann.
+\end{itemize}
+
+\subsubsection*{Allgemeine Parameter}
+Die Parameter der implementierenden Vergleichsfunktionen unterscheiden sich teilweise. In jedem Fall muss jedoch der Name des zu vergleichenden Attributs übergeben werden.\\
+Mehr zum genaueren Parameterformat im Abschnitt \textcrosslink{Spezielle Parameter} der jeweiligen Vergleichsfunktion.
+
+
+\newpage
+%
+% --> NumericAttributeSimilarUsingDouble
+%
+\subsection{\texttt{NumericAttributeSimilarUsingGauss}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter \structgetfullref{strct:spec:numattr} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Parameter}
+Diese Vergleichsfunktion benötigt zwei Parameter, die durch "`\texttt{;}"' voneinander abgetrennt werden. Folgend beide Unter-Parameter in der anzugebenden Reihenfolge:
+\begin{enumerate}
+	\item Der Name des zu vergleichenden, numerischen Attributs.
+	\item Ein Skalierungsfaktor, der in die Ähnlichkeitsberechnung eingeht.\\
+		Mehr dazu unter \textcrosslink{Spezielle Semantik und Rückgabewert}.
+\end{enumerate}
+Ein gültiger Parameter wäre also:  \texttt{myattribute;0.75}
+
+Sofern ein ungültiges Parameterformat übergeben wird oder der Skalierungsfaktor nicht parsbar ist, erfolgt die Auslösung einer Ausnahme des Typs \texttt{InvalidParameterSyntaxException}.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Diese Vergleichsfunktion vergleicht Ganz- bzw. 64-Bit Fließkomma-Zahlen vom Typ \texttt{Double} anhand der \emph{Gaußschen Normalverteilung} auf Ähnlichkeit. Dazu wird im Parameter dieser Vergleichsfunktion ebenfalls ein Skalierungsfaktor angegeben, um die Form der Glockenkurve individuell beeinflussen zu können.
+
+\dotuline{Im Detail:}
+\begin{itemize}
+	\item Zwischen beiden Attributwerten wird die Differenz gebildet und diese quadriert. Danach wird der Quotient aus der quadrierten Differenz und dem Skalierungsfaktor gebildet und das negierte Zwischenergebnis letztlich auf die Eulersche Exponentialfunktion angewandt.
+	\item In mathematischer Form wie folgt:  $exp\left(-\frac{(value1 - value2)^2}{scale}\right)$
+\end{itemize}
+
+
+%
+% --> NumericAttributeEqualUsingInteger
+%
+\subsection{\texttt{NumericAttributeEqualUsingInteger}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter \structgetfullref{strct:spec:numattr} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Parameter}
+Diese Vergleichsfunktion benötigt als Parameter lediglich den Namen des zu vergleichenden numerischen Attributs.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Diese Vergleichsfunktion vergleicht \textbf{\texttt{Integer}}-Werte (also 32-Bit große Ganzzahl-Werte) auf Identität.
+\begin{itemize}
+	\item Sind beide Attributwerte gleich, so beträgt die Ähnlichkeit $1$.
+	\item Bei verschiedenen Attributwerten wird $0$ zurückgegeben.
+\end{itemize}
+
+
+\newpage
+%
+% --> NumericAttributeEqualUsingFloat
+%
+\subsection{\texttt{NumericAttributeEqualUsingFloat}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter \structgetfullref{strct:spec:numattr} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Parameter}
+Diese Vergleichsfunktion benötigt als Parameter lediglich den Namen des zu vergleichenden numerischen Attributs.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Diese Vergleichsfunktion vergleicht \textbf{\texttt{Float}}-Werte (also 32-Bit große Fließkomma-Zahlen) auf Identität.
+\begin{itemize}
+	\item Sind beide Attributwerte gleich, so beträgt die Ähnlichkeit $1$.
+	\item Bei verschiedenen Attributwerten wird $0$ zurückgegeben.
+\end{itemize}
+
+
+%
+% --> NumericAttributeEqualUsingDouble
+%
+\subsection{\texttt{NumericAttributeEqualUsingDouble}}
+Diese Vergleichsfunktion führt Vergleiche anhand den unter \structgetfullref{strct:spec:numattr} aufgeführten allgemeinen Bedingungen durch.
+
+\subsubsection*{Spezielle Parameter}
+Diese Vergleichsfunktion benötigt als Parameter lediglich den Namen des zu vergleichenden numerischen Attributs.
+
+\subsubsection*{Spezielle Semantik und Rückgabewert}
+Diese Vergleichsfunktion vergleicht \textbf{\texttt{Double}}-Werte (also 64-Bit große Fließkomma-Zahlen) auf Identität.
+\begin{itemize}
+	\item Sind beide Attributwerte gleich, so beträgt die Ähnlichkeit $1$.
+	\item Bei verschiedenen Attributwerten wird $0$ zurückgegeben.
+\end{itemize}

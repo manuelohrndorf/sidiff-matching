@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Matching>
+	<Settings 
+		defaultSequencedMatcher="DefaultMatcher"
+		defaultTopDownMatcher="Propagation"
+		documentType="http://www.eclipse.org/emf/jcrm/samples/emf/sample/Library"
+		firstPassSequencedMatcher="UniqueSimilarityMatcher" 
+		matcherPrefix="org.sidiff.core.matching.matcher" />
+		
+	<Configurations/>
+	<Sequence/>	
+</Matching>

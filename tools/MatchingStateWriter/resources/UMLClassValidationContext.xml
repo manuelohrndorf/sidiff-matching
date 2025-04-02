@@ -1,0 +1,34 @@
+<ContextConfiguration>
+    <Settings documentType="http://www.sidiff.org/org.sidiff.uml.model" />
+	<Class name="classes.UMLPrimitiveType">
+	</Class>
+	<Class name="core.UMLStereotype">
+	</Class>	
+	<Class name="classes.UMLLiteral">
+	</Class>
+	<Class name="classes.UMLEnumeration">
+	</Class>
+	<Class name="core.UMLPackage">
+	</Class>
+ 	<Class name="classes.UMLAttribute">
+	</Class> 
+	<Class name="classes.UMLParameter">
+	</Class>
+  	<Class name="classes.UMLOperation">
+	</Class>
+	<Class name="classes.UMLClass">
+	</Class>
+ 	<Class name="classes.UMLAssociation">
+		<Context name="ValidationContext" isOrdered="false">
+			<Path value="associationEnds/target" />
+		</Context>
+	</Class> 
+	<Class name="classes.UMLAssociationEnd">
+	</Class>
+	<Class name="classes.UMLGeneralization">
+	</Class>
+	<Class name="core.UMLDependency">
+	</Class>
+	<Class name="core.UMLModel">
+	</Class>
+</ContextConfiguration>

@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="ASCII"?>
+<asymmetric:AsymmetricDifference xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:asymmetric="http://www.sidiff.org/difference/asymmetric/1.0" xmi:id="_61uAUJgxEeWGdoV6RBigvA" uriOriginModel="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141.ecore" uriChangedModel="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore">
+  <operationInvocations xmi:id="_61uAUZgxEeWGdoV6RBigvA" name="SetAttributeEPackageNsURI" editRuleName="SetAttributeEPackageNsURI">
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAUpgxEeWGdoV6RBigvA" formalName="selectedEObject">
+      <actualA href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141.ecore#_qWwXwH0_EeC_4fSSxHu_sw"/>
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qWwXwH0_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAU5gxEeWGdoV6RBigvA" formalName="NsURI" actual="http://www.eclipse.org/gmf/2005/GenModel/2.0"/>
+    <changeSet href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141_x_gmfgen_1.142_UUIDMatcher_lifted_post-processed.symmetric#_61n5_JgxEeWGdoV6RBigvA"/>
+  </operationInvocations>
+  <operationInvocations xmi:id="_61uAVJgxEeWGdoV6RBigvA" name="SetAttributeEReferenceVolatile" editRuleName="SetAttributeEReferenceVolatile">
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAVZgxEeWGdoV6RBigvA" formalName="selectedEObject">
+      <actualA href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141.ecore#_qWxmW30_EeC_4fSSxHu_sw"/>
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qWxmW30_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAVpgxEeWGdoV6RBigvA" formalName="Volatile" actual="true"/>
+    <changeSet href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141_x_gmfgen_1.142_UUIDMatcher_lifted_post-processed.symmetric#_61n5_ZgxEeWGdoV6RBigvA"/>
+  </operationInvocations>
+  <operationInvocations xmi:id="_61uAV5gxEeWGdoV6RBigvA" name="SetAttributeEClassName" editRuleName="SetAttributeEClassName">
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAWJgxEeWGdoV6RBigvA" formalName="selectedEObject">
+      <actualA href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141.ecore#_qWwXx30_EeC_4fSSxHu_sw"/>
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qWwXx30_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAWZgxEeWGdoV6RBigvA" formalName="Name" actual="GenEditorGenerator"/>
+    <changeSet href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141_x_gmfgen_1.142_UUIDMatcher_lifted_post-processed.symmetric#_61n5_pgxEeWGdoV6RBigvA"/>
+  </operationInvocations>
+  <operationInvocations xmi:id="_61uAWpgxEeWGdoV6RBigvA" name="MoveEAnnotationFromEModelElementToEModelElement" editRuleName="MoveEAnnotationFromEModelElementToEModelElement">
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAW5gxEeWGdoV6RBigvA" formalName="selectedEObject">
+      <actualA href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141.ecore#_qWxmen0_EeC_4fSSxHu_sw"/>
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qWxmen0_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAXJgxEeWGdoV6RBigvA" formalName="OldSource">
+      <actualA href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141.ecore#_qWxmcn0_EeC_4fSSxHu_sw"/>
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qWxmcn0_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAXZgxEeWGdoV6RBigvA" formalName="NewSource">
+      <actualA href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141.ecore#_qWxmgX0_EeC_4fSSxHu_sw"/>
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qWxmgX0_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <changeSet href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141_x_gmfgen_1.142_UUIDMatcher_lifted_post-processed.symmetric#_61n5_5gxEeWGdoV6RBigvA"/>
+  </operationInvocations>
+  <operationInvocations xmi:id="_61uAXpgxEeWGdoV6RBigvA" name="UnsetEReferenceRefeOppositetgtEReference" editRuleName="UnsetEReferenceRefeOppositetgtEReference">
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAX5gxEeWGdoV6RBigvA" formalName="selectedEObject">
+      <actualA href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141.ecore#_qWxmW30_EeC_4fSSxHu_sw"/>
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qWxmW30_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAYJgxEeWGdoV6RBigvA" formalName="Target">
+      <actualA href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141.ecore#_qWxAan0_EeC_4fSSxHu_sw"/>
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qWxAan0_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <changeSet href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141_x_gmfgen_1.142_UUIDMatcher_lifted_post-processed.symmetric#_61n6AJgxEeWGdoV6RBigvA"/>
+  </operationInvocations>
+  <operationInvocations xmi:id="_61uAYZgxEeWGdoV6RBigvA" name="MoveEOperationFromEClassToEClass" editRuleName="MoveEOperationFromEClassToEClass" outgoing="_61uA9ZgxEeWGdoV6RBigvA">
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAYpgxEeWGdoV6RBigvA" formalName="selectedEObject">
+      <actualA href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141.ecore#_qWxmfX0_EeC_4fSSxHu_sw"/>
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qWxmfX0_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAY5gxEeWGdoV6RBigvA" formalName="OldSource">
+      <actualA href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141.ecore#_qWxmcn0_EeC_4fSSxHu_sw"/>
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qWxmcn0_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAZJgxEeWGdoV6RBigvA" formalName="NewSource" incoming="_61uBA5gxEeWGdoV6RBigvA">
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyTH0_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <changeSet href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141_x_gmfgen_1.142_UUIDMatcher_lifted_post-processed.symmetric#_61n6AZgxEeWGdoV6RBigvA"/>
+  </operationInvocations>
+  <operationInvocations xmi:id="_61uAZZgxEeWGdoV6RBigvA" name="changeBidirectionalReferenceType" editRuleName="changeBidirectionalReferenceType" outgoing="_61uA_ZgxEeWGdoV6RBigvA">
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAZpgxEeWGdoV6RBigvA" formalName="selectedEObject">
+      <actualA href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141.ecore#_qWxman0_EeC_4fSSxHu_sw"/>
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qWxman0_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAZ5gxEeWGdoV6RBigvA" formalName="NewTarget" incoming="_61uBCpgxEeWGdoV6RBigvA">
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyTH0_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <changeSet href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141_x_gmfgen_1.142_UUIDMatcher_lifted_post-processed.symmetric#_61n6ApgxEeWGdoV6RBigvA"/>
+  </operationInvocations>
+  <operationInvocations xmi:id="_61uAaJgxEeWGdoV6RBigvA" name="CreateEClassInEPackage" editRuleName="CreateEClassInEPackage" incoming="_61uA35gxEeWGdoV6RBigvA _61uA7ZgxEeWGdoV6RBigvA _61uA75gxEeWGdoV6RBigvA _61uA95gxEeWGdoV6RBigvA _61uA-ZgxEeWGdoV6RBigvA">
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAaZgxEeWGdoV6RBigvA" formalName="selectedEObject">
+      <actualA href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141.ecore#_qWwXwH0_EeC_4fSSxHu_sw"/>
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qWwXwH0_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAapgxEeWGdoV6RBigvA" formalName="New" outgoing="_61uBAJgxEeWGdoV6RBigvA _61uBBpgxEeWGdoV6RBigvA _61uBCJgxEeWGdoV6RBigvA _61uBCZgxEeWGdoV6RBigvA">
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyTX0_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAa5gxEeWGdoV6RBigvA" formalName="Name" actual="GenReferenceNewElementSpec"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAbJgxEeWGdoV6RBigvA" formalName="InstanceClassName"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAbZgxEeWGdoV6RBigvA" formalName="InstanceTypeName"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAbpgxEeWGdoV6RBigvA" formalName="Abstract" actual="false"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAb5gxEeWGdoV6RBigvA" formalName="Interface" actual="false"/>
+    <changeSet href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141_x_gmfgen_1.142_UUIDMatcher_lifted_post-processed.symmetric#_61n6A5gxEeWGdoV6RBigvA"/>
+  </operationInvocations>
+  <operationInvocations xmi:id="_61uAcJgxEeWGdoV6RBigvA" name="SetAttributeEReferenceTransient" editRuleName="SetAttributeEReferenceTransient">
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAcZgxEeWGdoV6RBigvA" formalName="selectedEObject">
+      <actualA href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141.ecore#_qWxmW30_EeC_4fSSxHu_sw"/>
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qWxmW30_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAcpgxEeWGdoV6RBigvA" formalName="Transient" actual="true"/>
+    <changeSet href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141_x_gmfgen_1.142_UUIDMatcher_lifted_post-processed.symmetric#_61n6BJgxEeWGdoV6RBigvA"/>
+  </operationInvocations>
+  <operationInvocations xmi:id="_61uAc5gxEeWGdoV6RBigvA" name="CreateEReferenceInEClass" editRuleName="CreateEReferenceInEClass" incoming="_61uA8ZgxEeWGdoV6RBigvA _61uA85gxEeWGdoV6RBigvA">
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAdJgxEeWGdoV6RBigvA" formalName="selectedEObject">
+      <actualA href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141.ecore#_qWxmX30_EeC_4fSSxHu_sw"/>
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qWxmX30_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAdZgxEeWGdoV6RBigvA" formalName="EReferenceType">
+      <actualA href="platform:/plugin/org.eclipse.emf.codegen.ecore/model/GenModel.ecore#//GenClass"/>
+      <actualB href="platform:/plugin/org.eclipse.emf.codegen.ecore/model/GenModel.ecore#//GenClass"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAdpgxEeWGdoV6RBigvA" formalName="New" outgoing="_61uA_5gxEeWGdoV6RBigvA _61uBB5gxEeWGdoV6RBigvA">
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyQ30_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAd5gxEeWGdoV6RBigvA" formalName="Name" actual="elementClass"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAeJgxEeWGdoV6RBigvA" formalName="Ordered" actual="true"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAeZgxEeWGdoV6RBigvA" formalName="Unique" actual="true"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAepgxEeWGdoV6RBigvA" formalName="LowerBound" actual="0"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAe5gxEeWGdoV6RBigvA" formalName="UpperBound" actual="1"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAfJgxEeWGdoV6RBigvA" formalName="Changeable" actual="true"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAfZgxEeWGdoV6RBigvA" formalName="Volatile" actual="false"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAfpgxEeWGdoV6RBigvA" formalName="Transient" actual="false"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAf5gxEeWGdoV6RBigvA" formalName="DefaultValueLiteral"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAgJgxEeWGdoV6RBigvA" formalName="Unsettable" actual="false"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAgZgxEeWGdoV6RBigvA" formalName="Derived" actual="false"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAgpgxEeWGdoV6RBigvA" formalName="Containment" actual="false"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAg5gxEeWGdoV6RBigvA" formalName="ResolveProxies" actual="true"/>
+    <changeSet href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141_x_gmfgen_1.142_UUIDMatcher_lifted_post-processed.symmetric#_61n6BZgxEeWGdoV6RBigvA"/>
+  </operationInvocations>
+  <operationInvocations xmi:id="_61uAhJgxEeWGdoV6RBigvA" name="AddEClassTgtEClass" editRuleName="AddEClassTgtEClass" outgoing="_61uA45gxEeWGdoV6RBigvA">
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAhZgxEeWGdoV6RBigvA" formalName="selectedEObject">
+      <actualA href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141.ecore#_qWxmcn0_EeC_4fSSxHu_sw"/>
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qWxmcn0_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAhpgxEeWGdoV6RBigvA" formalName="NewTarget" incoming="_61uBBJgxEeWGdoV6RBigvA">
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyTH0_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <changeSet href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141_x_gmfgen_1.142_UUIDMatcher_lifted_post-processed.symmetric#_61n6BpgxEeWGdoV6RBigvA"/>
+  </operationInvocations>
+  <operationInvocations xmi:id="_61uAh5gxEeWGdoV6RBigvA" name="CreateEAnnotationInEModelElement" editRuleName="CreateEAnnotationInEModelElement" outgoing="_61uA8ZgxEeWGdoV6RBigvA">
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAiJgxEeWGdoV6RBigvA" formalName="selectedEObject" incoming="_61uA_5gxEeWGdoV6RBigvA">
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyQ30_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAiZgxEeWGdoV6RBigvA" formalName="New">
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyR30_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAipgxEeWGdoV6RBigvA" formalName="Source" actual="http://www.eclipse.org/gmf/2005/constraints"/>
+    <changeSet href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141_x_gmfgen_1.142_UUIDMatcher_lifted_post-processed.symmetric#_61n6B5gxEeWGdoV6RBigvA"/>
+  </operationInvocations>
+  <operationInvocations xmi:id="_61uAi5gxEeWGdoV6RBigvA" name="CreateEReferenceInEClass" editRuleName="CreateEReferenceInEClass" outgoing="_61uA-ZgxEeWGdoV6RBigvA" incoming="_61uA6ZgxEeWGdoV6RBigvA">
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAjJgxEeWGdoV6RBigvA" formalName="selectedEObject">
+      <actualA href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141.ecore#_qWxmX30_EeC_4fSSxHu_sw"/>
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qWxmX30_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAjZgxEeWGdoV6RBigvA" formalName="EReferenceType" incoming="_61uBBpgxEeWGdoV6RBigvA">
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyTX0_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAjpgxEeWGdoV6RBigvA" formalName="New" outgoing="_61uBAZgxEeWGdoV6RBigvA">
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyQX0_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAj5gxEeWGdoV6RBigvA" formalName="Name" actual="creatingInitializer"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAkJgxEeWGdoV6RBigvA" formalName="Ordered" actual="true"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAkZgxEeWGdoV6RBigvA" formalName="Unique" actual="true"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAkpgxEeWGdoV6RBigvA" formalName="LowerBound" actual="0"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAk5gxEeWGdoV6RBigvA" formalName="UpperBound" actual="1"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAlJgxEeWGdoV6RBigvA" formalName="Changeable" actual="false"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAlZgxEeWGdoV6RBigvA" formalName="Volatile" actual="false"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAlpgxEeWGdoV6RBigvA" formalName="Transient" actual="false"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAl5gxEeWGdoV6RBigvA" formalName="DefaultValueLiteral"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAmJgxEeWGdoV6RBigvA" formalName="Unsettable" actual="false"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAmZgxEeWGdoV6RBigvA" formalName="Derived" actual="false"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAmpgxEeWGdoV6RBigvA" formalName="Containment" actual="false"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAm5gxEeWGdoV6RBigvA" formalName="ResolveProxies" actual="true"/>
+    <changeSet href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141_x_gmfgen_1.142_UUIDMatcher_lifted_post-processed.symmetric#_61n6CJgxEeWGdoV6RBigvA"/>
+  </operationInvocations>
+  <operationInvocations xmi:id="_61uAnJgxEeWGdoV6RBigvA" name="SetAttributeEReferenceChangeable" editRuleName="SetAttributeEReferenceChangeable">
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAnZgxEeWGdoV6RBigvA" formalName="selectedEObject">
+      <actualA href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141.ecore#_qWxmiH0_EeC_4fSSxHu_sw"/>
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qWxmiH0_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAnpgxEeWGdoV6RBigvA" formalName="Changeable" actual="false"/>
+    <changeSet href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141_x_gmfgen_1.142_UUIDMatcher_lifted_post-processed.symmetric#_61n6CZgxEeWGdoV6RBigvA"/>
+  </operationInvocations>
+  <operationInvocations xmi:id="_61uAn5gxEeWGdoV6RBigvA" name="SetEReferenceRefeOppositetgtEReference" editRuleName="SetEReferenceRefeOppositetgtEReference" outgoing="_61uA5ZgxEeWGdoV6RBigvA _61uA6ZgxEeWGdoV6RBigvA _61uA7ZgxEeWGdoV6RBigvA">
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAoJgxEeWGdoV6RBigvA" formalName="selectedEObject" incoming="_61uBBZgxEeWGdoV6RBigvA">
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyUX0_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAoZgxEeWGdoV6RBigvA" formalName="NewTarget" incoming="_61uBAZgxEeWGdoV6RBigvA">
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyQX0_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <changeSet href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141_x_gmfgen_1.142_UUIDMatcher_lifted_post-processed.symmetric#_61n6CpgxEeWGdoV6RBigvA"/>
+  </operationInvocations>
+  <operationInvocations xmi:id="_61uAopgxEeWGdoV6RBigvA" name="CreateEAnnotationInEModelElement" editRuleName="CreateEAnnotationInEModelElement" outgoing="_61uA75gxEeWGdoV6RBigvA">
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAo5gxEeWGdoV6RBigvA" formalName="selectedEObject" incoming="_61uBAJgxEeWGdoV6RBigvA">
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyTX0_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uApJgxEeWGdoV6RBigvA" formalName="New">
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyTn0_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uApZgxEeWGdoV6RBigvA" formalName="Source" actual="http://www.eclipse.org/gmf/2005/constraints"/>
+    <changeSet href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141_x_gmfgen_1.142_UUIDMatcher_lifted_post-processed.symmetric#_61n6C5gxEeWGdoV6RBigvA"/>
+  </operationInvocations>
+  <operationInvocations xmi:id="_61uAppgxEeWGdoV6RBigvA" name="SetAttributeEStringToStringMapEntryValue" editRuleName="SetAttributeEStringToStringMapEntryValue">
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAp5gxEeWGdoV6RBigvA" formalName="selectedEObject">
+      <actualA href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141.ecore#_qWxmhn0_EeC_4fSSxHu_sw"/>
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qWxmhn0_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAqJgxEeWGdoV6RBigvA" formalName="Value" actual="The feature is already initialized by another 'GenFeatureInitializer' in the sequence"/>
+    <changeSet href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141_x_gmfgen_1.142_UUIDMatcher_lifted_post-processed.symmetric#_61n6DJgxEeWGdoV6RBigvA"/>
+  </operationInvocations>
+  <operationInvocations xmi:id="_61uAqZgxEeWGdoV6RBigvA" name="SetAttributeEClassAbstract" editRuleName="SetAttributeEClassAbstract">
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAqpgxEeWGdoV6RBigvA" formalName="selectedEObject">
+      <actualA href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141.ecore#_qWxmWH0_EeC_4fSSxHu_sw"/>
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qWxmWH0_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAq5gxEeWGdoV6RBigvA" formalName="Abstract" actual="false"/>
+    <changeSet href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141_x_gmfgen_1.142_UUIDMatcher_lifted_post-processed.symmetric#_61n6DZgxEeWGdoV6RBigvA"/>
+  </operationInvocations>
+  <operationInvocations xmi:id="_61uArJgxEeWGdoV6RBigvA" name="SetAttributeEStringToStringMapEntryValue" editRuleName="SetAttributeEStringToStringMapEntryValue">
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uArZgxEeWGdoV6RBigvA" formalName="selectedEObject">
+      <actualA href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141.ecore#_qWxmg30_EeC_4fSSxHu_sw"/>
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qWxmg30_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uArpgxEeWGdoV6RBigvA" formalName="Value" actual="The feature for which is to be initialized by this initializer"/>
+    <changeSet href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141_x_gmfgen_1.142_UUIDMatcher_lifted_post-processed.symmetric#_61n6DpgxEeWGdoV6RBigvA"/>
+  </operationInvocations>
+  <operationInvocations xmi:id="_61uAr5gxEeWGdoV6RBigvA" name="SetAttributeEClassInterface" editRuleName="SetAttributeEClassInterface">
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAsJgxEeWGdoV6RBigvA" formalName="selectedEObject">
+      <actualA href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141.ecore#_qWxmWH0_EeC_4fSSxHu_sw"/>
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qWxmWH0_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAsZgxEeWGdoV6RBigvA" formalName="Interface" actual="true"/>
+    <changeSet href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141_x_gmfgen_1.142_UUIDMatcher_lifted_post-processed.symmetric#_61n6D5gxEeWGdoV6RBigvA"/>
+  </operationInvocations>
+  <operationInvocations xmi:id="_61uAspgxEeWGdoV6RBigvA" name="AddEClassTgtEClass" editRuleName="AddEClassTgtEClass" outgoing="_61uA35gxEeWGdoV6RBigvA _61uA4ZgxEeWGdoV6RBigvA">
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAs5gxEeWGdoV6RBigvA" formalName="selectedEObject" incoming="_61uBCJgxEeWGdoV6RBigvA">
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyTX0_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAtJgxEeWGdoV6RBigvA" formalName="NewTarget" incoming="_61uBApgxEeWGdoV6RBigvA">
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyTH0_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <changeSet href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141_x_gmfgen_1.142_UUIDMatcher_lifted_post-processed.symmetric#_61n6EJgxEeWGdoV6RBigvA"/>
+  </operationInvocations>
+  <operationInvocations xmi:id="_61uAtZgxEeWGdoV6RBigvA" name="MoveEReferenceRefeStructuralFeaturesToEClass" editRuleName="MoveEReferenceRefeStructuralFeaturesToEClass" outgoing="_61uA-5gxEeWGdoV6RBigvA">
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAtpgxEeWGdoV6RBigvA" formalName="selectedEObject">
+      <actualA href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141.ecore#_qWxmgX0_EeC_4fSSxHu_sw"/>
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qWxmgX0_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAt5gxEeWGdoV6RBigvA" formalName="OldSource">
+      <actualA href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141.ecore#_qWxmcn0_EeC_4fSSxHu_sw"/>
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qWxmcn0_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAuJgxEeWGdoV6RBigvA" formalName="NewSource" incoming="_61uBC5gxEeWGdoV6RBigvA">
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyTH0_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <changeSet href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141_x_gmfgen_1.142_UUIDMatcher_lifted_post-processed.symmetric#_61n6EZgxEeWGdoV6RBigvA"/>
+  </operationInvocations>
+  <operationInvocations xmi:id="_61uAuZgxEeWGdoV6RBigvA" name="CreateEReferenceInEClass" editRuleName="CreateEReferenceInEClass" outgoing="_61uA95gxEeWGdoV6RBigvA" incoming="_61uA5ZgxEeWGdoV6RBigvA">
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAupgxEeWGdoV6RBigvA" formalName="selectedEObject" incoming="_61uBCZgxEeWGdoV6RBigvA">
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyTX0_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAu5gxEeWGdoV6RBigvA" formalName="EReferenceType">
+      <actualA href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141.ecore#_qWxmX30_EeC_4fSSxHu_sw"/>
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qWxmX30_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAvJgxEeWGdoV6RBigvA" formalName="New" outgoing="_61uBBZgxEeWGdoV6RBigvA">
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyUX0_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAvZgxEeWGdoV6RBigvA" formalName="Name" actual="newElementInitializers"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAvpgxEeWGdoV6RBigvA" formalName="Ordered" actual="true"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAv5gxEeWGdoV6RBigvA" formalName="Unique" actual="true"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAwJgxEeWGdoV6RBigvA" formalName="LowerBound" actual="1"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAwZgxEeWGdoV6RBigvA" formalName="UpperBound" actual="-1"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAwpgxEeWGdoV6RBigvA" formalName="Changeable" actual="true"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAw5gxEeWGdoV6RBigvA" formalName="Volatile" actual="false"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAxJgxEeWGdoV6RBigvA" formalName="Transient" actual="false"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAxZgxEeWGdoV6RBigvA" formalName="DefaultValueLiteral"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAxpgxEeWGdoV6RBigvA" formalName="Unsettable" actual="false"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAx5gxEeWGdoV6RBigvA" formalName="Derived" actual="false"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAyJgxEeWGdoV6RBigvA" formalName="Containment" actual="true"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAyZgxEeWGdoV6RBigvA" formalName="ResolveProxies" actual="true"/>
+    <changeSet href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141_x_gmfgen_1.142_UUIDMatcher_lifted_post-processed.symmetric#_61n6EpgxEeWGdoV6RBigvA"/>
+  </operationInvocations>
+  <operationInvocations xmi:id="_61uAypgxEeWGdoV6RBigvA" name="CreateEClassInEPackage" editRuleName="CreateEClassInEPackage" incoming="_61uA4ZgxEeWGdoV6RBigvA _61uA45gxEeWGdoV6RBigvA _61uA9ZgxEeWGdoV6RBigvA _61uA-5gxEeWGdoV6RBigvA _61uA_ZgxEeWGdoV6RBigvA">
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAy5gxEeWGdoV6RBigvA" formalName="selectedEObject">
+      <actualA href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141.ecore#_qWwXwH0_EeC_4fSSxHu_sw"/>
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qWwXwH0_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uAzJgxEeWGdoV6RBigvA" formalName="New" outgoing="_61uBApgxEeWGdoV6RBigvA _61uBA5gxEeWGdoV6RBigvA _61uBBJgxEeWGdoV6RBigvA _61uBCpgxEeWGdoV6RBigvA _61uBC5gxEeWGdoV6RBigvA">
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyTH0_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAzZgxEeWGdoV6RBigvA" formalName="Name" actual="GenFeatureInitializer"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAzpgxEeWGdoV6RBigvA" formalName="InstanceClassName"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uAz5gxEeWGdoV6RBigvA" formalName="InstanceTypeName"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uA0JgxEeWGdoV6RBigvA" formalName="Abstract" actual="false"/>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uA0ZgxEeWGdoV6RBigvA" formalName="Interface" actual="true"/>
+    <changeSet href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141_x_gmfgen_1.142_UUIDMatcher_lifted_post-processed.symmetric#_61n6E5gxEeWGdoV6RBigvA"/>
+  </operationInvocations>
+  <operationInvocations xmi:id="_61uA0pgxEeWGdoV6RBigvA" name="SetAttributeEStringToStringMapEntryValue" editRuleName="SetAttributeEStringToStringMapEntryValue">
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uA05gxEeWGdoV6RBigvA" formalName="selectedEObject">
+      <actualA href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141.ecore#_qWxmb30_EeC_4fSSxHu_sw"/>
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qWxmb30_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uA1JgxEeWGdoV6RBigvA" formalName="Value" actual="self.elementClass"/>
+    <changeSet href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141_x_gmfgen_1.142_UUIDMatcher_lifted_post-processed.symmetric#_61n6FJgxEeWGdoV6RBigvA"/>
+  </operationInvocations>
+  <operationInvocations xmi:id="_61uA1ZgxEeWGdoV6RBigvA" name="SetAttributeEStringToStringMapEntryValue" editRuleName="SetAttributeEStringToStringMapEntryValue">
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uA1pgxEeWGdoV6RBigvA" formalName="selectedEObject">
+      <actualA href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141.ecore#_qWxmfH0_EeC_4fSSxHu_sw"/>
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qWxmfH0_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uA15gxEeWGdoV6RBigvA" formalName="Value" actual="The 'feature' of 'GenFeatureInitializer' must be available in 'Meta Class' of the initialized element"/>
+    <changeSet href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141_x_gmfgen_1.142_UUIDMatcher_lifted_post-processed.symmetric#_61n6FZgxEeWGdoV6RBigvA"/>
+  </operationInvocations>
+  <operationInvocations xmi:id="_61uA2JgxEeWGdoV6RBigvA" name="CreateEAnnotationInEModelElement" editRuleName="CreateEAnnotationInEModelElement" outgoing="_61uA85gxEeWGdoV6RBigvA">
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uA2ZgxEeWGdoV6RBigvA" formalName="selectedEObject" incoming="_61uBB5gxEeWGdoV6RBigvA">
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyQ30_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uA2pgxEeWGdoV6RBigvA" formalName="New">
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyRH0_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uA25gxEeWGdoV6RBigvA" formalName="Source" actual="http://www.eclipse.org/gmf/2005/constraints"/>
+    <changeSet href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141_x_gmfgen_1.142_UUIDMatcher_lifted_post-processed.symmetric#_61n6FpgxEeWGdoV6RBigvA"/>
+  </operationInvocations>
+  <operationInvocations xmi:id="_61uA3JgxEeWGdoV6RBigvA" name="SetAttributeEStringToStringMapEntryValue" editRuleName="SetAttributeEStringToStringMapEntryValue">
+    <parameterBindings xsi:type="asymmetric:ObjectParameterBinding" xmi:id="_61uA3ZgxEeWGdoV6RBigvA" formalName="selectedEObject">
+      <actualA href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141.ecore#_qWxme30_EeC_4fSSxHu_sw"/>
+      <actualB href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qWxme30_EeC_4fSSxHu_sw"/>
+    </parameterBindings>
+    <parameterBindings xsi:type="asymmetric:ValueParameterBinding" xmi:id="_61uA3pgxEeWGdoV6RBigvA" formalName="Value" actual="feature &lt;> null implies feature.ecoreFeature.eContainingClass.isSuperTypeOf(featureSeqInitializer.elementClass.ecoreClass)"/>
+    <changeSet href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141_x_gmfgen_1.142_UUIDMatcher_lifted_post-processed.symmetric#_61n6F5gxEeWGdoV6RBigvA"/>
+  </operationInvocations>
+  <depContainers xmi:id="_61uA35gxEeWGdoV6RBigvA" source="_61uAspgxEeWGdoV6RBigvA" target="_61uAaJgxEeWGdoV6RBigvA">
+    <dependencies xsi:type="asymmetric:NodeDependency" xmi:id="_61uA4JgxEeWGdoV6RBigvA" kind="CreateUse">
+      <object href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyTX0_EeC_4fSSxHu_sw"/>
+    </dependencies>
+  </depContainers>
+  <depContainers xmi:id="_61uA4ZgxEeWGdoV6RBigvA" source="_61uAspgxEeWGdoV6RBigvA" target="_61uAypgxEeWGdoV6RBigvA">
+    <dependencies xsi:type="asymmetric:NodeDependency" xmi:id="_61uA4pgxEeWGdoV6RBigvA" kind="CreateUse">
+      <object href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyTH0_EeC_4fSSxHu_sw"/>
+    </dependencies>
+  </depContainers>
+  <depContainers xmi:id="_61uA45gxEeWGdoV6RBigvA" source="_61uAhJgxEeWGdoV6RBigvA" target="_61uAypgxEeWGdoV6RBigvA">
+    <dependencies xsi:type="asymmetric:NodeDependency" xmi:id="_61uA5JgxEeWGdoV6RBigvA" kind="CreateUse">
+      <object href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyTH0_EeC_4fSSxHu_sw"/>
+    </dependencies>
+  </depContainers>
+  <depContainers xmi:id="_61uA5ZgxEeWGdoV6RBigvA" source="_61uAn5gxEeWGdoV6RBigvA" target="_61uAuZgxEeWGdoV6RBigvA">
+    <dependencies xsi:type="asymmetric:EdgeDependency" xmi:id="_61uA5pgxEeWGdoV6RBigvA" kind="CreateUse">
+      <srcObject href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyUX0_EeC_4fSSxHu_sw"/>
+      <tgtObject href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qWxmX30_EeC_4fSSxHu_sw"/>
+      <type href="http://www.eclipse.org/emf/2002/Ecore#//ETypedElement/eType"/>
+    </dependencies>
+    <dependencies xsi:type="asymmetric:EdgeDependency" xmi:id="_61uA55gxEeWGdoV6RBigvA" kind="CreateUse">
+      <srcObject href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyTX0_EeC_4fSSxHu_sw"/>
+      <tgtObject href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyUX0_EeC_4fSSxHu_sw"/>
+      <type href="http://www.eclipse.org/emf/2002/Ecore#//EClass/eStructuralFeatures"/>
+    </dependencies>
+    <dependencies xsi:type="asymmetric:NodeDependency" xmi:id="_61uA6JgxEeWGdoV6RBigvA" kind="CreateUse">
+      <object href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyUX0_EeC_4fSSxHu_sw"/>
+    </dependencies>
+  </depContainers>
+  <depContainers xmi:id="_61uA6ZgxEeWGdoV6RBigvA" source="_61uAn5gxEeWGdoV6RBigvA" target="_61uAi5gxEeWGdoV6RBigvA">
+    <dependencies xsi:type="asymmetric:EdgeDependency" xmi:id="_61uA6pgxEeWGdoV6RBigvA" kind="CreateUse">
+      <srcObject href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qWxmX30_EeC_4fSSxHu_sw"/>
+      <tgtObject href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyQX0_EeC_4fSSxHu_sw"/>
+      <type href="http://www.eclipse.org/emf/2002/Ecore#//EClass/eStructuralFeatures"/>
+    </dependencies>
+    <dependencies xsi:type="asymmetric:EdgeDependency" xmi:id="_61uA65gxEeWGdoV6RBigvA" kind="CreateUse">
+      <srcObject href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyQX0_EeC_4fSSxHu_sw"/>
+      <tgtObject href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyTX0_EeC_4fSSxHu_sw"/>
+      <type href="http://www.eclipse.org/emf/2002/Ecore#//ETypedElement/eType"/>
+    </dependencies>
+    <dependencies xsi:type="asymmetric:NodeDependency" xmi:id="_61uA7JgxEeWGdoV6RBigvA" kind="CreateUse">
+      <object href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyQX0_EeC_4fSSxHu_sw"/>
+    </dependencies>
+  </depContainers>
+  <depContainers xmi:id="_61uA7ZgxEeWGdoV6RBigvA" source="_61uAn5gxEeWGdoV6RBigvA" target="_61uAaJgxEeWGdoV6RBigvA">
+    <dependencies xsi:type="asymmetric:NodeDependency" xmi:id="_61uA7pgxEeWGdoV6RBigvA" kind="CreateUse">
+      <object href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyTX0_EeC_4fSSxHu_sw"/>
+    </dependencies>
+  </depContainers>
+  <depContainers xmi:id="_61uA75gxEeWGdoV6RBigvA" source="_61uAopgxEeWGdoV6RBigvA" target="_61uAaJgxEeWGdoV6RBigvA">
+    <dependencies xsi:type="asymmetric:NodeDependency" xmi:id="_61uA8JgxEeWGdoV6RBigvA" kind="CreateUse">
+      <object href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyTX0_EeC_4fSSxHu_sw"/>
+    </dependencies>
+  </depContainers>
+  <depContainers xmi:id="_61uA8ZgxEeWGdoV6RBigvA" source="_61uAh5gxEeWGdoV6RBigvA" target="_61uAc5gxEeWGdoV6RBigvA">
+    <dependencies xsi:type="asymmetric:NodeDependency" xmi:id="_61uA8pgxEeWGdoV6RBigvA" kind="CreateUse">
+      <object href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyQ30_EeC_4fSSxHu_sw"/>
+    </dependencies>
+  </depContainers>
+  <depContainers xmi:id="_61uA85gxEeWGdoV6RBigvA" source="_61uA2JgxEeWGdoV6RBigvA" target="_61uAc5gxEeWGdoV6RBigvA">
+    <dependencies xsi:type="asymmetric:NodeDependency" xmi:id="_61uA9JgxEeWGdoV6RBigvA" kind="CreateUse">
+      <object href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyQ30_EeC_4fSSxHu_sw"/>
+    </dependencies>
+  </depContainers>
+  <depContainers xmi:id="_61uA9ZgxEeWGdoV6RBigvA" source="_61uAYZgxEeWGdoV6RBigvA" target="_61uAypgxEeWGdoV6RBigvA">
+    <dependencies xsi:type="asymmetric:NodeDependency" xmi:id="_61uA9pgxEeWGdoV6RBigvA" kind="CreateUse">
+      <object href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyTH0_EeC_4fSSxHu_sw"/>
+    </dependencies>
+  </depContainers>
+  <depContainers xmi:id="_61uA95gxEeWGdoV6RBigvA" source="_61uAuZgxEeWGdoV6RBigvA" target="_61uAaJgxEeWGdoV6RBigvA">
+    <dependencies xsi:type="asymmetric:NodeDependency" xmi:id="_61uA-JgxEeWGdoV6RBigvA" kind="CreateUse">
+      <object href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyTX0_EeC_4fSSxHu_sw"/>
+    </dependencies>
+  </depContainers>
+  <depContainers xmi:id="_61uA-ZgxEeWGdoV6RBigvA" source="_61uAi5gxEeWGdoV6RBigvA" target="_61uAaJgxEeWGdoV6RBigvA">
+    <dependencies xsi:type="asymmetric:NodeDependency" xmi:id="_61uA-pgxEeWGdoV6RBigvA" kind="CreateUse">
+      <object href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyTX0_EeC_4fSSxHu_sw"/>
+    </dependencies>
+  </depContainers>
+  <depContainers xmi:id="_61uA-5gxEeWGdoV6RBigvA" source="_61uAtZgxEeWGdoV6RBigvA" target="_61uAypgxEeWGdoV6RBigvA">
+    <dependencies xsi:type="asymmetric:NodeDependency" xmi:id="_61uA_JgxEeWGdoV6RBigvA" kind="CreateUse">
+      <object href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyTH0_EeC_4fSSxHu_sw"/>
+    </dependencies>
+  </depContainers>
+  <depContainers xmi:id="_61uA_ZgxEeWGdoV6RBigvA" source="_61uAZZgxEeWGdoV6RBigvA" target="_61uAypgxEeWGdoV6RBigvA">
+    <dependencies xsi:type="asymmetric:NodeDependency" xmi:id="_61uA_pgxEeWGdoV6RBigvA" kind="CreateUse">
+      <object href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.142.ecore#_qXIyTH0_EeC_4fSSxHu_sw"/>
+    </dependencies>
+  </depContainers>
+  <parameterMappings xmi:id="_61uA_5gxEeWGdoV6RBigvA" source="_61uAdpgxEeWGdoV6RBigvA" target="_61uAiJgxEeWGdoV6RBigvA"/>
+  <parameterMappings xmi:id="_61uBAJgxEeWGdoV6RBigvA" source="_61uAapgxEeWGdoV6RBigvA" target="_61uAo5gxEeWGdoV6RBigvA"/>
+  <parameterMappings xmi:id="_61uBAZgxEeWGdoV6RBigvA" source="_61uAjpgxEeWGdoV6RBigvA" target="_61uAoZgxEeWGdoV6RBigvA"/>
+  <parameterMappings xmi:id="_61uBApgxEeWGdoV6RBigvA" source="_61uAzJgxEeWGdoV6RBigvA" target="_61uAtJgxEeWGdoV6RBigvA"/>
+  <parameterMappings xmi:id="_61uBA5gxEeWGdoV6RBigvA" source="_61uAzJgxEeWGdoV6RBigvA" target="_61uAZJgxEeWGdoV6RBigvA"/>
+  <parameterMappings xmi:id="_61uBBJgxEeWGdoV6RBigvA" source="_61uAzJgxEeWGdoV6RBigvA" target="_61uAhpgxEeWGdoV6RBigvA"/>
+  <parameterMappings xmi:id="_61uBBZgxEeWGdoV6RBigvA" source="_61uAvJgxEeWGdoV6RBigvA" target="_61uAoJgxEeWGdoV6RBigvA"/>
+  <parameterMappings xmi:id="_61uBBpgxEeWGdoV6RBigvA" source="_61uAapgxEeWGdoV6RBigvA" target="_61uAjZgxEeWGdoV6RBigvA"/>
+  <parameterMappings xmi:id="_61uBB5gxEeWGdoV6RBigvA" source="_61uAdpgxEeWGdoV6RBigvA" target="_61uA2ZgxEeWGdoV6RBigvA"/>
+  <parameterMappings xmi:id="_61uBCJgxEeWGdoV6RBigvA" source="_61uAapgxEeWGdoV6RBigvA" target="_61uAs5gxEeWGdoV6RBigvA"/>
+  <parameterMappings xmi:id="_61uBCZgxEeWGdoV6RBigvA" source="_61uAapgxEeWGdoV6RBigvA" target="_61uAupgxEeWGdoV6RBigvA"/>
+  <parameterMappings xmi:id="_61uBCpgxEeWGdoV6RBigvA" source="_61uAzJgxEeWGdoV6RBigvA" target="_61uAZ5gxEeWGdoV6RBigvA"/>
+  <parameterMappings xmi:id="_61uBC5gxEeWGdoV6RBigvA" source="_61uAzJgxEeWGdoV6RBigvA" target="_61uAuJgxEeWGdoV6RBigvA"/>
+  <symmetricDifference href="platform:/resource/org.sidiff.emf.CrossDocumentReferenceLoader/models/gmfgen_1.141_x_gmfgen_1.142_UUIDMatcher_lifted_post-processed.symmetric#_61n5sJgxEeWGdoV6RBigvA"/>
+</asymmetric:AsymmetricDifference>

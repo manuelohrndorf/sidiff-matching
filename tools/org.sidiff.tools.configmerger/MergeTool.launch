@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="/org.sidiff.tools.configmerger/src/org/sidiff/tools/configmerger/MergeTool.java"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="1"/>
+</listAttribute>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.sidiff.tools.configmerger.MergeTool"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="testdata/org.sidiff.uml.core a b"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="org.sidiff.tools.configmerger"/>
+</launchConfiguration>

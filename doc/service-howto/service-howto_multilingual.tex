@@ -1,0 +1,1719 @@
+\documentclass[10pt,a4paper]{scrartcl}
+\usepackage[utf8]{inputenc}
+\usepackage{ngerman}
+\usepackage{graphicx}
+\usepackage[final]{listings}
+\lstset{tabsize=2,basicstyle=\ttfamily\small}
+\usepackage[draft]{fixme}
+\usepackage{color}
+\usepackage{framed}
+\definecolor{LinkColor}{rgb}{0.0,0.0,0.0} 
+\usepackage[
+        bookmarks=true,
+        bookmarksopen=true,
+        bookmarksopenlevel={1},
+        bookmarksnumbered=true,
+        plainpages=false,
+        pdfpagelabels=true,
+        hypertexnames=false,
+        pdftitle={},
+        pdfauthor={Sven Wenzel},
+        pdfcreator={LaTeX with hyperref and KOMA-Script},
+        pdfsubject={},
+        pdfkeywords={},
+        final]{hyperref}
+\hypersetup{colorlinks=true,
+        anchorcolor=LinkColor,
+        linkcolor=LinkColor,
+        citecolor=LinkColor,
+        filecolor=LinkColor,
+        menucolor=LinkColor,
+        pagecolor=LinkColor,
+        urlcolor=LinkColor}
+
+\newcommand{\hinweis}[1]{
+\begin{framed}
+\begin{minipage}[t]{0.02\textwidth}
+\textcolor{red}{\Huge{\sffamily !}}
+\end{minipage}
+\begin{minipage}[t]{0.94\textwidth}
+#1
+\end{minipage}
+\end{framed}
+}
+
+\newcommand{\review}[1]{
+	\hfil\\
+	\textbf{\textcolor{red}{#1}}
+	\hfil\\
+}
+
+\providecommand{\deng}[2]{#1 / {\sffamily #2}}
+\providecommand{\deutsch}[1]{#1}
+\providecommand{\englisch}[1]{{\sffamily #1}}
+
+
+\title{SiDiff 2.0 -- Service-Howto}
+\author{Sven Wenzel}
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+\section*{\deng{Dokumentation}{Documentation}}
+\deutsch{Dieses Dokument wird fortlaufend gepflegt. Die nachfolgende Tabelle
+gibt eine Übersicht über die Änderungen in einzelnen Versionen.}
+\englisch{This document is maintained continuously, the subsequent table 
+provides information about changes.}
+
+
+
+\begin{tabular}{|c|p{11cm}|}\hline
+Datum & Änderungen \\\hline\hline
+16.2.09 & erste Version (einfache und instanzierbare Services) \\\hline
+17.2.09 & Kochrezept für konfigurierbare Services \\
+& Hinweis auf Bundle-Namen als String-Konstanten \\
+& Kapitel über häufige Stolperfallen \\\hline
+18.2.09 & Kochrezept für konfigurierbare, instanzierbare Services \\\hline
+23.2.09 & Neues Kapitel: Erstellen einer Laufzeitumgebung \\
+& Neues Kapitel: Zusammenspiel von Services \\\hline
+17.6.09 & Überarbeitet: \\
+& Zusammenspiel von Services: der Service-Kontext \\
+& Kochrezepte B und C an aktuellen ServiceHelper angepasst \\\hline
+17.09.09 & Komplett überarbeitet \\\hline
+22.09.09 & Korrektur kleinerer Fehler\\
+& \textbf{Dokument ist auf Stand der Implementierung (rev. 1470)}\\\hline
+26.10.09 & englische Übersetzung eingepflegt\\\hline
+\end{tabular} 
+
+
+\newpage
+\section{\deng{Einleitung}{Introduction}}
+\subsection{\deng{Warum Services?}{Why services?}}
+\deutsch{SiDiff ist nicht bloß ein Differenzalgorithmus, sondern ein kompletter
+Werkzeugkasten zum Bau verschiedener Differenzwerkzeuge. Zudem ist es kein
+Produkt, sondern Forschungsgegenstand. Um eine hohe Flexibilität zu erreichen,
+also einzelne Komponenten austauschen zu können, wurde SiDiff auf Basis von
+Services realisiert.}
+\englisch{SiDiff is not only an algorithm to compute the differences but rather
+a complete toolbox which allows one to build different tools in the field of
+model differencing. Moreover, it is not a product but rather a subject of
+ongoing research. SiDiff has been realized on the basis of services in order to
+achive a flexibility in particular in order to allow a single components to be
+exchanged.}
+
+\subsection{\deng{Grundidee}{Basic concept}}
+\deutsch{Die Grundidee ist, dass jede Funktionsgruppe, die SiDiff anbietet und die ggf.
+mal gegen eine andere Implementierung ausgetauscht werden könnte, als eigener
+Service realisiert wird. So gibt es z.B. jeweils eigene Services für:}
+\englisch{The basic concept is that each group of functions offered by SiDiff
+which might eventually be replaced by another implementaion is realized as a
+seperate service. Thus, there are services for:}
+
+\begin{itemize}
+ \item \deng{Einlesen von Dokumenten}{The reading of documents}
+ \item \deng{Annotieren mit künstlichen Attributen, wie z.B. Pfaden oder Metriken}{The annotaitons of the model elements with artifial attributes for example: path or matrix values}
+ \item \deng{Ähnlichkeitsberechnung}{Computation of similarities}
+ \item Matching
+ \item \deng{... (uvm.)}{... and so on.}
+\end{itemize}
+
+\deutsch{Zudem können sich Services auf mehrere Module verteilen. 
+Das Annotieren z.B. unterteilt sich weiter in
+\begin{itemize}
+ \item Erweiterung des Datenmodells, um Annotationen an Modellelemente anzuhängen,
+ \item der Annotationsalgorithmus, der alle Modellelemente nacheinander abläuft
+ \item und einzelne Annotationsfunktionen, die die künstlichen Attributwerte berechnen.
+\end{itemize}}
+
+\englisch{In addition services can be seperated over several modules.
+For examplem the annotation is further subdivided into:
+\begin{itemize}
+ \item Extension of the data model in order to be able to append the annotations to model elements,
+ \item the algorithm which scans all model elements and annotates them,
+ \item and single annotation functions which compute artificial attribute values.
+\end{itemize}}
+
+
+\subsection{\deng{Technische Realisierung}{Technical realization}}
+\deutsch{Technisch werden die Services und Module durch OSGi-Bundles realisiert. Ferner
+benutzen wir Eclipse Equinox als OSGi-Plattform.
+
+Ein \emph{Bundle} ist i.W. eine Ansammlung von Java-Klassen und weiteren Ressourcen.
+
+\hinweis{In Eclipse werden OSGi-Bundles gleichwertig wie Plugins behandelt. Zum
+Anlegen eines neuen Bundles sollte im Eclipse-Wizard deshalb ``New
+Plug-In-Project'' gewählt werden. Wichtig ist, dass bei \emph{Target Platform}
+``an OSGi framework: \textbf{standard}'' ausgewählt wird. Der Unterschied
+zwischen beiden Varianten besteht in der Abhängigkeit zum verwendeten
+OSGi-Framework: Die Wahl ``standard'' setzt lediglich das Paket
+\texttt{org.osgi.framework} voraus. Welches Bundle dieses Paket bereitstellt
+(d.h. welche OSGi-Implemntierung benutzt wird), wird dabei völlig offen
+gelassen. Die Variante ``Equinox'' resultiert in einer Bundle-Abhängigkeit zum
+Bundle \texttt{org.eclipse.osgi} (also der OSGI-Implementierung Equinox).}
+}
+
+\englisch{
+Technically, services and modules are realized as OSGI bundles. We are using
+Eclipse Equinox as OSGI platform. 
+
+A \emph{Bundle} is a collection of Java classes and further resources.
+
+\hinweis{In Eclipse OSGi-Bundles and Pulgins are treated equally. In order to
+create a new bundle one should select the Eclipse wizard ``New
+Plug-In-Project''. It is important that under the item \emph{Target Platform} in
+OSGi-Framework \textbf{standard} is chosen. Both variants defer in the
+dependency to the OSGi-Framework. If one chooses standard, only the package
+\texttt{org.osgi.framework} is required. It is completely left open which bundle
+provides this package (in other words which OSGi-Implemetation is used), if one
+choses the variant ``Equinox'', one is independent from the bundle
+\texttt{org.eclipse.osgi} (and in addition from the OSGi-Implemetation Equinox).
+}}
+
+\deutsch{Ein \emph{Service} ist eine Funktion, die bereitgestellt wird. Hierzu
+unterscheiden wir zwischen Servicedefinition (Schnittstelle) und Realisierung.
+Die Schnittstelle ist i.W. wirklich nur ein Java-Interface, während die
+Realisierung dieses Interface implementiert.}
+
+\englisch{A \emph{Service} is a function which is provided somehow. We
+distinguish between the service definition (i.e. Interface) and the realization.
+The interface is essentially only a java interface and the realization
+implements this interface.}
+
+\deutsch{Für einen Service gibt es immer mindestens zwei Bundles. Ein Bundle
+stellt die Servicedefinition und bietet ggf. Klassen und Ressourcen an, die von
+allen Realisierungen genutzt werden können. Mindestens ein weiteres Bundle
+stellt eine Implementierung des Services bereit. Mehrere verschiedene
+Implementierungen sind selbstverständlich möglich.}
+
+\englisch{There are at least two bundles for each service. One bundle defines
+the service (i.e. the interface) and may offer classes and resources which are
+used by all realizations. At least one bundle provides an implementation of the
+service. Of cource the same service can have different implementaions.}
+
+\subsection{\deng{Arten von Services}{Kinds of Services}}
+\label{service-arten}
+\deutsch{Wir unterscheiden folgende Arten von Services:}
+
+\englisch{We distinguish the following types of services:}
+
+\begin{itemize}
+ \item \deng{einfache Services (siehe Kochrezept A)}{Simple services (see recipe A)}
+ \item \deng{instanzierbare Services (siehe Kochrezept B)}{Services which can be instantiated (see recipe B)}
+ \item \deng{konfigurierbare Services (siehe Kochrezept C)}{Services which can be configured (see recipe C)}
+ \item \deng{konfigurierbare und instanzierbare Services (siehe Kochrezept D)}{Services which can be configured and instantiated (see recipe D)}
+\end{itemize}
+
+\deutsch{Als \emph{einfachen Service} bezeichnen wir einen Service, der durch \emph{ein Objekt}
+bereitgestellt wird, dass eine bestimmte Schnittstelle definiert.}
+
+\englisch{A \emph{simple Service} is a service which is provided by \emph{one Object} which defines one particular interface.}
+
+\deutsch{Als \emph{instanzierbaren Service} bezeichnen wir einen Service, der
+bei jeder Anforderung durch ein \emph{neues Objekt} bereitgestellt wird. Das
+Konzept ähnelt dem OSGi-Konzept der \texttt{ServiceFactory}, ist jedoch
+grundsätzlich anders, da es bei \emph{wirklich jeder} Anforderung ein neues
+Service-Objekt erzeugt -- auch wenn der Service mehrfach aus dem gleichen Bundle
+angefordert wird. Um uns von der \texttt{ServiceFactory} abzugrenzen, wird hier
+mit einem \texttt{ServiceProvider} gearbeitet\footnote{Aus OSGi-Sicht ist der
+\texttt{ServiceProvider} ein Service, der nur ein Objekt erzeugt und zurückgibt.
+Wir bezeichnen aber dieses Objekt als Implementierung des Service, da der
+Mechanismus des \texttt{ServiceProvider}s transparent erfolgt.}.}
+
+\englisch{A \emph{Service which can be instantiated} is a service which is
+provided by a new object whenever the service is called. This concept is similar
+to the OSGi-concept of a \texttt{ServiceFactory}, however it defers
+substantially because \emph{at each and every} invocation of the service a new
+service object is created. Even then if the service is invoked several times
+from the same bundle. In order to distinguish it from a \texttt{ServiceFactory}
+we use a \texttt{ServiceProvider} here.\footnote{From the point of view of OSGi,
+a \texttt{ServiceProvider} is a service which creates only one new object and
+returns it. We call this object an implementaion of the service because the
+mechanism of the \texttt{ServiceProvider} works transparently}.}
+
+\deutsch{\emph{Konfigurierbare Services} sind Services, die mittels geeigneter Daten
+(z.B. Konfigurationsdatei) auf spezielle Dokumenttypen angepasst werden können.
+Hier wird ein Konfigurator registriert, mit dessen Hilfe eine Service-Instanz
+erzeugt und konfiguriert werden kann. Im Anschluss ist diese Instanz dauerhaft
+konfiguriert und mehrfach verwendbar. Die Koexistenz verschieden konfigurierter
+Instanzen eines Service ist damit möglich.}
+
+\englisch{\emph{Services which can be configured} are services which can be
+adapted to a specific document type using suitable data (for example a
+configuration file). In this case a configurator is registered and using this
+configurator a service instance can be created and configured. Afterwards this
+instance is configured permanently and can be used repeatedly. In this way
+several instances of a service which are configured differently can coexist at
+the same time.}
+
+\deutsch{\emph{Konfigurierbare und instanzierbare Services} sind eine Mischform
+aus den beiden vorherigen Service-Typen. Die Services werden konfiguriert und
+bei jeder Anforderung wird ein neues Objekt bereitgestellt. Im Wesentlichen wird
+hier der \texttt{ServiceProvider} konfiguriert.}
+
+\englisch{\emph{Services which can be configured and instantiated} are a mixture
+of the both previous service types. The services are configured and a new object
+is created at each invocation of the service. Essentailly the
+\texttt{ServiceProvider} is configured here.}
+
+\subsection{\deng{Hierarchien von Services}{Hierarchies of services}}
+\deutsch{Services lassen sich hierarchisch klassifizieren. Erste Klassen von
+Services wurden bspw. bereits in Abschnitt \ref{service-arten} eingeführt. Das
+sich die Klassifizierung von Services hierarchisch strukturieren läßt ist bspw.
+daran erkennbar, dass jeder konfigurierbare Service natürlich auch ein einfacher
+Service mit zusätzlichen Eigenschaften ist. Ein weiteres Beispiel aus SiDiff ist
+der MatchingService, von dem es spezielle Varianten in Form des
+HashMatchingService und des IterativeMatchingService gibt.}
+
+\englisch{Services can be classified hierarichally. A first set of service
+classes has been introduced in the previous section \ref{service-arten}. It is
+easy to see that services can be structured hierarchically because each service
+which can be configured is also simple service with additional properties.
+Another example from the SiDiff is the matching service which has two specific
+variants in the form of the hash matching service and the iterative matching
+service.}
+
+\deutsch{Im Zuge des Service-Managements durch den ServiceHelper (s. Abschnitt
+\ref{service-helper}) wird dieser Service-Hierarchie dadurch Rechnung getragen,
+dass jeder Service nicht nur unter seinem eigenen Service-Interface beim
+OSGI-Framework registriert wird, sondern auch unter der Schnittstelle seiner
+Superklassen. Der HashMatchingService wäre demnach also nicht nur als
+HashMatchingService, sondern auch als MatchingService registriert. Gleichzeit
+bekäme ein Client bei der Anforderung MatchingService tatsächlich einen Service
+zurück. In der Regel wird hier der am wenigsten spezielle Service vom
+ServiceHelper zurückgeliefert. Sind zwei oder mehr Service gleich speziell (d.h.
+sie besitzen die selbe Tiefe in der Sevice-Hierachie), so wird irgendeiner dieser
+Services zurückgegeben.}
+
+\englisch{The service hierarchy is is taken into account in the context of the
+service-management as follows. Each service is not only registered under its own
+interface but also under the interfaces of its superclasses. For example, the
+hash matching service is not only registered as HashMatchingService but also as
+MatchingServicen in general. This means also that a client which requests a
+MatchingService gets a service returned. Normally the least specific service is
+delivered by the ServiceHelper. If two services are equally specific, in other
+words they are located at the same level at the service hierarchy, then one of
+them is returend).}
+
+\subsection{\deng{Der ServiceHelper}{The ServiceHelper}}
+\label{service-helper}
+\deutsch{Der ServiceHelper kapselt die Zugriffe auf den Service-Layer des
+OSGi-Frameworks. Wir benutzen den ServiceHelper somit als allgemeine
+Schnittstelle für Aufgaben wie bspw. die Registrierung oder das Anfordern von
+Services. Die direkte Kommunikation mit dem OSGi-Framework über den
+OSGi-BundleContext sollte vermieden werden. Der ServiceHelper kapselt alle
+Zugriffe für eine bessere Wartbarkeit und die gleichartige Nutzung anderer
+Servicearten.}
+
+\englisch{The ServiceHelper encapsulates the service layer of the OSGi-Framework.
+We are using the ServiceHelper as a general interface for registering and
+requesting services. One should not directly invoke operations of the
+OSGi-Framework using the OSGi-BundleContext. If the ServiceHelper is used the
+system can be better maintained and all services are used consistently.}
+
+\subsection{\deng{Literatur}{Literature}}
+\deutsch{Als Einführung in die OSGi-Thematik empfehlen wir:}
+
+\englisch{We recommend as an introduction to the OSGi topic the book:}
+
+\noindent Gerd Wütherich et.al.,\\
+Die OSGi Service Platform,\\
+dpunkt Verlag,\\
+ISBN 978-3-89864-457-0,\\
+2008
+
+
+
+\clearpage
+\section{\deng{Konventionen}{Conventions}}
+\subsection{\deng{Trennung von Schnittstelle und Implementierung}{Seperation of Interface and Implementaion}}
+\deutsch{Wie bereits oben erwähnt, gibt es für jeden Service mindestens zwei Bundles,
+damit Schnittstelle und Implementierung getrennt werden.
+
+Es kann Ausnahmen geben, in denen Schnittstelle und Implementierung eines Service
+nicht getrennt werden. Dies ist insbesondere dann der Fall, wenn es nur eine 
+Implementierung für den Service geben kann und die Möglichkeit zur Austauschbarkeit
+unsinnig ist. \textbf{Diese Ausnahmen sollten gemeinsam abgestimmt werden.}}
+
+\englisch{We have already mentioned above that there are at least two bundles
+for each service in order to sepearte interface and implementation.
+
+There can be exceptions to this rule in which the interface and the
+implementaion of a service are not seperated. Such exceptions occur in
+particular if there can be at most one implementaion of a service and if it can
+not be exchanged. However, such exceptions should be discussed together.}
+
+
+\subsection{\deng{Namensgebung}{Choice of Names}}
+\deutsch{Jeder Service soll seinen eigenen Namensraum definieren, dazu wird das
+Bundle entsprechend benannt. Der Name beginnt immer mit \texttt{org.sidiff.}.
+Dann folgt ggf. ein \texttt{core.}, falls das Bundle dem SiDiff-Kern zuzuordnen
+ist. Im Anschluss folgt der eigentliche Bundlename. 
+
+Beispiele: Matching (gehört zum Kern) $\to$ \texttt{org.sidiff.core.matching},
+Fingerprints (nicht Bestandteil des Kerns) $\to$
+\texttt{org.sidiff.fingerprints}.
+
+Hat ein Bundle mehrere Unterbundles oder gibt es für den Service verschiedene
+Realisierungen, so werden hierzu weitere Pakete angehängt. 
+
+Beispiel \texttt{org.sidiff.core.matching.idbased} und
+\texttt{org.sidiff.core.matching.iterative}
+}
+
+\englisch{Each service should define its name space and the bundle has to be
+named accordingly. The new name starst always with \texttt{org.sidiff.}.
+Subsequently follows \texttt{core.} if the bundle belongs to the SiDiff kernel.
+Then follows the bundle name and such.
+
+Example: Matching (which belongs to the kernel) has the name: $\to$
+\texttt{org.sidiff.core.matching}, Fingerprints (which is not part of the
+kernel) has the name: $\to$ \texttt{org.sidiff.fingerprints}.
+
+If a bundle has several subbundles or if a service has several implementaions
+one has to append the names of these packages.
+
+Example: \texttt{org.sidiff.core.matching.idbased} and
+\texttt{org.sidiff.core.matching.iterative}
+}
+
+\subsection{\deng{Sichtbarkeiten}{Visibilities}}
+\deutsch{OSGi bietet die Möglichkeit, in der Manifest-Datei eines Bundles festzulegen,
+welche Pakete nach aussen sichtbar sein sollen, und welche für den internen
+Gebrauch innerhalb des Bundles gedacht sind. Dieser Mechanismus ist bitte soweit
+möglich auszunutzen, sodass nur die Klassen nach aussen sichtbar sind, die dies
+wirklich erfordern. Um Klassen zu ``verstecken'' kann man ggf. ein Unterpaket
+\texttt{internal} anlegen, das man nach aussen nicht freigibt.}
+
+\englisch{OSGi allows one to define in the manifest file of a bundle which
+packages are visible from outside and which can be used internally within the
+bundle. This mechanism should be used as much as possible. As a result only
+those classes should be visible from the outside which are really used. In order
+to hide classes one can, if necessary, create a subpackage \texttt{internal}
+which is not accessible from the outside.}
+
+
+
+
+\clearpage
+\section{\deng{Kochrezept A: Anbieten und Nutzen eines einfachen Services}{Cooking recipe A: Offering and Using a Simple Service}}
+\deutsch{Zum Anbieten eines Service müssen zwei Bundles angelegt werden. Eines mit der 
+Service-Schnittstelle und eines mit der Implementierung des Service.}
+
+\englisch{In order to offer a service two bundles should be created. One of them with the Service-Interface and the other one with the implemetation of the service.}
+
+\subsection{\deng{Anlegen des Schnittstellen-Bundles}{Creation of the Interface-Bundle}}
+\deutsch{Das Schnittstellen-Bundle wird angelegt wie ein Bundle, das Klassen und 
+Ressourcen anbietet (siehe WhitePaper ``Introduction to the SiDiff 2.0 Development Environment'').
+
+Im Wesentlichen bietet dieses Bundle nämlich ein Java-Interface an. 
+Optional können hier auch noch andere Klassen
+und Ressourcen angeboten werden. Zum Beispiel: Hilfsfunktionen, die von 
+verschiedenen Implementierungen genutzt werden können.}
+
+\englisch{The Interface-Bundle is created as a bundle which provides classes and
+resources (see white paper ``Introduction to the SiDiff 2.0 Development
+Environment'').
+
+Essentially this bundle provides the Java-Interface.  In addition one can offer
+further classes and resources here. For example: Auxilary functions which can be
+used by different implementations.} 
+
+\paragraph{\deng{Definition der Service-Schnittstelle}{Definition of the Service-Interface}}
+\deutsch{Die Service-Schnittstelle ist ein reines Java-Interface, welches das
+Interface \texttt{org.sidiff.common.services.Service} erweitert. Hier sollten
+alle Methoden definiert werden, die der Service anbieten soll.}
+
+\englisch{The Service-Interface is a pure Java interface which extends the
+interface \texttt{org.sidiff.common.services.Service}. All methods which service
+offers should be defined here.}
+
+\begin{lstlisting}
+public interface MyService extends Service {
+	public void doSomething();
+	public boolean doAnotherThing(int i);
+}
+\end{lstlisting}
+
+\deutsch{\hinweis{Es sollen keine abstrakten Klassen als Service-Schnittstellen
+eingesetzt werden. Möchte man ein abstraktes Verhalten bereits anbieten, so kann
+zusätzlich zum Interface eine abstrakte Klassen bereitgestellt werden, von der
+konkrete Service-Implementierungen erben können.}}
+
+\englisch{\hinweis{Abstract classes should not be used as service interfaces. If
+one really wants to provide abstract behaviour one should create an abstract
+class in addition to the interface in order to be able to inherit from concrete
+service implementations}}
+
+\subsection{\deng{Anlegen des Bundles mit der Implementierung}{Creation of the Implementation Bundle}}
+\deutsch{Auch das Bundle mit der Implementierung wird wie im WhitePaper
+``Introduction to the SiDiff 2.0 Development Environment''beschrieben erstellt,
+\textbf{jedoch mit einer wichtigen Änderung}:
+
+In Schritt 3 wird ausgewählt, dass ein Activator generiert werden soll. Der
+vorgeschlagene Name sollte beibehalten werden.}
+
+\englisch{The bundle with the implementaiton should be created as described in
+the white paper ``Introduction to the SiDiff 2.0 Development Environment'',
+however with one important difference.
+
+In step 3 , one should choose to generate an activator. The name which is
+proposed should be kept.}
+
+
+\paragraph{\deng{Abhängigkeit zum Schnittstellen-Bundle}{Dependencies from the Interface-Bundle}}
+\deutsch{Bevor der Service implementiert werden kann, ist im Manifest-Editor unter
+\emph{Dependencies} das Schnittstellen-Bundle als \emph{Required Plugin}
+hinzuzufügen. Im Anschluss können die Klassen und damit auch das Interface
+aus dem Schnittstellen-Bundle verwendet werden.}
+
+\englisch{Before implementing a service, one has to specify the Interface-Bundle
+as \emph{Required Plugin} in the \emph{Dependencies} section of the manifest. In
+this way classes and interfaces of the Interface-Bundle can be used.}
+
+
+\paragraph{\deng{Implementieren des Services}{Implementing with the Service}}
+\deutsch{Um den Service zu implementieren, ist eine neue Klasse anzulegen, die das
+Interface aus dem Schnittstellen-Bundle implementiert. Hierzu können auch beliebig
+viele andere Klassen angelegt und verwendet werden. auch das Nutzen weiterer
+Services ist selbstverständlich möglich.}
+
+\englisch{In order to implement the service a new class has to be created which
+implements the interface from the Interface-Bundle. Of course one can arbitrarily
+create and use many other classes. One can also use other services.}
+
+\begin{lstlisting}
+public class MyServiceImpl implements MyService {
+	public void doSomething() {
+		System.out.println("something");
+	}
+	public boolean doAnotherThing(int i) {
+		return (i<5);
+	}
+}
+\end{lstlisting}
+
+
+\paragraph{\deng{Bekanntmachen der Service-Implementierung mittels Activator}{Publishing a Service-Implementation using the Activator}}
+\deutsch{Bevor ein konkreter Service genutzt werden kann, muss er registriert werden. Es
+muss also irgendwo gesagt werden ``Hallo, ich bin eine Implementierung von
+Service X!''. Dies erfolgt bei der zentralen OSGi-Verwaltung, die über den
+sogenannten BundleContext zugreifbar ist. Den BundleContext erhält man als
+Parameter in der Start-Methode des Activators. Hier wird auch die
+Service-Implementierung registriert.
+
+\hinweis{Es werden nur Implementierungen von Services registriert. Die
+Service-Schnittstellen werden allen betroffenen als bekannt vorausgesetzt und
+nicht explizit registriert.}
+
+Hier ein Beispiel-Activator. Hinter \texttt{MyService.class} verbirgt sich ein Java-Interface, dass im
+Schnittstellen-Bundle definiert ist.}
+
+\englisch{A concrete service can only be used if it has been registered before. This is done by the central OSGi-Management which is accessible via the BundleContext. The BundleContext is obtained as a parameter in the start method of the activator. The service implementation is also registered here.
+
+\hinweis{Only implementations of services are registered. Service-Interfaces are assumed to be known whenever necessary and are not explicitly registered }
+
+It follows an example activator. \texttt{MyService.class} contains a Java interface which is defined in an Interface-Bundle.}
+
+\begin{lstlisting}
+public class Activator implements BundleActivator {
+
+	public static final String BUNDLE_NAME = "org.sidiff.example.myservice";
+
+	@Override
+	public void start(BundleContext context) throws Exception {
+		ServiceHelper.registerService(context, MyService.class, 
+			new MyServiceImpl(), null, null);
+	}
+
+	@Override
+	public void stop(BundleContext context) throws Exception {
+	}
+
+}
+\end{lstlisting}
+\deutsch{Die \texttt{start()}-Methode wird vom OSGi-Framework automatisch aufgerufen,
+wenn das Bundle gestartet wird. 
+
+Mit \texttt{registerService()} wird der Service registriert. Hierzu werden folgende
+Parameter übergeben:}
+
+\englisch{The \texttt{start()}-Method is invoked automatically by the OSGi-Framework if the bundle is started.
+
+A service is registered using \texttt{registerService()}. This operation has the following parameters:}
+
+\begin{enumerate}
+ \item \deng{Der OSGI-BundleContext }{The  OSGI-BundleContext}
+ \item \deng{Der Service, dessen Implementierung hier angeboten wird.}{The service whose implementation is offered here}
+ \item \deng{Eine \textbf{Instanz} der Service-Implementierung.}{One \textbf{Instance} of the Service-Implemetation.}
+ \item \deng{Der Dokumenttyp, den der Service unterstützt, oder \texttt{null}, falls
+der Service Dokumenttyp-unabhängig ist.}{The DocumetnType which is supported by this particular service or a \texttt{null}, if this service is independent from documet types.}
+ \item \deng{Eine optionale Variantenbezeichnung oder \texttt{null}.}{An optional name of variant or \texttt{null}.}
+ \item \deng{Als fünfter, optionaler(!) Parameter kann noch, wie bei allen OSGI-Services, ein Dictionary mit 
+Schlüssel-Wert-Paaren angegeben werden, das in der OSGi-ServiceRegistry 
+gespeichert wird.}{As another optional parameter one can supply a diciotnary of key-value pairs as for all OSGi-Services. This dicitionary starts in the OSGi-ServiceRegistry.}
+\end{enumerate}
+
+\deutsch{Falls notwendig, können in der \texttt{stop()}-Methode Anweisungen angegeben werden,
+die auszuführen sind, falls das Bundle aus dem System herausgenommen wird.}
+
+\englisch{If necessary the \texttt{stop()}-Method can contain instructions which are to be executed if the bundle is removed from the system.}
+
+\deutsch{\hinweis{Per Konvention sollten alle Bundles ihren Namen, der gleichzeitig Projektname ist,
+auch als String-Konstante speichern, um darauf referenzieren zu können. Die Konstante sollte
+nach Möglichkeit im Activator definiert werden, um sie innerhalb eines Projektes schnell zu finden.}}
+
+\englisch{\hinweis{All bundles should store their name which is at the same time Projectname as a string constant in order to be able to refrence it. This constant should, if possible, be defined in the activator in order to enable one to find it quickly within the project.}}
+
+\subsection{\deng{Verwenden des Services}{Using the Service}}
+\deutsch{Der oben implementierte Service kann nun in anderen Bundles verwendet
+werden. Hierzu muss im Manifest-Editor des benutzenden Bundles das Bundle mit
+der Service-Schnittstelle als \emph{Required Plugin} in den \emph{Dependencies}
+eingetragen werden. Die Registrierung des implementierenden Bundles ist nicht
+notwendig und sollte zwecks Aufrechterhaltung der Austauschbarkeit von
+Implementierungen auf keinen Fall eingetragen werden.\footnote{Welche
+Implementierung gerade zur Verfügung steht ergibt sich aus der aktuellen
+Laufzeitumgebung. In Eclipse-Runtime-Umgebungen z.B. zum Debuggen, wird dies
+durch Auswahl aller zu ladenden Plugins/Bundles festgelegt.}}
+
+\englisch{If a service has been implemented as described above it can be used by
+other bundles. The bundle with the service interface must be specified in the
+manifest of the using bundle. It is not necessary to register the implementation
+bunlde and in fact registering implemetation bundles should be avoided
+completely in order to make implementaitons exchangable.\footnote{Which
+implementation is availabe can be seen from the current run-time environment.
+For example in an Eclipse-Runtime-Environment for debugging this specified by
+the selection of the plugins and bundles which are to be loaded.}}
+
+\deutsch{Zudem muss das Bundle \texttt{org.sidiff.common.services} als
+\emph{Required Plugin} eingetragen werden. Es bietet Hilfsfunktionen wie den
+\texttt{ServiceHelper} an.
+
+Im benutzenden Bundle kann die Implementierung des Service wie folgt angefordert
+und benutzt werden:}
+
+\englisch{In additon the bundle \texttt{org.sidiff.common.services} must be
+registered as \emph{Required Plugin}. It provides auxilary functions such as
+\texttt{ServiceHelper}.
+
+The implementation of a service can be invoked in the using bundle as follows:}
+
+\begin{lstlisting}
+MyService ms = ServiceHelper.getService(context, MyService.class,
+ null, null);
+if (ms != null) {
+	ms.doSomething();
+}
+\end{lstlisting}
+
+\deutsch{\texttt{MyService} stellt dabei das Java-Interface dar, das die
+Service-Schnittstelle definiert. Über die konkrete Implementierung wird hier
+nichts bekannt. \texttt{context} ist der BundleContext von OSGi. Der zweite
+Parameter ist die Schnittstelle des angeforderten Service. Der dritte Parameter
+kann einen Dokumenttyp vorgeben für den der Service angefordert wird. Der vierte
+Parameter kann eine Variante vorschreiben. Im einfachen Fall können der dritte
+und vierte Paramter \texttt{null} sein.}
+
+\englisch{\texttt{MyService} represents the Java-Interface which defines the
+Service-Interface. The concrete implementation is not known here. The parameter
+\texttt{context} is the BundleContext of OSGi. The second parameter is the
+Interface of the requested service. The third parameter is optional, it can
+specify the document type for which the service is required. The forth parameter
+can choose one of the variant. In simple cases the third and forth parameters
+are \texttt{null}.}
+
+\deutsch{\hinweis{Es ist zu beachten, dass bei dem hier vorgestellten Verfahren,
+\emph{ein Objekt} als Serviceimplementierung registriert wurde. Alle Nutzer des
+Services bekommen also Zugriff auf dasselbe Objekt. Dies sollte bei der
+Definition der Schnittstelle und bei der Implementierung (Stichwort temporäre
+Daten) berücksichtigt werden.}}
+
+\englisch{\hinweis{On the procedures presented here one object has been
+registered as implementation of the service. Thus all users of the service
+access the same object. This must be considered in the definition of the
+interface and the implemetation (e.g. with respect to temporary data).}}
+
+
+
+\clearpage
+\section{\deng{Kochrezept B: Definition und Verwendung eines ProvideableService}{Cooking Recipe B: Definition and Use of a Providable Service}}
+\deutsch{Es kann oft vorkommen, dass ein Service in verschiedenen Kontexten genutzt
+werden soll; und das ggf. gleichzeitig. Deshalb ist es nicht sinnvoll, wenn
+genau eine Service-Instanz (also ein Objekt) beim OSGi-Framework registriert
+wird. Mit \texttt{ProvideableService} und \texttt{ServiceProvider} bieten wir
+ein Konzept an, um Service-Instanzen erst dann anzulegen wenn der Service
+angefordert wird, und außerdem um jedem Nutzer des Services eine neue Instanz
+anzubieten. Die Klassen werden beide im Bundle \texttt{org.sidiff.common.services}
+bereitgestellt.}
+
+\englisch{Sometimes a service must be used concurently in differnt contexts. In
+such cases it is not suitable to register exactly one instance (i.e one object)
+in the OSGi-Framework. \texttt{ProvideableService} and \texttt{ServiceProvider} 
+are concepts for creating service instances only at the time when the service is
+resquested. This concept also allows each user to have an instance of his own.
+Both classes are supplied in the bundle \texttt{org.sidiff.common.services}.}
+
+\deutsch{\hinweis{OSGi bietet eine sogenannte \texttt{ServiceFactory} an. Es
+handelt sich dabei um ein Interface, welches ein Service implementieren kann.
+Ist dies der Fall wird, beim Anfordern des Services aus verschiedenen Bundles
+die Factory verwendet und jedem Bundle ein neues Objekt zurückgegeben. Da die
+Service-Instanzen, die mittels \texttt{ServiceFactory} erzeugt werden, jedoch
+transparent vom OSGi-Framework pro Bundle zwischengespeichert werden, wird zwei
+unterschiedlichen Instanzen eines Services der gleiche Service angeboten.
+Nebenläufigkeit und Trennung von Informationen sind somit nicht mehr möglich.
+Das Konzept der \texttt{ServiceFactory} wird deshalb bei SiDiff nicht
+verwendet.}}
+
+\englisch{\hinweis{OSGi provides a so called \texttt{ServiceFactory}. This is an
+interface which can be implemented by a service. In this case if a service is
+requested by different bundles, the factory is used and for each bundle a new
+object is created. The service instances which are created using the
+\texttt{ServiceFactory} are transparently stored by the OSGi-Framework for each
+bundle. Hence, two different instances of the service are provided with the same
+service instance. Concurrent execution and seperation of information is
+thereforenot possible. This is why we don't use the concept of a
+\texttt{ServiceFactory}.}}
+
+
+\subsection{\deng{Definition der Service-Schnittstelle}{Definition of a Service-Interface}}
+\deutsch{Die Definition der Service-Schnittstelle erfolgt wie bei einfachen
+Services, jedoch muss das Interface zusätzlich vom Interface
+\texttt{ProvideableService} erben. Dieses Interface ist leer und dient als
+``Marker'' im automatischen Instanzierungsprozess.}
+
+\englisch{The Service-Interface is defined in the same way as with simple
+services. However the interface must in addition inherit from the interface
+\texttt{ProvideableService}. This interface is actually empty and serves only as
+a type of marker in the automatic process of instantiation.}
+
+\begin{lstlisting}
+public interface MyService extends ProvideableService {
+	public void doSomething();
+	public boolean doAnotherThing(int i);
+}
+\end{lstlisting}
+
+\deutsch{Außerdem wird die Definition eines \texttt{ServiceProviders} benötigt, welcher die Methode
+\texttt{createInstance()} definiert.}
+
+\englisch{In addition the definition of a \texttt{ServiceProvider} is requested which defines the method \texttt{createInstance()}.}
+
+\begin{lstlisting}
+public interface MyServiceProvider extends ServiceProvider<MyService> {
+}
+\end{lstlisting}
+
+\deutsch{Wichtig ist, dass das Interface folgender \textbf{Konvention} folgt:}
+
+\englisch{It is important that the interface follows the following conventions:}
+
+\begin{enumerate}
+ \item \deng{Es heißt genauso wie die Service-Schnittstelle trägt das Suffix \texttt{Provider}.}{The name is the same as the one of the service interface with the additonal suffix \texttt{Provider}.}
+ \item \deng{Es liegt im selben Paket wie die Service-Schnittstelle.}{It is located in the same package like the Servie-Interface.}
+ \item \deng{Es erbt vom Interface \texttt{ServiceProvider}, getypt auf die Service-Schnittstelle.}{It inherits from the interface \texttt{ServiceProvider}. and is typecast to the Service-Interface.}
+\end{enumerate}
+
+
+\subsection{\deng{Implementierung des Services}{Implementaion of a Service}}
+\deutsch{Der Service selbst wird wie gewohnt realisiert, indem er die Schnittstelle implementiert.
+
+Zusätzlich ist nun die Implementierung des ServiceProviders notwendig. Dieser verfügt
+über eine \texttt{createInstance}-Methode, die ausgerufen wird, um eine Instanz des Service
+zu erzeugen.}
+
+\englisch{The service is implemented as usual by implementing the interface. 
+
+In addition the implementation of service provider is necessary. It has a method \texttt{createInstance} which is called in order to create an instance of the service.}
+
+\begin{lstlisting}
+public class MyServiceProviderImpl implements MyServiceProvider {
+	@Override
+	public MyService createInstance() {
+		return new MyServiceImpl();
+	}
+}
+\end{lstlisting}
+\deutsch{Die Methode muss ein Objekt vom Typ des entsprechenden Service zurückgeben.}
+
+\englisch{This method must return an object whose type is this service.}
+
+
+\subsection{\deng{Bekanntmachen der Service-Implementierung}{Publishing the Service-Implementation}}
+\deutsch{Die Bekanntmachung der Service-Implementierung erfolgt wieder über den Activator.
+Jedoch wird diesmal der \texttt{ServiceProvider} registriert. Die weiteren 
+Parameter sind analog zur Registrierung einfacher Services.}
+
+\englisch{A Service-Implementation is published via the activator. This time however the \texttt{ServiceProvider} is registerd. All other parameters are the same as indicates when a simple service is registerd.}
+
+\begin{lstlisting}
+public class Activator implements BundleActivator {
+
+	@Override
+	public void start(BundleContext context) throws Exception {
+		ServiceHelper.registerServiceProvider(context,
+			MyServiceProvider.class, new MyServiceProviderImpl(), 
+			null, null);
+	}
+
+	@Override
+	public void stop(BundleContext context) throws Exception {
+	}
+
+}
+\end{lstlisting}
+\deutsch{Die Service-Implementierung selbst muss nicht registriert werden. Sie wird über
+den \texttt{ServiceProvider} bereitgestellt.}
+
+\englisch{It is not necessary to register the service implementaion itself. It is provided by the \texttt{ServiceProvider}.}
+
+
+\subsection{\deng{Verwenden des Services}{Usage of the Service}}
+\deutsch{Der oben implementierte Service kann nun genauso in anderen Bundles verwendet
+werden wie einfache Services. Hierzu muss wieder das Schnittstellen-Bundle als
+Abhängigkeit im Manifest-Editor eingetragen werden. Zudem besteht wieder die
+Abhängigkeit zum Bundle \texttt{org.sidiff.common.services}.}
+
+\englisch{A service which is implemented as described above can be used in other bundles in the same way like simple services. As preparation one must specify in the manifest a dependency from the Interface-Bundle. Moreover the dependency from the bundle \texttt{org.sidiff.common.services} must be specified.}
+
+\deutsch{Der Zugriff auf den \texttt{ServiceProvider} erfolgt transparent über den
+\texttt{ServiceHelper}. Im benutzenden Bundle kann die Implementierung des
+Service also wie bei einfachen Services angefordert und benutzt werden:}
+
+\englisch{The \texttt{ServiceProvider} is accessed transparently via the \texttt{ServiceHelper}. The using bundle can request the implementation of the service in the same way as a simple service.}
+
+\begin{lstlisting}
+MyService ms = ServiceHelper.getService(context, MyService.class, null ,null);
+if (ms != null) {
+	ms.doSomething();
+}
+\end{lstlisting}
+
+\deutsch{\texttt{MyService} stellt dabei wieder das Java-Interface dar, das die
+Service-Schnittstelle definiert. Über den eingesetzten \texttt{ServiceProvider}
+ist hier also nichts bekannt. Der Zugriff auf den Provider und die Instanzierung
+der eigentlichen Service-Implementierung erfolgt transparent.
+
+Der \texttt{ServiceHelper} prüft, ob der angeforderte Service ein
+\texttt{ProvideableService} ist. Wenn ja, wird beim OSGi-Framework ein
+entsprechend benannter \texttt{ServiceProvider} (hier
+\texttt{MyServiceProvider}) gesucht und dessen \texttt{createInstance()}-Methode
+aufgerufen. Der Nutzer des Services bekommt durch die Kapselung im
+\texttt{ServiceHelper} jedoch nichts davon mit.
+}
+
+\englisch{\texttt{MyService} represents again the Java-Interface which defines
+the Service-Interface. Nothing is known about the provider being used. The
+provider is transparently accessed, and also the service implementation is
+instantiated transparently.
+
+The \texttt{ServiceProvider} checks whether the required service is a \texttt{ProvideableService}. If so, the respectively named \texttt{ServiceProvider}  (in this case \texttt{MyServiceProvider}) is searched in the OSGi-Framework and it's \texttt{createInstance()} method is called. The details of this procedure is are not visible to user of the service due to the encapsulation in the \texttt{ServiceHelper}.}
+
+\deutsch{\hinweis{Es ist zu beachten, dass bei dem hier vorgestellten Verfahren,
+\emph{immer} ein \emph{neues} Objekt als Service-Implementierung zurückgeliefert
+wird. Wird daselbe Objekt mehrfach benötigt, sollte also entsprechend nach dem
+ersten Anfordern eine Referenz darauf angelegt werden.}}
+
+\englisch{\hinweis{With the techniques presented here, always a new object is returened as service implementation. If this particular object is required several times one should create a refrence to this object after the intial service request.}}
+
+
+
+\clearpage
+\section{\deng{Kochrezept C: Konfigurierbare Services}{Cooking Recipe C: Services which can be Configured}}
+\deutsch{In viel Fällen benötigen wir Services, die z.B. für einen bestimmten
+Dokumenttyp konfiguriert werden. Zudem möchten wir unterstützen, dass mehrere,
+verschieden konfigurierte Services eines Typs parallel existieren.
+
+Wir ermöglichen die Koexistenz von mehreren Service-Instanzen, die verschieden
+konfiguriert sind. Die Instanzen unterschieden wir anhand des Dokumenttyps für
+den sie bestimmt sind. Da SiDiff darauf ausgelegt ist, Dokumente 
+unterschiedlichen Typs zu verarbeiten und die Konfiguration sich insbesondere
+von Dokumenttyp zu Dokumenttyp unterscheidet, benutzen wir den Dokumenttyp als 
+Schlüsselattribut.
+
+Um zudem auch für einen Dokumenttyp noch mehrere Konfigurationen zuzulassen, kann 
+zusätzlich zum Dokumenttyp auch noch eine Variante angegeben werden. Diese ist
+ein einfacher String, um verschiedene Konfigurationen zu unterscheiden.
+
+Services müssen nur einmal konfiguriert werden und können danach beliebig oft
+verwendet werden. Dies ermöglicht eine effiziente Integration in Algorithmen,
+da u.U. aufwendige Initialisierungen nur einmal auszuführen sind.}
+
+\englisch{In many cases one needs services which can be configured for one
+particular documet type. In addition we want to have several
+services of the same type which are configured differently to exist in parallel.
+
+Several service instances which are differently configured can exist in parallel.
+The instances are distinguished by the document type to which they belong.
+SiDiff has been designed in such a way that document of different type can be
+processed and each document type has its own configuration. This is why we use
+the document type as key attribute.
+
+In order to support several configurations for the same documet type a variant
+can be specified in addition to the document type. The variant specified using a
+simple string, different configurations can be distinguished in this way.
+
+Services need to configured only once and can then be used arbitrary often. The
+integration in other algorithms is made more efficient this way because
+initializations must be performed only once.}
+
+\subsection{\deng{Definition eines konfigurierbaren Services}{Definition of Service which can be Configured}}
+\paragraph{\deng{Service-Schnittstelle}{Service-Interface}}
+\deutsch{Um einen konfigurierbaren Service zu definieren, muss die Service-Schnittstelle
+lediglich das Interface \texttt{ConfigurableService} erweitern. Es befindet
+sich, wie die anderen Service-relevanten Teile, im Bundle 
+\texttt{org.sidiff.common.services}}
+
+\englisch{In order to define a configurable service the service interface must extend the interface \texttt{ConfigurableService}. It is located in the bundle \texttt{org.sidiff.common.services} as other parts which are relavent to services.}
+
+\begin{lstlisting}
+public interface ConfigurableService {
+	public String configure(Object... configData);
+	public void deconfigure();
+	public Dictionary<String, String> getProperties();
+}
+\end{lstlisting}
+
+\deutsch{Die \texttt{configure()}-Methode wird aufgerufen, um den Service mit 
+beliebigen Daten (\texttt{Object...}) zu konfigurieren. Es kann sich hierbei
+um eine freidefinierbare Menge von Objekten, wie z.B. String oder 
+Konfigurationsdateien handeln. Beim registrieren des Services müssen diese
+Daten entsprechend übergeben werden (s.u.).
+Der Aufruf der Methode \texttt{configure()} des konfigurierbaren Services geschieht hierbei
+für den Nutzer des Services völlig transparent.
+
+Der Rückgabewert der \texttt{configure()}-Methode ist der Dokumenttyp für
+den die Konfiguration geeignet ist. Da sich der Typ i.d.R. aus den
+Konfigurationsdaten ableitet, kann er sinnvollerweise nur hier ermittelt werden.
+Mit dem hier zurückgegebenen Typ als Schlüssel wird der Service später im 
+OSGi-Framework registriert.
+
+Die \texttt{deconfigure()}-Methode kann optional dazu verwendet werden,
+Konfigrationen zu deinitialisieren. Sie wird aufgerufen, wenn der zuvor
+konfigurierte Service deregistriert wird.
+
+Mit \texttt{getProperties()} kann ein String-zu-String-Dictionary mit weiteren
+Service-Eigenschaften als Schlüssel-Wert-Paare zurückgeliefert werden. Bei der
+Registrierung des Services wird das Dictionary wird (nach der Ausführung von
+\texttt{configure()}) abgefragt und an das OSGi-Framework weitergegeben. Im
+Normalfall werden keine weiteren Eigenschaften definiert und es kann
+\texttt{null} zurückgegeben werden.
+
+\textbf{Da der konfigurierte Service automatisiert instanziert wird, benötigt er
+einen parameterlosen Konstruktor.}}
+
+\englisch{The method \texttt{configure()} is being used in order to configure
+the service with arbitrary data (\texttt{Object...}). This data can be a freely
+defined set of objects for example of type String or a configuration file. It is
+shown below how these data are passed. The method \texttt{configure()} of a
+configurable service is called by the ServiceHelper in a way which is
+transparent for the user of the service. 
+
+The \texttt{configure()} method returns a document type which is suitable for
+this configuration. Normally this type is derived from the configuration data,
+it can only be determined here. This returned type is used as a key to register
+the service later in the OSGi-Framework.
+
+The method \texttt{deconfigure()} can be used to deinitialize configurations. It
+is called if a service which has already be configured shall be deregisterd.
+
+The operation \texttt{getProperties()} returns a String-to-String dictionary
+which contains further service properties as key value pairs. When a service is
+registered, the dictionary is carried after the excecution of
+\texttt{configure()} and passed on to the OSGi-Framework. Normally, no further
+property is defined and the value null can be returend.
+
+\textbf{Since a configured service is instatiated automatically, it's 
+constructor must not have a parameter.}}
+
+\paragraph{\deng{Implementierung}{Implementation}}
+\deutsch{Die Implementierung des Service erfolgt wie bei einfachen Services. Sie
+unterscheidet sich nur durch die zusätzlichen Methoden des 
+\texttt{ConfigurableService} womit der ServiceInstanz die Konfiguration
+übergeben wird.
+
+Gehen wir davon aus, dass wir bereits eine Schnittstelle Namens
+\texttt{MyConfigurableService} erstellt haben. Diese solle wie oben beschrieben
+von \texttt{ConfigurableService} abgeleitet sein und keine zusätzlichen Methoden
+definieren. Eine Mögliche Implementierung könnte folgendermaßen aussehen:}
+
+\englisch{This service is implemented in the same way like simple services. The
+implementation differs only by the additional methods of the
+\texttt{ConfigurableService} which provide the configuration to the service
+instance.
+
+The following example assumes that we have already produced an interface with
+the name \texttt{MyConfigurableService}. It should have been derived from
+\texttt{ConfigurableService} as described above and should not define addtional
+methods.}
+
+\begin{lstlisting}
+public class MyConfigurableServiceImpl implements MyConfigurableService	
+
+	String value;
+	
+	@Override
+	public String configure(Object... configData) {
+		value = (String)configData[0];
+		return value;
+}
+
+	@Override
+	public void deconfigure() {
+	}
+
+	@Override
+	public Dictionary<String, String> getProperties() {
+		return null;
+	}
+}
+\end{lstlisting}
+
+
+\subsection{\deng{Bekanntmachen des konfigurierbaren Services}{Publishing a Configurable Service}}
+\deutsch{Der konfigurierbare Service wird angeboten, indem die Schnittstelle und die 
+konkrete Implementierung des konfigurierbaren Services beim ServiceHelper 
+registriert werden. Dies erfolgt i.d.R. im Activator:}
+
+\englisch{A configurable service is published by registering the interface and the concrete implementation at the ServiceHelper. This is typically done in the activator:}
+
+\begin{lstlisting}
+public class Activator implements BundleActivator {
+
+	public void start(BundleContext context) throws Exception {
+		ServiceHelper.registerServiceConfigurator(
+			context, MyConfigurableService.class, MyConfigurableServiceImpl.class);
+	}
+	
+	@Override
+	public void stop(BundleContext context) throws Exception {
+	}
+
+}
+\end{lstlisting}
+
+\subsection{\deng{Verwenden eines konfigurierbaren Services}{Using a Configurable Service}}
+\deutsch{Die Verwendung eines konfigurierbaren Services erfolgt in zwei Schritten.
+Im ersten Schritt wird der Service konfiguriert. Dies braucht nur einmal
+gemacht werden. Im zweiten Schritt wird die konfigurierte Instanz des Service
+benutzt. Dies kann beliebig oft erfolgen.}
+
+\englisch{A configurable service is used in two setps. In the first step the
+service is configured, this needs to be done only once. In the second step the
+configured instance of the service is used, the second step can be called
+serveral times.}
+
+\paragraph{\deng{Service konfigurieren}{Configuring a Service}}
+\deutsch{Die Konfiguration des Services erfolgt auch mit dem \texttt{ServiceHelper}, über folgende
+Methode:}
+
+\englisch{A service is configured using the \texttt{ServiceHelper} by the following method:}
+\begin{lstlisting}
+public static void configureInstance(
+	BundleContext context, 
+	Class<?> interfaceClass, 
+	String docType, 
+	String variant, 
+	Object... configData) {
+\end{lstlisting}
+
+\deutsch{Diese wird bspw. folgendermaßen aufgerufen:}
+\englisch{This code can be called for example as follows:}
+
+\begin{lstlisting}
+ServiceHelper.configureInstance(
+	context
+	MyConfigurableService.class, 
+	eObj.eClass().getEPackage().getNsURI(),
+	"SIMPLE", 
+    "config.xml");
+\end{lstlisting}
+
+\deutsch{Als Parameter werden übergeben: der BundleContext, die Service-Schnittstelle, der Dokumenttyp, ggf.
+die Variantenbezeichnung, und eine beliebige Anzahl weiterer Objekte als Konfigurationsdaten.
+Es empfiehlt sich, eine Konfigurationsdatei zu übergeben.
+
+Nach diesem Aufruf steht der Service in konfigurierter Form zur Verfügung. Die Eigentliche
+Konfiguration erfolgt transparent durch den \texttt{ServiceHelper}.}
+
+\englisch{The following parameters are passed: the BundleContext, the service interface, the document type, the name of the variant if applicable, and an arbitrary number of further objects as configuration data. It is recommended to pass one configuration file.
+
+After this invocation the service is avilable in a configured form. The configuration as such is excecuted transparently by the \texttt{ServiceHelper}.}
+
+
+\paragraph{\deng{Service anfordern}{Requesting a Service}}
+\deutsch{Um einen fertig konfigurierten Service zu verwenden, wird dieser wie alle
+anderen Services über den \texttt{ServiceHelper} angefordert. Hier müssen jedoch
+der Dokumenttyp oder der Dokumenttyp und die Variante als Parameter mitgegeben
+werden.}
+
+\englisch{In order to use a service which has already been configured it must be requested via the \texttt{ServiceHelper} as all other services. However, the documet type and the variant if applicable must be passed as additional parameters.}
+
+\begin{lstlisting}
+MyService ms = ServiceHelper.getService(context, MyConfigurableService.class, 
+                                        eObj.eClass().getEPackage().getNsURI());
+\end{lstlisting}
+\deng{oder}{or}
+\begin{lstlisting}
+MyService ms = ServiceHelper.getService(context, MyConfigurableService.class, 
+                                        eObj.eClass().getEPackage().getNsURI(),
+                                        "SIMPLE");
+\end{lstlisting}
+
+\deutsch{\hinweis{Innerhalb des SiDiff-Projektes verwenden wir EMF-Modelle, daher bietet
+sich grundsätzlich an, den Namespace-URI des jeweiligen Metamodells als
+Dokumenttyp zu verwenden. (siehe Beispiel)}}
+
+\englisch{\hinweis{Within the SiDiff-Project we use EMF-Models, therefore it is recommended to use the namespace URI of a metamodel of a document type.}}
+
+
+
+\clearpage
+\section{\deng{Kochrezept D: Konfigurierbare und instanzierbare Services}{Cooking Recipe D: Service which can be Configured and Instantiated}}
+\deutsch{Instanzierbare Services können auch als konfigurierbare Services mit
+zusätzlichen Konfigurationsdaten eingestellt werden. Hierzu wird wieder ein
+\texttt{ServiceProvider} angelegt, der jedoch auch ein
+\texttt{ConfigurableService} ist. Um das Konzept einfach umzusetzen, werden
+spezielle Java-Interfaces angeboten, die beide Mechanismen miteinander vereinen.
+
+Der \texttt{ServiceProvider} kann dann mit unterschiedlichen Daten konfiguriert
+werden. Die Koexistenz verschieden konfigurierter Provider ist ebenfalls wieder
+möglich. Wenn der konkrete Service angefordert wird, wird jedesmal eine neue
+Instanz zurückgegeben. Ein wiederholtes Einlesen einer Konfiguration ist dabei
+nicht mehr notwendig.}
+
+\englisch{Services which can be instantiated can be additionally be made
+configurable by additional configuration data. In order to achive this, a
+\texttt{ServiceProvider} which is at the same time a
+\texttt{ConfigurableService} is created. In order to facilitate the use of this
+concept special Java interfaces are provided which unite both mechanisms.
+
+The \texttt{ServiceProvider} can be configured using different sorts of data.
+Several differently configured providers can coexist. If a concrete service is
+requested, a new instance is created each time and passed back. It is not
+necessay to re-read the configuration each time.}
+
+\subsection{\deng{Definition der konfigurierbaren und instanzierbaren Services}{Definition of a Service which can be Configured and Instantiated}}
+
+\paragraph{\deng{Service-Schnittstelle}{Service-Interface}}
+\deutsch{Der neue Service muss das Interface
+\texttt{ConfigurableProvideableService}, welches lediglich wieder ein
+Marker-Interface darstellt, implementieren. Dieses dient zur Markierung, damit
+die Anforderung des Service transparent zum konfigurierten
+\texttt{ServiceProvider} delegiert werden kann.}
+
+\englisch{The new service must implement the interface
+\texttt{ConfigurableProvideableService} which is only a marker interface again.
+It serves only for the purpose to transparently delegate the request of a
+service to the configured \texttt{ServiceProvider}.}
+
+\begin{lstlisting}
+public interface MyService extends ConfigurableProvideableService {
+	public void doSomething();
+	public boolean doAnotherThing(int i);
+}
+\end{lstlisting}
+
+\deutsch{Zudem benötigt man einen \texttt{ServiceProvider}. Hier wird diesmal
+jedoch ein konfigurierbarer Provider benötigt, welcher mit dem Interface
+\texttt{ConfigurableServiceProvider} erstellt werden kann.}
+
+
+\englisch{In addtion a \texttt{ServiceProvider} is requested. This time, however,
+a configurable provider is required. It can be created with the interface
+\texttt{ConfigurableProvideableService}.}
+
+\begin{lstlisting}
+public interface MyServiceProvider
+                 extends ConfigurableServiceProvider<MyService> {
+}
+\end{lstlisting}
+\deutsch{Auch hier gilt die Namenskonvention, dass der Provider genauso benannt
+ist wie der Service und zusätzlich das Suffix \texttt{Provider} trägt.}
+
+\englisch{Here again one should follow the naming convention to name the 
+provider like the service with the additonal suffix \texttt{Provider}.}
+
+\paragraph{\deng{Implementierung des Service}{Implementation of a Service}}
+\deutsch{Die Implementierung des Service erfolgt hier wie bei einfachen Services. Ein
+besonderes Verhalten muss nicht berücksichtigt werden. Im Gegenteil: anders als
+beim konfigurierbaren Service sind hier keine zusätzlichen Methoden zu
+Konfiguration zu implementieren. Die Konfiguration betrifft diesmal den
+\texttt{ServiceProvider}.}
+
+\englisch{The service is implemented in the same way like simple services. It is
+not necessary to take specific behaviour into account. On the contrary unlike 
+with configurable services no additional methods for configuration purposes need
+to be implemented. At this time the configuration addresses only the 
+\texttt{ServiceProvider}.}
+
+\paragraph{\deng{Implementierung des Providers}{Implementation of the Provider}}
+\deutsch{Der \texttt{ServiceProvider} ist dafür zuständig mit jeder Anforderung
+des Services eine neue Instanz anzulegen und zurückzugeben. Zudem soll er mit
+Hilfe von Konfigurationsdaten konfiguriert werden können. Durch die
+Implementierung des zuvor definierten Provider-Interfaces muss der Provider auch
+die Schnittstelle des \texttt{ConfigurableServiceProvider}s bedienen, welche
+wiederum \texttt{ServiceProvider} und \texttt{ConfigurableService} vereint.}
+
+\englisch{The \texttt{ServiceProvider} has the task to create an new instance of
+the service at each request and to pass it back. Moreover one should be able to
+configure it using configuration data. The provider must also implement the
+interface of a \texttt{ConfigurableServiceProvider} which unites
+\texttt{ServiceProvider} and \texttt{ConfigurableService}.}
+
+\begin{lstlisting}
+public class MyServiceProviderImpl implements MyServiceProvider {
+
+	private MyConfiguration config; 
+
+	@Override
+	public String configure(Object... configData) {
+		config = ...
+	}
+
+	@Override
+	public void deconfigure() {
+		// nothing to do
+	}
+
+	@Override
+	public Dictionary<String, String> getProperties() {
+		// no special properties
+		return null;
+	}
+
+	@Override
+	public MyService createInstance() {
+		MyService ms = new MyServiceImpl();
+		ms.setConfiguration(config);
+		return ms;
+	}
+
+}
+\end{lstlisting}
+\deutsch{Die Methoden \texttt{configure()}, \texttt{deconfigure()} und
+\texttt{getProperties()} sind zur Realisierung der Konfigurierbarkeit gedacht.
+Die benötigten Informationen für eine Konfiguration sollten beim Aufruf der
+\texttt{configure()}-Methode gespeichert werden (hier angedeutet durch
+\texttt{MyConfiguration}). Wie sich die Konfiguration bis zur Instanzierung des
+Service gemerkt wird ist egal. Es wäre auch möglich, alle übergebenen Objekte
+(\texttt{Object... configData}) zwischenzuspeichern und erst bei der
+Instanzierung komplett auszuwerten. \textbf{Es ist jedoch darauf zu achten, dass
+\texttt{configure()} den gültigen Dokumenttyp, für den die Konfiguration gedacht
+ist, zurückgibt.}
+
+Die \texttt{createInstance()}-Methode wird aufgerufen, wenn der Service
+angefordert wird. Hier ist also die konkrete Instanz des Service zu erzeugen,
+ggf. zu konfigurieren (hier angedeutet durch
+\texttt{ms.setConfiguration(config)}, alternativ könnte je nach Konfiguration 
+eine andere Instanz angelegt werden), und zurückzugeben.
+
+\textbf{Da der konfigurierte \texttt{ServiceProvider} automatisiert instanziert wird, 
+benötigt er einen parameterlosen Konstruktor.}}
+
+\englisch{The methods \texttt{configure()}, \texttt{deconfigure()} and
+\texttt{getProperties()} address configurations issues. All information
+necessary for a configuration should be stored by calling the
+\texttt{configure()} method (indicated in the example by
+\texttt{MyConfiguration}). It does not matter here how the data are managed
+until the first instatiation of the service. One can also store all supplied
+objects (\texttt{Object... configData})  and to evaluate it at only at that time
+of the instantition. However, it is important to check that \texttt{configure()}
+returns the document type which is expected in this context.
+
+The \texttt{createInstance()} method is called when the service is requested.
+Here the concrete instance of the service is created, configured if applicable
+(indicated in the example by \texttt{ms.setConfiguration(config)}, alternatively
+one could use another instance depending on the configuration) and passed back.
+
+\textbf{The configured \texttt{ServiceProvider} is instatiated automatically, 
+therefore it requires a constructor without parameters.}}
+
+\subsection{\deng{Bekanntmachen des Services}{Publishing the Service}}
+\deutsch{Der konfigurierbare und instanzierbare Service wird angeboten, indem
+die Schnittstelle und die konkrete Implementierung des Services beim
+ServiceHelper registriert werden. Dies erfolgt i.d.R. im Activator:}
+
+\englisch{A service which can be configured and instantiated is published by
+registering the interface and the concrete implementation of the service at the 
+ServiceHelper. This is done typically in the activator:}
+
+\begin{lstlisting}
+public class Activator implements BundleActivator {
+
+	public void start(BundleContext context) throws Exception {
+		ServiceHelper.registerServiceConfigurator(
+			context, MyServiceProvider.class, MyServiceProviderImpl.class);
+	}
+	
+	@Override
+	public void stop(BundleContext context) throws Exception {
+	}
+
+}
+\end{lstlisting}
+
+
+\subsection{\deng{Verwenden des Services}{Using a Service}}
+\deutsch{Auch die Verwendung des konfigurierbaren und instanzierbaren Service
+funktioniert wie bei einem normalen konfigurierbaren Service.}
+
+\englisch{A service which can be configured and instatiated is used in the same
+way like a noraml configurable service.}
+
+\paragraph{\deng{Service konfigurieren}{Configuring the Service}}
+\deutsch{Die Konfiguration des Services erfolgt wieder mit dem
+\texttt{ServiceHelper}, über folgende Methode:}
+
+\englisch{The service is configured again using the ServiceHelper according to
+the following method.}
+
+\begin{lstlisting}
+public static void configureInstance(
+	BundleContext context, 
+	Class<?> interfaceClass, 
+	String docType, 
+	String variant, 
+	Object... configData) {
+\end{lstlisting}
+
+\deutsch{Diese wird bspw. folgendermaßen aufgerufen:}
+
+\englisch{This is invoked for example as follows}
+
+\begin{lstlisting}
+ServiceHelper.configureInstance(
+	context
+	MyConfigurableService.class, 
+	eObj.eClass().getEPackage().getNsURI(),
+	"SIMPLE", 
+    "config.xml");
+\end{lstlisting}
+
+
+\paragraph{\deng{Service verwenden}{Using a Service}}
+\deutsch{Um einen fertig konfigurierten, instanzierbaren Service zu verwenden,
+wird dieser wie alle anderen Services über den \texttt{ServiceHelper}
+angefordert.}
+
+\englisch{In order to use a completely configured and instantiable service it is
+requested via the ServiceHelper as all other services.}
+
+\begin{lstlisting}
+MyService ms = ServiceHelper.getService(context, MyService.class, 
+                                        eObj.eClass().getEPackage().getNsURI());
+\end{lstlisting}
+\deng{oder}{or}
+\begin{lstlisting}
+MyService ms = ServiceHelper.getService(context, MyService.class, 
+                                        eObj.eClass().getEPackage().getNsURI(),
+                                        "SIMPLE");
+\end{lstlisting}
+
+\deutsch{Mit dem Aufruf von \texttt{getService()} wird der
+\texttt{ConfigurableServiceProvider} mittels \texttt{createInstance()}-Methode
+aufgefordert, eine konkrete Instanz des Service zu erzeugen und zurückzugeben.
+Mit jedem Aufruf von \texttt{getService()} wird also eine neue Instanz des
+konfigurierten Service zurückgegeben. Sowohl die eigentliche Konfiguration des
+Services als auch dessen Instanzieerung erfolgen für den Nutzer wieder völlig
+transparent.}
+
+\englisch{The call of \texttt{getService()} leads to a call of a
+\texttt{createInstance()} method at \texttt{ConfigurableServiceProvider}, the
+latter call creates a concrete instance of the service and passes it back. Thus
+each call of \texttt{getService()} returns a new instance of the configured
+service. The user does not see any details of how the service is configured and
+instantiated.}
+
+
+\clearpage
+\section{\deng{Zusammenspiel von Services: ServiceContext und Kommunikation}{Cooperation of Services: Service Context and Communication}}
+\deutsch{Es gibt einige Services in SiDiff, die eng miteinander verwoben sind. Das OSGi-Framework
+erlaubt uns, Services nach Belieben bereitzustellen, Implementierungen auszutauschen und
+Dinge zu kapseln. Doch manchmal haben wir genau den Fall, dass mehrere Service-Instanzen
+gemeinsam einen Kontext bilden.
+
+Hierzu haben wir den \texttt{ServiceContext} entwickelt. Er ermöglicht, mehrere
+Services zusammenzustecken, die gegenseitig ihren Kontext bilden, und bietet den
+Services an, auf die anderen Services eben dieses Kontextes zuzugreifen. Zudem
+bietet er Mechanismen zur Kommunikation zwischen den Services. Er stellt einen
+Eventbus bereit, über den die Services Nachrichten verschicken können bzw. auf
+dem sie lauschen können.
+
+Ein mögliches Beispiel für sogenannte Kontext-sensitive Services in SiDiff sind
+die Korrespondenz- und die Kandidatenverwaltung. Wann immer eine neue
+Korrespondenz angelegt wird, stehen die beteiligten Elemente nicht mehr als
+Kandidaten zur Verfügung.
+}
+
+\englisch{Some services in SiDiff are tightly connected to each other. Basically the OSGi-Framework allows us to freely offer services to exchange implementations and to encapsulate details. However, in some cases several service instances belong to each other and can only be used as a group.
+
+In order to support such cases, we have developed the ServiceContext. It allows us to define groups of services which only require each other and offer services for accessing the other services in this context. In addition it supplies mechanisems for the communication between services. It provides an event bus which allows services to send messages and which can be monitored for incomming messages.
+
+The management of correspondences and candidates in SiDiff is a typical example of two services which depend on each other. Whenever a new correspondence is created, the document elements which are involved in this corrrespondence are no longer avalilabe as candidates.}
+
+
+\subsection{\deng{Kontext und Kontext-sensitive Services}{Context and Context-Sensitive Services}}
+\deutsch{Der Kontext wird durch die Klasse \texttt{ServiceContext} realisiert. 
+Hier können verschiedene Services hinzugefügt werden.}
+
+\englisch{Context are realized by the class \texttt{ServiceContext}. Several 
+services can be added to such a class instance.}
+
+\begin{lstlisting}
+public Object putService(Class<?> serviceId, Object service, int... initParams) {
+	...
+}
+public boolean containsService(Class<?> serviceID) {
+	...
+}
+public <X> X getService(Class<X> serviceID) {
+	...
+}
+public void initialize(Object... params) {
+	...
+}
+public void setDefaultParams(int... defaultParams) {
+	...
+}
+\end{lstlisting}
+
+\deutsch{Mit \texttt{putService()} kann eine Service-Instanz \texttt{service} in den
+Kontext eingefügt werden. Die Service-Schnittstelle \texttt{serviceID} dient
+dabei zur Identifikation einer Service-Instanz. Pro Schnittstelle kann im
+Kontext immer nur eine Instanz existieren. 
+
+\texttt{getService()} ermöglicht, bestimmte Services abzufragen. Vorher sollte
+aber mit \texttt{containsService()} geprüft werden, ob der entsprechende Service
+auch im Kontext vorhanden ist, da es sonst zu Exceptions kommen kann.
+
+Nachdem alle Services in einen Kontext eingefügt wurden, ist dieser mit 
+\texttt{initialize()} zu initialisieren. Hierbei können Parameter-Objekte 
+mitgegeben werden, die an alle Services im Kontext weitergereicht werden. Ein
+Beispiel bilden die beiden Modellressourcen eines Vergleichs. Sollen einige der
+Services nicht alle Parameter-Objekte übergeben bekommen, so kann hierzu beim
+Einfügen des Services (mit \texttt{putService()}) eine optionale Liste von 
+Indizes angegeben werden. Die Indizes beschreiben, welche der Parameter-Objekte
+von \texttt{initialize()} an den jeweiligen Service weitergereicht werden. Mit
+\texttt{setDefaultParams()} kann eine Liste von Indizes vorgegeben werden, die
+genutzt werden, falls \texttt{putService()} ohne Indizes aufgerufen wird.
+
+\hinweis{Ein einmal initialisierter Kontext darf nicht mehr verändert werden.
+Das Einfügen oder Löschen weiterer Services führt zu Exceptions!}}
+
+\englisch{\texttt{putService()} inserts the service instance \texttt{service}
+into a context. This service instance is identified by its service interface
+\texttt{ServiceID}. For each service interface there can exist at most one
+instance in the context.
+
+\texttt{getService()} returns selected services. Before using this service one
+should check using the operation \texttt{containsService()} whether a desired
+service exists in the pariticular context, because otherwise exceptions may
+occur.
+
+When all services of a group have been inserted into a context it must be
+initialized using the operation \texttt{initialize()}. The parameter objects
+which are passed to initialize are passed to all services in this context. A
+typical example are two models which are used in a comparison. One can specify
+that particular service obtains only a subset of all parameter objects. This
+subset is specified by a list of indexes. This list of indexes is specified when
+a service is inserted into a context using \texttt{putService()}. The operation
+\texttt{setDefaultParams()} takes a set of indexes which are used as parameters
+if \texttt{putService()} is invoked without such specific subset.
+
+\hinweis{As soon as a context has been initialized it must not be changed
+anymore. If services are inserted or moved later, this will lead to exception.}}
+
+
+\paragraph{\deng{Kontext-sensitive Services}{Context-Sensitive Services}}
+\deutsch{Manche Services benötigen zu Beginn eine Initialisierung mit bestimmten
+Daten, die letztlich auch den Kontext bestimmen. Dies kann z.B. eine Menge von
+Dokumenten sein, die verglichen werden. Um sicherzustellen, dass alle
+beteiligten Services mit den gleichen Daten initialisiert werden, wird die
+Initialisierung vom \texttt{ServiceContext} mittels \texttt{initialize()}
+organisiert (siehe oben).
+
+Services, die mit dem Kontext initialisiert werden sollen, müssen hierzu das
+Interface \texttt{ContextSensitiveService} implementieren.}
+
+\englisch{Some services must be initialized with certain data which also
+determine a context. For example, this can be the set of documents which are to
+be compared. All services in a context must be initialized with the same data.
+In order to guarantee this the \texttt{ServiceContext} triggers all service
+initialization in the operation \texttt{initialize()}.
+
+Services which shall be initialized by the context must implement the interface \texttt{ContextSensitiveService}.}
+
+\begin{lstlisting}
+public interface ContextSensitiveService {
+	public void initialize(ServiceContext serviceContext, Object... contextElements);
+}
+\end{lstlisting}
+
+\deutsch{Mithilfe von \texttt{initialize()} werden dem betreffenden Service der
+Kontext und ggf. weitere Objekte zur Initialisierung übergeben.
+
+\hinweis{Es ist nicht notwendig, dass alle Services, die in einen
+\texttt{ServiceContext} eingefügt werden \texttt{ContextSensitiveService}
+implementieren. Dies ist nur notwendig, wenn diese Services selbst auf den
+Kontext zugreifen wollen.}}
+
+\englisch{The operation \texttt{initialize()} passes the context and if 
+applicable further objects for the initialization to this service.
+
+\hinweis{It is not necessary that all services which belong to a
+\texttt{ServiceContext} implement \texttt{ContextSensitiveService}.
+\texttt{ContextSensitiveService} must only be implemented by services which need
+to access the context.}}
+
+\paragraph{\deng{Beispiele}{Examples}}
+\deutsch{Im nachfolgenden Beispiel werden die Services A und B in einen Kontext eingefügt. 
+Anschließend wird der Kontext mit zwei Modellen initialisiert. Da A und B jeweils
+die gleichen Initialisierungs-Parameter erwarten können Indizes weggelassen werden.}
+
+\englisch{In the following example the services A and B are inserted into a context. The context is then initialized with two models. Indexes are not used because A and B need the same initalization parameters.}
+
+\begin{lstlisting}
+ServiceContext serviceContext = new ServiceContext();
+
+serviceA = ServiceHelper.getService(context, ServiceA.class); 
+serviceContext.putService(ServiceA.class, serviceA);
+
+serviceB = ServiceHelper.getService(context, ServiceB.class); 
+serviceContext.putService(ServiceB.class, serviceB);
+
+serviceContext.initialize(model1, model2);
+\end{lstlisting}
+\deutsch{Das Beispiel könnte durch das Setzen von Standard-Indizes (vor 
+\texttt{initialize()}) ergänzt werden. Standardmäßig werden immer alle 
+Parameter-Objekte von \texttt{initialize()} an die Services weitergegeben.}
+
+\englisch{The example can be further extended by setting Standard-Indices before call the operation \texttt{initialize()}. By default all Parameter-Objects are passed to all services by \texttt{initialize()}.}
+
+\begin{lstlisting}
+serviceContext.setDefaultParams(0, 1);
+\end{lstlisting}
+
+\deutsch{Hätten wir nun einen weiteren Service C, der nur das erste Modell und einen
+String als Parameter erwartet, sähe das Beispiel so aus:}
+
+\englisch{Next we assume another service C which needs only the first model and a string as parameter. Now the example look as follows:}
+
+\begin{lstlisting}
+
+ServiceContext serviceContext = new ServiceContext();
+
+serviceA = ServiceHelper.getService(context, ServiceA.class); 
+serviceContext.putService(ServiceA.class, serviceA);
+
+serviceB = ServiceHelper.getService(context, ServiceB.class); 
+serviceContext.putService(ServiceB.class, serviceB);
+
+serviceC = ServiceHelper.getService(context, ServiceC.class); 
+serviceContext.putService(ServiceC.class, serviceC, 0, 2);
+
+serviceContext.setDefaultParams(0, 1);
+serviceContext.initialize(model1, model2, "abcdefg");
+\end{lstlisting}
+
+\deutsch{Eine Beispielrealisierung für Service A, die den Kontext benutzt um auf den anderen Service
+zuzugreifen, kann folgendermaßen aussehen.}
+
+\englisch{Realization of service A which uses the contexts in order to access the other services can look for example as follows:}
+
+\begin{lstlisting}
+public interface MyService extends ContextSensitiveService {
+	...
+}
+\end{lstlisting}
+\begin{lstlisting}
+public class MyServiceImpl implements MyService {
+
+	private ServiceContext context = null;
+
+	private Resource modelA = null;
+	private Resource modelB = null;
+
+	@Override
+	public void initialize(ServiceContext serviceContext, Object... models) {
+		this.modelA = (Resource) models[0];
+		this.modelB = (Resource) models[1];
+		this.context = serviceContext;
+		if (!context.containsService(ServiceB.class)) {
+			throw new RuntimeException("benoetigter Service fehlt");
+		}
+	}
+
+	@Override
+	public void doSomething() {
+		ServiceB b = this.context.getService(ServiceB.class);
+	}
+
+	...
+}
+\end{lstlisting}
+
+\subsection{\deng{Kommunikation zwischen Services}{Communication between Services}}
+\deutsch{Services, die gemeinsam im Kontext stehen, bedürfen oft auch einen
+Informationsaustausch. Hierzu verwaltet der \texttt{ServiceContext} verschiedene
+\texttt{EventDispatcher}. Die jeweils das Observer-Muster realisieren. Jeder
+Dispatcher kümmert sich um die Verwaltung und Benachrichtung der Listener
+(Observer) eines bestimmten Event-Typs.
+
+Event-Typen werden definiert indem eine Eventklasse angelegt wird, die von 
+\texttt{SCEvent} erbt.}
+
+\englisch{Services in the same context sometimes must exchange information.
+\texttt{ServiceContext} supports this by several different
+\texttt{EventDispatcher}. Each of them realizes an observer pattern. Each
+dispatcher manages a set of listeners ( observers) for a particular event type
+and notifies them appropriately.
+
+Event-Types are defined by creating an event calss which inherits from a 
+\texttt{SCEvent}.}
+
+\begin{lstlisting}
+public class MyEvent extends SCEvent {
+
+	public final static int EVENT_X = createNewEvent();
+	public final static int EVENT_Y = createNewEvent();
+	
+	public final static int EVENT_X_FEATURE_A = 0;
+	public final static int EVENT_X_FEATURE_B = 1;
+	
+	public MyEvent(Object source, int eventID, Object...objects ) {
+		super(source, eventID, objects);
+	}
+}
+\end{lstlisting}
+
+\deutsch{In diesem Beispiel wird die Eventklasse \emph{MyEvent} definiert. Um
+mehrere Event-Typen innerhalb dieser Eventklasse zu definieren, werden mit
+\texttt{createNewEvent()} Konstanten definiert. Im obigen Beispiel gibt es zwei
+Arten von \texttt{MyEvent}s: X und Y.
+
+\hinweis{Die Konstanten sollten nicht von Hand vergeben werden.
+\texttt{createNewEvent()} stellt sicher, dass jeder Eventtyp eine eigene ID
+erhält.}
+
+Der Konstruktor eines Events sieht vor, dass immer die Quelle eines Events
+übergeben wird. Zudem wird die ID des Eventtyps mitgeteilt. Zudem können einem
+Event immer beliebig viele Objekte übergeben werden, die neben der reinen
+Notifikation über aufgetretene Ereignisse auch Nutzdaten übertragen können.
+
+Um die Nutzdaten, die der Notifikation über ein Ereignis beigefügt werden,
+besser zu unterscheiden, sollte die Reihenfolge, in der die Nutzdaten übergeben
+werden, klar definiert sein. Die Position einer bestimmten Nutzdateninformation
+sollte daher als Konstante definiert werden. Im Beispiel sind dies im Fall von
+Event X das Feature A an erster Position (=0) und Feature B an zweiter Position
+(=1).}
+
+\englisch{In this example the event class \emph{MyEvent} is defined. Several
+Event-Types are used in this event calss. Appropriate constansts are defined
+using \texttt{createNewEvent()}. In the above examples we have two types of
+events: X and Y
+
+\hinweis{The constants should not be created manually. \texttt{createNewEvent()}
+guarantees that each Event-Type obtains a unique ID.}
+
+The constructor of an event requires the source of the event to be passed to it
+as a parameter. Moreover the ID of the event type is required. In addition,
+arbitrarly many objects can passed to an event, they can contain information 
+about the notification and such and additional user data.
+
+Different user data which are passed to an event can only be seperated by their 
+position in the sequence. Therefore a sequence should be handled carefully and 
+the position of a particular piece of a user data should be defined as a 
+constant. In our above example feature A of event X has the position 0 and 
+feature B has the postition 1.}
+
+
+\paragraph{\deng{Erzeugen von Events}{Creating Events}}
+\deutsch{Ausgelöst wird ein Event durch erzeugen einer Event-Instanz und Aufruf
+der Methode \texttt{fireEvent()} des \texttt{ServiceContext}.}
+
+\englisch{An event is triggered by creating an Event instance and calling the 
+operation \texttt{fireEvent()} of the \texttt{ServiceContext}.}
+
+\begin{lstlisting}
+this.serviceContext.fireEvent(new MyEvent(this, MyEvent.EVENT_X, object1, object2));
+\end{lstlisting}
+
+\deutsch{Der erste Parameter des Event-Konstrukturs ist der Aufrufer, hier muss 
+also \texttt{this} übergeben werden.}
+
+\englisch{The first parameter of the Event-Constructor is the caller, therefore
+\texttt{this} must be specified here.}
+
+
+\paragraph{\deng{Registrieren eines Listeners}{Registering a Listener}}
+\deutsch{Ein Listener kann einfach realisiert werden, indem das Interface 
+\texttt{SCEventListener} implementiert wird.}
+
+\englisch{A listener can be realized simply be implementing the interface 
+\texttt{SCEventListener}.}
+
+\begin{lstlisting}
+public interface SCEventListener extends EventListener {
+	public void eventDispatched(SCEvent event);
+}
+\end{lstlisting}
+\deutsch{Im Fall eines Events wird die \texttt{eventDispatched()}-Methode 
+aufgerufen und das Event als Parameter übergeben.
+
+Der Listener wird beim \texttt{ServiceContext} mittels.}
+
+\englisch{If an event occurs the opration \texttt{eventDispatched()} is called 
+and the event is passed as parameter.
+
+The listener is registered at the event context using the following operation:}
+
+\begin{lstlisting}
+public boolean addEventListener(Class<? extends SCEvent> eventtype,
+                                SCEventListener listener){ 
+	...
+}
+\end{lstlisting}
+
+\deutsch{registriert. Hierzu muss angegeben werden auf welche Klasse von Events
+gehorcht werden soll. Der Listener wird dann für alle Typen von Events dieser 
+Klasse benachrichtigt.}
+
+\englisch{One must specify which classes of events shall be listened. The 
+listener is then notified for all types of events of this class.}
+
+
+\paragraph{\deng{Reagieren auf Nachrichten}{Reacting to a Notification}}
+\deutsch{Um auf eine bestimmte Nachricht zu reagieren, muss der Listener
+selbstverständlich beim \texttt{ServiceContext} registriert sein. Da dem
+Listener im Fall eines Events ein \texttt{SCEvent}-Objekt übergeben wird, können
+der Typ eines Ereignisses sowie die mitgeschickten Nutzdaten abgefragt werden.
+Eine Realisierung könnte wie folgt aussehen:}
+
+\englisch{In order to react to a notification a listener must be registered at
+the \texttt{ServiceContext}. In the case of an event an \texttt{SCEvent}-Object
+is passed to the listener. The listener can query the type of the event and
+included user data from this object. A realization might look as follows:}
+
+\begin{lstlisting}
+public class MyListener implements SCEventListener {
+	public void eventDispatched(SCEvent event) {
+		if (event.getEventID==MyEvent.EVENT_X) {
+			int featureA = event.getObject(MyEvent.EVENT_X_FEATURE_A, Integer.class);
+			String featureB = event.getObject(MyEvent.EVENT_X_FEATURE_B, String.class);
+			...
+		} else if ...
+			...
+		}
+	}
+}
+\end{lstlisting}
+\deutsch{Im Beispiel wird zunächst geprüft, ob Ereignis vom Typ X aufgetreten
+ist. Wenn ja, werden die Nutzdaten (hier ein \texttt{int} und ein
+\texttt{String}) abgefragt, um auf das Event zu reagieren.}
+
+\englisch{In this example we first check to see if an event of type X has
+occured, if so as a user data (in this example \texttt{int} and \texttt{String}) 
+are queried in order to react on the event.}
+
+
+\end{document}
+ 

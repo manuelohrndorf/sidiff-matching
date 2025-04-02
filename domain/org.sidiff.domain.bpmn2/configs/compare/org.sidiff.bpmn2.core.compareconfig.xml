@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Comparison>
+<Settings normalizeWeights="true"
+			  documentType="http://www.omg.org/spec/BPMN/20100524/MODEL-XMI" />
+
+<!-- New Matches -->
+		<Class name="ParticipantMultiplicity" threshold="0.3">
+			 <CompareFunction class="Parent" policy="mandatory" weight="1.0" parameter="ECMatchedOrSimilar"/>  
+		</Class>	
+
+<!-- ID Based Matches -->
+
+		<Class name="BaseElement" threshold="1.0">
+				<CompareFunction class="Self" parameter="ECAttributeStatic[CEquals;id]" weight="1.0"/>
+		</Class>
+
+
+<!-- Local Based Matches -->		
+		
+		<Class name="Message" threshold="0.4">
+			<CompareFunction class="Self" parameter="ECAttributeStatic[VCStringLCS[ci];name]" weight="1.0"  policy="unfulfilled"/>
+		</Class>
+		
+		<Class name="TextAnnotation" threshold="0.5">
+			<CompareFunction class="Self" parameter="ECAttributeStatic[VCStringLCS[ci];text]" weight="1.0"/>
+		</Class>
+
+<!-- Local + Remote Based Matches -->				
+			
+		<Class name="StartEvent" threshold="0.5">
+			 <CompareFunction class="Self" policy="fulfilled" parameter="ECAttributeStatic[VCStringLCS[ci];name]" weight="0.5"/>
+			 <CompareFunction class="NeighboursSingleReference"	parameter="SCGreedyMatchedOrSimilar;outgoing" weight="0.5" />
+		</Class>
+		
+		<Class name="EndEvent" threshold="0.5">
+			 <CompareFunction class="Self" policy="fulfilled" parameter="ECAttributeStatic[VCStringLCS[ci];name]" weight="0.5"/>
+			 <CompareFunction class="NeighboursSingleReference"	 policy="unfulfilled" parameter="SCGreedyMatchedOrSimilar;incoming"	weight="0.5" />
+		</Class>
+
+		<Class name="Task" threshold="0.3">
+			 <CompareFunction class="Self" parameter="ECAttributeStatic[VCStringLCS[ci];name]" weight="0.6"/>
+			 <CompareFunction class="NeighboursSingleReference" policy="unfulfilled" weight="0.2" parameter="SCGreedyMatchedOrSimilar;incoming"/>
+			 <CompareFunction class="NeighboursSingleReference" policy="unfulfilled" weight="0.2" parameter="SCGreedyMatchedOrSimilar;outgoing"/>  
+			 <CompareFunction class="RemoteNodes" policy="unfulfilled" weight="0.2" parameter="SCGreedyMatchedOrSimilar;Outgoing.outgoing#SequenceFlow/Outgoing.targetRef#*"/>  
+			 <CompareFunction class="RemoteNodes" policy="unfulfilled" weight="0.2" parameter="SCGreedyMatchedOrSimilar;Outgoing.incoming#SequenceFlow/Outgoing.sourceRef#*"/>  
+		</Class>
+		
+		
+		<Class name="SequenceFlow" threshold="0.3">
+			 <CompareFunction class="NeighboursSingleReference" policy="fulfilled" weight="0.5" parameter="SCGreedyMatchedOrSimilar;sourceRef"/>  
+			 <CompareFunction class="NeighboursSingleReference" policy="fulfilled" weight="0.5" parameter="SCGreedyMatchedOrSimilar;targetRef"/>  
+		</Class>
+
+		<Class name="MessageFlow" threshold="0.4">
+			<CompareFunction policy="unfulfilled" class="Self" parameter="ECAttributeStatic[VCStringLCS[ci];name]" weight="0.2"/>
+			<CompareFunction class="NeighboursSingleReference" policy="mandatory" weight="0.4" parameter="SCGreedyMatchedOrSimilar;sourceRef"/>
+			<CompareFunction class="NeighboursSingleReference" policy="mandatory" weight="0.4" parameter="SCGreedyMatchedOrSimilar;targetRef"/> 
+		</Class>
+		
+		<Class name="IntermediateCatchEvent" threshold="0.5">
+			 <CompareFunction class="Self" parameter="ECAttributeStatic[VCStringLCS[ci];name]" weight="0.4"/>
+			 <CompareFunction class="NeighboursSingleReference" policy="fulfilled" weight="0.1" parameter="SCGreedyMatchedOrSimilar;incoming"/>
+			 <CompareFunction class="NeighboursSingleReference" policy="fulfilled" weight="0.3" parameter="SCGreedyMatchedOrSimilar;outgoing"/>
+			 <CompareFunction class="Children" policy="mandatory" weight="0.2" parameter="SCGreedyMatchedOrSimilar"/>
+		</Class>	
+		
+		<Class name="Lane" threshold="0.5">
+			 <CompareFunction policy="fulfilled" class="Self" parameter="ECAttributeStatic[VCStringLCS[ci];name]" weight="0.3"/>
+			 <CompareFunction class="NeighboursSingleReference" policy="fulfilled" weight="0.7" parameter="SCGreedyMatchedOrSimilar;flowNodeRefs"/>
+		</Class>	
+		
+		<Class name="SubProcess" threshold="0.5">
+			 <CompareFunction class="Children"	policy="unfulfilled" parameter="SCGreedyMatchedOrSimilar"	weight="0.5" />
+			 <CompareFunction class="Self" policy="fulfilled" parameter="ECAttributeStatic[VCStringLCS[ci];name]" weight="0.5"/>
+		</Class>
+
+<!-- Remote Based Matches -->		
+		
+		<Class name="EventBasedGateway" threshold="0.3">
+			 <CompareFunction class="NeighboursSingleReference" policy="mandatory" weight="0.5" parameter="SCGreedyMatchedOrSimilar;incoming"/>  
+			 <CompareFunction class="NeighboursSingleReference" policy="mandatory" weight="0.5" parameter="SCGreedyMatchedOrSimilar;outgoing"/>  
+		</Class>
+		
+		<Class name="ExclusiveGateway" threshold="0.3">
+			 <CompareFunction class="NeighboursSingleReference"	parameter="SCGreedyMatchedOrSimilar;incoming"	weight="0.25" />
+			 <CompareFunction class="NeighboursSingleReference"	parameter="SCGreedyMatchedOrSimilar;outgoing"	weight="0.25" />
+			 <CompareFunction class="RemoteNodes" policy="mandatory" weight="0.25" parameter="SCGreedyMatchedOrSimilar;Outgoing.outgoing#SequenceFlow/Outgoing.targetRef#*"/>  
+			 <CompareFunction class="RemoteNodes" policy="mandatory" weight="0.25" parameter="SCGreedyMatchedOrSimilar;Outgoing.incoming#SequenceFlow/Outgoing.sourceRef#*"/>  
+		</Class>	
+
+		<Class name="InclusiveGateway" threshold="0.3">
+			 <CompareFunction class="NeighboursSingleReference"	parameter="SCGreedyMatchedOrSimilar;incoming"	weight="0.25" />
+			 <CompareFunction class="NeighboursSingleReference"	parameter="SCGreedyMatchedOrSimilar;outgoing"	weight="0.25" />
+			 <CompareFunction class="RemoteNodes" policy="mandatory" weight="0.25" parameter="SCGreedyMatchedOrSimilar;Outgoing.outgoing#SequenceFlow/Outgoing.targetRef#*"/>  
+			 <CompareFunction class="RemoteNodes" policy="mandatory" weight="0.25" parameter="SCGreedyMatchedOrSimilar;Outgoing.incoming#SequenceFlow/Outgoing.sourceRef#*"/>   
+		</Class>	
+		
+		
+		<Class name="ParallelGateway" threshold="0.3">
+			 <CompareFunction class="NeighboursSingleReference"	parameter="SCGreedyMatchedOrSimilar;incoming"	weight="0.25" />
+			 <CompareFunction class="NeighboursSingleReference"	parameter="SCGreedyMatchedOrSimilar;outgoing"	weight="0.25" />
+			 <CompareFunction class="RemoteNodes" policy="mandatory" weight="0.25" parameter="SCGreedyMatchedOrSimilar;Outgoing.outgoing#SequenceFlow/Outgoing.targetRef#*"/>  
+			 <CompareFunction class="RemoteNodes" policy="mandatory" weight="0.25" parameter="SCGreedyMatchedOrSimilar;Outgoing.incoming#SequenceFlow/Outgoing.sourceRef#*"/>  
+		</Class>	
+			
+		<Class name="Association" threshold="0.5">
+			 <CompareFunction class="NeighboursSingleReference"	policy="mandatory" parameter="SCGreedyMatchedOrSimilar;sourceRef"	weight="0.5" />
+			 <CompareFunction class="NeighboursSingleReference"	policy="mandatory" parameter="SCGreedyMatchedOrSimilar;targetRef"	weight="0.5" />
+		</Class>
+		
+		<Class name="TerminateEventDefinition" threshold="0.3">
+			 <CompareFunction class="Parent" policy="mandatory" weight="1.0" parameter="ECMatchedOrSimilar"/>  
+		</Class>
+
+		<Class name="MessageEventDefinition" threshold="0.3">
+			 <CompareFunction class="Parent" policy="mandatory" weight="1.0" parameter="ECMatchedOrSimilar"/>  
+		</Class>
+
+
+		<Class name="LaneSet" threshold="0.5">
+			 <CompareFunction class="Children" policy="fulfilled" weight="1.0" parameter="SCGreedyMatchedOrSimilar"/>
+		</Class>		
+		
+</Comparison>

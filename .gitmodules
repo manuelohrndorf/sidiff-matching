@@ -1,0 +1,15 @@
+[submodule "testdata"]
+	path = testdata
+	url = git@git.informatik.uni-siegen.de:sidiff-testdata
+[submodule "common"]
+	path = common
+	url = git@git.informatik.uni-siegen.de:sidiff-common
+[submodule "visualization"]
+	path = visualization
+	url = git@git.informatik.uni-siegen.de:sidiff-visualization
+[submodule "reuse"]
+	path = reuse
+	url = git@git.informatik.uni-siegen.de:sidiff-reuse
+[submodule "lifting"]
+	path = lifting
+	url = git@git.informatik.uni-siegen.de:sidiff-lifting

@@ -1,0 +1,70 @@
+--------------------------------------------------------
+Leitfaden zur Verwendung von TODO Tags in Eclipse:
+--------------------------------------------------------
+
+Position: ueber der Klasse/Methode/Codeblock, die es betrifft
+
+Form: TODO [Wer] [Was]: [kurze Beschreibung] (Absender, Datum)
+
+Beispiel: TODO MS,SW Diskussion: Sollte hier nicht besser eine HashMap genutzt werden? (SW, 7.8.08) 
+
+Erlaeuterungen:
+ - Wer = Wer soll es tun? -->  Kuerzel oder Name (siehe unten), wenn eine bestimmte 
+                               Person(engruppe) angesprochen ist, sonst weglassen
+                               Wenn Person(engruppe) noch unklar, dann ??
+ - Was = Was ist zu tun?  -->  Diskussion, Fix, Optimierung, Entfernen, Implement, etc.
+ - Beschreibung = kurzer beschreibender Text der Taetigkeit also das "TO DO"
+                  laengere Beschreibungen koennen in den naechsten Zeilen folgen, ebenso wie Kommentare
+ - Absender, Datum = Angabe ueber Verfasser zwecks Rueckfragen
+ 
+ 
+ Wichtig ist, dass alle wichtigen Angaben (vgl. Form) in einer Zeile stehen, damit Eclipse diese anzeigt.
+ Laengere Beschreibungen oder auch Kommentare koennen in nachfolgenden Zeilen stehen.
+ 
+ Kommentare sollten auch immer mit Absender und Datum versehen sein.
+ 
+ 
+--------------------------------------------------
+ ERLEDIGTE TODOS sollten bitte nicht sofort entfernt, sondern 
+                 zu Dokumentationszwecken folgendermassen abgeaendert werden
+                 
+ Das TODO wird zu DONE und zusaetzlich werden Kuerzel und Datum eingefuegt.
+ 
+ Form: DONE [Datum] [alte TODO Beschreibung]
+ 
+
+
+--------------------------------------------------
+KUERZEL:
+Thomas Bender - TB
+Timo Kehrer - 	TK
+Dennis Koch - 	DK
+Maik Schmidt - 	MS
+Marco Schneider - MA (nicht MS!)
+Sven Wenzel - 	SW
+
+
+
+--------------------------------------------------
+ Ausfuehrliches Beispiel:
+ 
+   //TODO MS,SW Diskussion: Sollte hier nicht besser eine HashMap genutzt werden? (SW, 7.8.08)
+   // Ich glaube, die HashMap ist in diesem Fall performanter.
+   private TreeMap<String, String> myMap; 
+
+
+   //TODO MS,SW Diskussion: Sollte hier nicht besser eine HashMap genutzt werden? (SW, 7.8.08)
+   // Ich glaube, die HashMap ist in diesem Fall performanter.
+   // TK, 8.8.08: Ja, die TreeMap ist beim Befuellen langsam.
+   private TreeMap<String, String> myMap; 
+
+
+   //DONE 9.8.08 MS,SW Diskussion: Sollte hier nicht besser eine HashMap genutzt werden? (SW, 7.8.08)
+   // Ich glaube, die HashMap ist in diesem Fall performanter.
+   // TK, 8.8.08: Ja, die TreeMap ist beim Befuellen langsam.
+   // MS, 9.8.08: Ihr habt wohl recht, habs geaendert
+   private HashMap<String, String> myMap; 
+
+
+
+   

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- <!DOCTYPE Preprocessing SYSTEM "http://pi.informatik.uni-siegen.de/SiDiff/org.sidiff.core.annotation.default.dtd" > -->
+<Annotations documentType="http://www.eclipse.org/uml2/4.0.0/UML">
+	
+<!-- 	 Use xmi:id as ID --> 
+<!-- 	<Annotation nodeType="EObject"> -->
+<!-- 		<SyntheticAttribute attributeName="DERIVED_ID" operation="PersistentIDAnnotator"/>	 -->
+<!-- 	</Annotation> -->
+
+	<!-- Don't use xmi:id as ID -->
+	
+	<Annotation nodeType="EObject">
+		<SyntheticAttribute attributeName="PATH" operation="TypePathAnnotator" />
+		<SyntheticAttribute attributeName="HASH" operation="HashAnnotator" parameter="
+			localPositionAnnotationKey=PATH,
+			referencedObjectsPositionAnnotationKey=PATH,
+			globalMoveAllowed=true" 
+			requires="PATH"/>
+	</Annotation>
+ 		
+	<Annotation nodeType="NamedElement">
+		<SyntheticAttribute attributeName="PATH" operation="AttributePathAnnotator" parameter="name" />
+	</Annotation>
+<!-- 	<Annotation nodeType="Model"> -->
+<!-- 		<SyntheticAttribute attributeName="DERIVED_ID" operation="DerivedSignatureAnnotator" parameter=" -->
+<!-- 			name"/> -->
+<!-- 	</Annotation> -->
+
+	<Annotation nodeType="StateMachine">
+		<SyntheticAttribute attributeName="DERIVED_ID" operation="DerivedSignatureAnnotator" parameter="
+ 			Parent#Model$DERIVED_ID::name"/> 
+	</Annotation>
+<!-- 	<Annotation nodeType="Region"> -->
+<!-- 		<SyntheticAttribute attributeName="DERIVED_ID" operation="DerivedSignatureAnnotator" parameter=" -->
+<!-- 			Parent#*$DERIVED_ID::name"/> -->
+<!-- 	</Annotation> -->
+<!-- 	<Annotation nodeType="State"> -->
+<!-- 		<SyntheticAttribute attributeName="DERIVED_ID" operation="DerivedSignatureAnnotator" parameter=" -->
+<!-- 			Parent#Region$DERIVED_ID::name"/> -->
+<!-- 	</Annotation> -->
+	
+</Annotations>

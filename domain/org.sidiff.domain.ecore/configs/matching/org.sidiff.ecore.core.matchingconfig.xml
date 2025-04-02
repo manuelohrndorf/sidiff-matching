@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- <!DOCTYPE Matching SYSTEM "http://pi.informatik.uni-siegen.de/SiDiff/org.sidiff.core.matching.iterative.dtd">-->
+
+<Matching>
+	<Settings matcherPrefix="org.sidiff.matcher.similarity.flooding.matcher"
+			  documentType="http://www.eclipse.org/emf/2002/Ecore"
+			  firstPassSequencedMatcher="UniqueSimilarityMatcher"
+			  defaultSequencedMatcher="DefaultMatcher"
+			  defaultTopDownMatcher="Propagation" />
+			  
+	<Configurations>
+<!-- 		<MatchingConfiguration className="EFactory"
+			threshold="0.5"
+			allowLocalMove="false"
+			allowGlobalMove="false"
+			alwaysComputeSimilarity="true"
+			independentMatching="false"
+			topDownMatcher="" />
+-->
+		<MatchingConfiguration className="EPackage"
+			threshold="0.5"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="" />
+
+		<MatchingConfiguration className="EClass"
+			threshold="0.5"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="GreedyForcedPropagation" />
+
+		<MatchingConfiguration className="EDataType"
+			threshold="0.5"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="" />
+
+		<MatchingConfiguration className="EAttribute"
+			threshold="0.6"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="" />
+
+		<MatchingConfiguration className="EGenericType"
+			threshold="0.5"
+			allowLocalMove="false"
+			allowGlobalMove="false"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="" />
+
+		<MatchingConfiguration className="ETypeParameter"
+			threshold="0.5"
+			allowLocalMove="false"
+			allowGlobalMove="false"
+			alwaysComputeSimilarity="true"
+			independentMatching="false"
+			topDownMatcher="" />
+
+		<MatchingConfiguration className="EReference"
+			threshold="0.5"
+			allowLocalMove="true"
+			allowGlobalMove="false"
+			alwaysComputeSimilarity="true"
+			independentMatching="false"
+			topDownMatcher="" />
+
+		<MatchingConfiguration className="EOperation"
+			threshold="0.6"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="" />
+
+		<MatchingConfiguration className="EParameter"
+			threshold="0.6"
+			allowLocalMove="false"
+			allowGlobalMove="false"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="" />
+
+		<MatchingConfiguration className="EEnum"
+			threshold="0.5"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="" />
+
+		<MatchingConfiguration className="EEnumLiteral"
+			threshold="0.5"
+			allowLocalMove="true"
+			allowGlobalMove="false"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="" />
+
+		<MatchingConfiguration className="EAnnotation"
+			threshold="0.5"
+			allowLocalMove="true"
+			allowGlobalMove="false"
+			alwaysComputeSimilarity="true"
+			independentMatching="false"
+			topDownMatcher="" />
+
+		<MatchingConfiguration className="EStringToStringMapEntry"
+			threshold="0.5"
+			allowLocalMove="true"
+			allowGlobalMove="false"
+			alwaysComputeSimilarity="true"
+			independentMatching="false"
+			topDownMatcher="NoPropagation" />
+
+	</Configurations>
+	
+	<Sequence>
+		<Class name="EAnnotation" />
+		<Class name="EStringToStringMapEntry" />
+		<Class name="EEnumLiteral" />
+		<Class name="EEnum" />
+		<Class name="EAttribute" />
+		<Class name="EOperation" />
+		<Class name="EParameter" />
+		<Class name="EClass" />
+		<Class name="EDataType" />
+		<Class name="EReference" />
+		<Class name="EPackage" />
+		<Class name="EGenericType" />
+		<Class name="ETypeParameter" />
+		<!-- <Class name="EFactory" /> -->
+	</Sequence>
+	
+</Matching>

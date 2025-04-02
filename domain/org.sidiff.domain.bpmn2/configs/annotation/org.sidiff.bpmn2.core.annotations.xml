@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- <!DOCTYPE Preprocessing SYSTEM "http://pi.informatik.uni-siegen.de/SiDiff/org.sidiff.core.annotation.default.dtd" > -->
+<Annotations documentType="http://www.omg.org/spec/BPMN/20100524/MODEL-XMI">
+	<Annotation nodeType="EObject">
+		<SyntheticAttribute attributeName="PATH"
+			operation="TypePathAnnotator" />
+		<SyntheticAttribute attributeName="HASH" operation="HashAnnotator"
+			parameter=" localPositionAnnotationKey=PATH, referencedObjectsPositionAnnotationKey=PATH, 
+			globalMoveAllowed=true"
+			requires="PATH" />
+	</Annotation>
+
+	<Annotation nodeType="Participant">
+		<SyntheticAttribute attributeName="PATH"
+			operation="TypePathAnnotator" />
+		<SyntheticAttribute attributeName="HASH" operation="HashAnnotator"
+			parameter=" localPositionAnnotationKey=PATH, referencedObjectsPositionAnnotationKey=PATH, 
+			globalMoveAllowed=true,
+			exclude=outgoingConversationLinks;incomingConversationLinks"
+			requires="PATH" />
+	</Annotation>
+	
+	<Annotation nodeType="Event">
+		<SyntheticAttribute attributeName="PATH"
+			operation="TypePathAnnotator" />
+		<SyntheticAttribute attributeName="HASH" operation="HashAnnotator"
+			parameter=" localPositionAnnotationKey=PATH, referencedObjectsPositionAnnotationKey=PATH, 
+			globalMoveAllowed=true,
+			exclude=outgoingConversationLinks;incomingConversationLinks"
+			requires="PATH" />
+	</Annotation>
+	
+	<Annotation nodeType="Task">
+		<SyntheticAttribute attributeName="PATH"
+			operation="TypePathAnnotator" />
+		<SyntheticAttribute attributeName="HASH" operation="HashAnnotator"
+			parameter=" localPositionAnnotationKey=PATH, referencedObjectsPositionAnnotationKey=PATH, 
+			globalMoveAllowed=true,
+			exclude=outgoingConversationLinks;incomingConversationLinks"
+			requires="PATH" />
+	</Annotation>
+	
+	
+	<Annotation nodeType="SequenceFlow"> 
+		<SyntheticAttribute attributeName="INHASH" operation="DerivedSignatureAnnotator" parameter="Outgoing.sourceRef#FlowNode$HASH" requires="HASH"/> 
+		<SyntheticAttribute attributeName="OUTHASH" operation="DerivedSignatureAnnotator" parameter="Outgoing.targetRef#FlowNode$HASH" requires="HASH"/>
+ 		<SyntheticAttribute attributeName="MYHASH" operation="DerivedSignatureAnnotator" parameter="Self#SequenceFlow$INHASH?Self#SequenceFlow$OUTHASH" requires="INHASH,OUTHASH"/> 
+ 		<SyntheticAttribute attributeName="PATH" operation="TypePathAnnotator"/>  
+ 	</Annotation> 
+ 	
+ 	<Annotation nodeType="MessageFlow"> 
+		<SyntheticAttribute attributeName="INHASH" operation="DerivedSignatureAnnotator" parameter="Outgoing.sourceRef#InteractionNode$HASH" requires="HASH"/> 
+		<SyntheticAttribute attributeName="OUTHASH" operation="DerivedSignatureAnnotator" parameter="Outgoing.targetRef#InteractionNode$HASH" requires="HASH"/>
+ 		<SyntheticAttribute attributeName="MYHASH" operation="DerivedSignatureAnnotator" parameter="Self#MessageFlow$INHASH?Self#MessageFlow$OUTHASH" requires="INHASH,OUTHASH"/> 
+ 		<SyntheticAttribute attributeName="PATH" operation="TypePathAnnotator"/>  
+ 	</Annotation> 
+	
+</Annotations>

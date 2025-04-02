@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- <!DOCTYPE Matching SYSTEM "http://pi.informatik.uni-siegen.de/SiDiff/org.sidiff.core.matching.iterative.dtd">-->
+
+<Matching>
+	<Settings matcherPrefix="org.sidiff.core.matching.matcher"
+			  documentType="http://www.sidiff.org/org.sidiff.uml.model"
+			  firstPassSequencedMatcher="UniqueSimilarityMatcher"
+			  defaultSequencedMatcher="DefaultMatcher"
+			  defaultTopDownMatcher="Propagation" />
+			  
+	<Configurations>
+		<MatchingConfiguration className="core.UMLModel"
+			threshold="1.0"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="false"
+			independentMatching="true"
+			topDownMatcher="" />
+
+		<MatchingConfiguration className="classes.UMLPrimitiveType"
+			threshold="0.8"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="NoPropagation" />
+
+		<MatchingConfiguration className="core.UMLStereotype"
+			threshold="0.8"
+			allowLocalMove="false"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="NoPropagation" />
+
+		<MatchingConfiguration className="classes.UMLAssociation"
+			threshold="0.6"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="" />
+
+		<MatchingConfiguration className="classes.UMLAssociationEnd"
+			threshold="0.4"
+			allowLocalMove="true"
+			allowGlobalMove="false"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="NoPropagation" />
+
+	</Configurations>
+	
+	<Sequence>
+		<Class name="classes.UMLPrimitiveType" />
+		<Class name="core.UMLStereotype" />
+		<Class name="classes.UMLAssociation" />
+		<Class name="classes.UMLAssociationClass" />
+		<Class name="classes.UMLAssociationEnd" />
+		<Class name="classes.UMLGeneralization" />
+		<Class name="core.UMLDependency" />
+		<Class name="core.UMLPackage" />
+		<Class name="core.UMLModel" />
+		
+	</Sequence>
+	
+</Matching>

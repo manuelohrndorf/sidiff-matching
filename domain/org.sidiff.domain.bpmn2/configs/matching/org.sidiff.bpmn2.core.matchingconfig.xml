@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<Matching>
+<Settings matcherPrefix="org.sidiff.core.matching.matcher"
+			  documentType="http://www.omg.org/spec/BPMN/20100524/MODEL-XMI"
+			  firstPassSequencedMatcher="UniqueSimilarityMatcher"
+			  defaultSequencedMatcher="DefaultMatcher"
+			  defaultTopDownMatcher="Propagation" />
+
+
+			  
+		<Configurations>	  
+
+<!-- New Matches -->
+
+<MatchingConfiguration className="ParticipantMultiplicity"
+			threshold="0.5"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="" />		
+
+<!--  End New Matchings -->
+
+<!-- ID Based Matches -->
+
+		<MatchingConfiguration className="BaseElement"
+			threshold="1.0"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="false"
+			independentMatching="true"
+			topDownMatcher="" />
+
+<!--  End ID-based Matchings -->			
+			
+		
+		 <MatchingConfiguration className="Task"
+			threshold="0.5"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="" />
+		
+		 <MatchingConfiguration className="StartEvent"
+			threshold="0.5"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="" />	
+					  
+		 <MatchingConfiguration className="EndEvent"
+			threshold="0.5"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="" />		
+			
+		<MatchingConfiguration className="SequenceFlow"
+			threshold="0.4"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="" />
+			
+			
+		<MatchingConfiguration className="SubProcess"
+			threshold="0.5"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="" />
+			
+		<MatchingConfiguration className="ExclusiveGateway"
+			threshold="0.4"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="" />	
+			
+		<MatchingConfiguration className="ParallelGateway"
+			threshold="0.4"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="" />	
+
+	
+		<MatchingConfiguration className="EventBasedGateway"
+			threshold="0.4"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="" />
+
+		<MatchingConfiguration className="InclusiveGateway"
+			threshold="0.4"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="" />	
+			
+		<MatchingConfiguration className="Association"
+			threshold="0.5"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="false"
+			independentMatching="true"
+			topDownMatcher="" />						  
+
+
+		<MatchingConfiguration className="TextAnnotation"
+			threshold="0.8"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="false"
+			independentMatching="true"
+			topDownMatcher="" />	
+			
+			
+		<MatchingConfiguration className="MessageEventDefinition"
+			threshold="0.8"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="false"
+			independentMatching="true"
+			topDownMatcher="" />	
+			
+		<MatchingConfiguration className="Message"
+			threshold="0.6"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="false"
+			independentMatching="true"
+			topDownMatcher="" />	
+
+
+		<MatchingConfiguration className="MessageFlow"
+			threshold="0.6"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="" />	
+
+			
+			
+		<MatchingConfiguration className="IntermediateCatchEvent"
+			threshold="0.7"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="" />	
+
+
+		<MatchingConfiguration className="Lane"
+			threshold="0.6"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="" />	
+
+
+
+		<MatchingConfiguration className="LaneSet"
+			threshold="0.6"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="" />	
+
+
+		<MatchingConfiguration className="TerminateEventDefinition"
+			threshold="0.6"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="" />
+
+
+			
+
+
+
+
+
+
+		<Sequence initial="6">
+			<Class name="Definitions" />					//id-based
+			<Class name="Process" />						//id-based
+			<Class name="Collaboration" />					//id-based
+			<Class name="Participant" />					//id-based
+			<Class name="TimerEventDefinition" />			//id-based		
+			<Class name="IntermediateThrowEvent" />			//id-based
+			<Class name="Documentation" />					//id-based
+			<Class name="BoundaryEvent" />					//id-based
+			
+			<Class name="Message" />						//local-based
+			<Class name="TextAnnotation" />					//local-based	
+			
+			<Sequence initial="6">
+				<Class name="StartEvent" />					//local- + remote-based
+				<Class name="EndEvent" />					//local- + remote-based
+				<Class name="Task" />						//local- + remote-based
+				<Class name="SequenceFlow" />				//local- + remote-based
+				<Class name="MessageFlow" />				//local- + remote-based	
+				<Class name="IntermediateCatchEvent" />		//local- + remote-based
+				<Class name="Lane" />						//local- + remote-based	
+				<Class name="SubProcess" />					//local- + remote-based
+			</Sequence>
+			
+			<Class name="ExclusiveGateway" />				//remote-based
+			<Class name="InclusiveGateway" />				//remote-based
+			<Class name="ParallelGateway" />				//remote-based
+			<Class name="EventBasedGateway" />				//remote-based
+			<Class name="Association" />					//remote-based
+			<Class name="TerminateEventDefinition" />		//remote-based	
+			<Class name="MessageEventDefinition" />			//remote-based	
+			
+			<Class name="LaneSet" />
+			
+			<Class name="ParticipantMultiplicity" />		//new
+	
+		</Sequence>				
+						  
+	</Configurations>		  
+</Matching>

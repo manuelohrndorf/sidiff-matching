@@ -1,0 +1,18 @@
+%
+% Aufbau und Validierung einer Konfigurationsdatei
+% ===========================================================================
+%
+
+\chapter{Einleitung}
+\label{strct:intro}
+
+Um eine SiDiff-Compare-Konfiguration zu erstellen oder zu modifizieren, ist zunächst eine ausreichende Kenntnis der verfügbaren Vergleichsfunktionen unausweichlich. An dieser Stelle soll nun eine Dokumentation der im SiDiff-Kern implementierten Vergleichsfunktionen folgen.
+
+\subsection*{Struktur der Dokumentation}
+Die Dokumentation der einzelnen Vergleichsfunktionen ist dabei in mehrere, kurze Unterabschnitte gegliedert. Dies beinhaltet eine Unterteilung in die Sektionen \emph{Vorbedingungen}, \emph{Semantik} und folgend \emph{Rückgabewert}, \emph{Parameter} und gegebenenfalls Querverweise zu anderen, ähnlichen Vergleichsfunktionen.\\
+In den einzelnen Unterabschnitten -- jedoch vorwiegend unter \emph{Vorbedingungen} -- werden Ausnahmetypen angeführt, die bei fehlerhafter Anwendung der Vergleichsfunktion bzw. möglicherweise auch fehlerhaftem Datenbestand ausgelöst werden können.\\
+Für jede Vergleichsfunktion werden zudem Testfälle spezifiziert, um die Vergleichsfunktion in einem Black-Box Testverfahren auf ihre Korrektheit zu prüfen. Hinsichtlich der Testdaten einer Vergleichsfunktion sind zwei verschiedene Arten zu unterscheiden: Modelldaten und Parameter. Zum derzeitigen Zeitpunkt ist dieses Dokument ein lebendes Dokument, welches sich im Aufbau befindet und ständigen Änderungen unterworfen ist. Die Vorgehensweise zur Erstellung der Testdaten sollte sich dabei in zwei Schritte untergliedern: Die Identifikation verschiedener Äquivalenzklassen von Testdaten und die Wahl geeigneter Repräsentanten mit welchen die Tests durchgeführt werden sollen.
+
+Hinweise zur Erstellung von Testmodellen finden sich in Kapitel \ref{TODO}. Hinweise zur Durchführung der Unit-Tests sind in Kapitel \ref{TODO} zu finden.
+
+Sofern sich Gruppierungen der Vergleichsfunktionen nach ähnlicher Semantik treffen lassen, erfolgt zu Beginn eines jeden neuen Gruppierungs-Abschnitts eine Auflistung der Spezifikationen, die sich allgemein über diese Klasse von Funktionen aussagen lassen. Eine spezifischere Erläuterung der einzelnen Vergleichsfunktionen lässt sich darauffolgend in den sich anschließenden Unterabschnitten, in denen die Funktionen nacheinander dokumentiert werden, finden.

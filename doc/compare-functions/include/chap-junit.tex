@@ -1,0 +1,34 @@
+%
+% Aufbau und Validierung einer Konfigurationsdatei
+% ===========================================================================
+%
+
+\chapter{Einrichten und Ausführen der Unit-Tests}
+\label{strct:intro}
+
+Checkout der relevanten Bundles. Für die Unit-Tests der EMF Funktionen sind 
+dies beispielsweise
+	
+\begin{itemize}
+	\item org.sidiff.commons
+	\item org.sidiff.common.emf
+	\item org.sidiff.common.junit
+	\item org.sidiff.common.services
+	\item org.sidiff.common.testmetamodel
+	\item org.sidiff.core.compare.comparefunctions
+	\item org.sidiff.core.compare.comparefunctions.emf
+	\item org.sidiff.core.compare.comparefunctions.emf.test
+\end{itemize}
+
+Starten des Activators in org.sidiff.common.junit als neue OSGi Framework
+Run-Konfiguration.\\
+
+Reiter Bundles: Auswahl der benötigten bundles (i.d.R. Workspace + required
+Bundles)\\
+		
+Reiter Arguments: Wichtig! Das Working Directory auf den lokalen Workspace
+setzen. Dies ist nötig damit die zu testenden Models später über relative
+Pfade gefunden werden können!\\
+
+Einstellungen übernehmen und starten. In der OSGi Konsole sampleTest zum 
+Starten des Beispiels tippen und Return drücken...

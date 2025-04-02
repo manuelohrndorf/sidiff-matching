@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: SiDiff ChartsUtil
+Bundle-SymbolicName: org.sidiff.common.chartsutil
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.sidiff.common.chartsutil.Activator
+Require-Bundle: org.eclipse.birt.chart.engine;bundle-version="4.3.1",
+ org.eclipse.birt.chart.device.extension;bundle-version="4.3.1",
+ org.eclipse.birt.chart.device.pdf;bundle-version="4.3.1",
+ org.eclipse.birt.chart.device.svg;bundle-version="4.3.1",
+ org.eclipse.birt.chart.device.swt;bundle-version="4.3.1",
+ org.eclipse.birt.chart.engine.extension;bundle-version="4.3.1"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
+Export-Package: org.sidiff.common.chartsutil

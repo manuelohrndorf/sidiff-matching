@@ -1,0 +1,502 @@
+%
+% Präambel
+% ===========================================================================
+%
+
+% Schriftgröße, Layout, Papierformat, Art des Dokumentes
+\documentclass[
+		a4paper,			% A4 Papier
+		11pt,				% Standard-Schriftgröße
+		twoside,			% 1-seitig / 2-seitig (oneside/twoside)
+		openany,			% Kapitel können sowohl links als auch rechts beginnen
+		halfparskip,		% Europäischer Satz mit halben Zeilenabstand zwischen Absätzen
+		normalheadings		% Überschriften in normaler Schriftgröße (wird unten überschrieben)
+		%fleqn			% Formeln linksbündig
+	]{scrreprt}
+
+% Einstellungen der Seitenränder
+\usepackage[left=3cm, right=2cm, top=1.3cm, bottom=1.3cm,
+		includeheadfoot, headsep=0.7cm, footskip=1cm
+	]{geometry}
+
+% Umlaute, Deutsche Trennungen, Anführungsstriche und mehr:
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}	% u.a. spitze Klammern
+\usepackage[ngerman]{babel}
+\usepackage[babel]{csquotes}
+
+
+%
+% ===========================================================================
+%
+
+% Meta-Informationen
+\newcommand{\mytitle}{SiDiff 2.0: Vergleichsfunktionen}
+\newcommand{\mydate}{\today}
+\newcommand{\myauthor}{Pit Pietsch, Timo Kehrer}
+\newcommand{\mypdftitle}{SiDiff 2.0: Vergleichsfunktionen}
+\newcommand{\mypdfauthor}{Universität Siegen, Praktische Informatik}
+\newcommand{\mypdfsubject}{Dokumentation}
+\newcommand{\mypdfkeywords}{}
+
+\newcommand{\myorg}{
+		Universität Siegen\\
+		Fachbereich 12\\
+		Elektrotechnik und Informatik\\
+		\textbf{Fachgruppe Praktische Informatik}\\
+		Hölderlinstr. 3\\
+		D-57068 Siegen
+}
+
+\newcommand{\myfootinner}{\mytitle}
+\newcommand{\myfootouter}{Universität Siegen, Praktische Informatik}
+
+\setcounter{tocdepth}{2}
+
+
+%
+% ===========================================================================
+%
+
+% Schusterjungen und Hurenkinder vermeiden
+\clubpenalty = 10000
+\widowpenalty = 10000
+
+% Unterstreichungen
+\usepackage[normalem]{ulem}	% (\uline \uuline \dotuline \dashuline)
+\def\dotuline{\bgroup
+  \ifdim\ULdepth=\maxdimen
+   \settodepth\ULdepth{(j}\advance\ULdepth.2pt\fi
+  \markoverwith{\begingroup
+  \advance\ULdepth0.08ex
+  \lower\ULdepth\hbox{\kern.1em .\kern.005em}%
+  \endgroup}\ULon}
+\def\dashuline{\bgroup
+  \ifdim\ULdepth=\maxdimen
+   \settodepth\ULdepth{(j}\advance\ULdepth.2pt\fi
+  \markoverwith{\kern.15em
+  \vtop{\kern\ULdepth \hrule width .3em}%
+  \kern.15em}\ULon}
+
+
+% Zeilenabstand
+% (\singlespacing \onehalfspacing \doublespacing \setstretch{1})
+\usepackage{setspace}
+\newcommand{\mylinespacing}{\singlespacing}
+\mylinespacing
+
+% Type 1 Fonts für bessere Darstellung in PDF verwenden
+%\usepackage{mathptmx}				% Times (\rmdefault) und Mathematikschrift
+\usepackage[T1]{eulervm} 			% Euler u.a. als Mathematikschrift
+%\usepackage{txfonts}				% Times (\rmdefault), Adobe Helvetica (\sfdefault), TXTT (\ttdefault) etc.
+%\usepackage[scaled=.92]{helvet}		% Helvetica (\sfdefault)
+%\usepackage{courier}				% Courier (\ttdefault)
+%\usepackage[scaled]{beramono}		% Bera Mono (\ttdefault)
+\renewcommand*{\ttdefault}{txtt}		% TXTT (\ttdefault)
+%\renewcommand{\familydefault}{\sfdefault}
+\usepackage{cancel} 		% Kürzen erlauben
+\usepackage{underscore}		% Underscore in Typewriter erlauben (\textunderscore{})
+\newcommand{\degree}{^{\circ}}
+
+
+% Zahlenausgabe (Tausendertrennzeichen)		\numprint{}
+\usepackage{numprint}
+
+% Mathematische Symbole aus dem AMS Paket
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% Package für Farben im PDF
+\usepackage{color}
+
+% Font-Kommandos:
+% \sffamily		\textsf{}		serifenlos (Arial o.ä.)
+% \rmfamily		\textrm{}		Romanschriftart (Times)
+% \ttfamily		\texttt{}		Schreibmaschinenschrift (Courier o.ä.)
+% 
+% \mdseries		\textmd{}		normale (mittlere) Stärke
+% \bfseries		\textbf{}		Fettdruck
+%
+% \itshape		\textit{}		Kursivschrift
+% \slshape		\textsl{}		geneigte Schrift
+% \scshape		\textsc{}		Kapitälchenschrift
+% \upshape		\textup{}		Normale Schrift (Zurückschaltung)
+
+% Spezielle Schrift im Koma-Script setzen
+\setkomafont{chapter}{\Large\sffamily\upshape\bfseries}
+\setkomafont{section}{\large\sffamily\upshape\bfseries}
+\setkomafont{subsection}{\normalfont\sffamily\itshape\bfseries}
+\setkomafont{subsubsection}{\small\sffamily\itshape\bfseries}
+\setkomafont{sectioning}{\normalfont\rmfamily\upshape\mdseries}
+\setkomafont{caption}{\footnotesize\sffamily\upshape\mdseries}
+\setkomafont{captionlabel}{\footnotesize\sffamily\upshape\bfseries}
+\setkomafont{descriptionlabel}{\small\sffamily\upshape\mdseries}
+
+% Absätze
+\newcommand{\setparindent}[1]{\parindent#1}		% Einrückung der ersten Zeile eines Absatzes
+\newcommand{\setparskip}[1]{\parskip#1}			% Abstand zwischen zwei Absätzen
+\newcommand{\setmyparindent}{\setparindent{0pt}}
+\newcommand{\setmyparskip}{\setparskip{6pt}}
+\setmyparindent
+\setmyparskip
+
+% Kapitel anpassen (Seitenumbruch)
+\makeatletter
+	\renewcommand\chapter{
+			\if@openright\cleardoublepage\else\clearpage\fi
+			\thispagestyle{plain}%
+			\global\@topnum\z@
+			\@afterindenttrue
+			\secdef\@chapter\@schapter
+	}
+	\def\@chapter[#1]#2{\ifnum \c@secnumdepth >\m@ne
+	      \refstepcounter{chapter}%
+	      \@maybeautodot\thechapter
+	      \typeout{\@chapapp\space\thechapter.}%
+	      \addcontentsline{toc}{chapter}%
+	      {\protect\numberline{\thechapter}#1}%
+	    \else
+	      \addcontentsline{toc}{chapter}{#1}%
+	    \fi
+	    \chaptermark{#1}%
+	    \addtocontents{lof}{\protect\addvspace{10\p@}}%
+	    \addtocontents{lot}{\protect\addvspace{10\p@}}%
+	    \addtocontents{lol}{\protect\addvspace{10\p@}}%			% INSERTED
+	    \@ifundefined{float@addtolists}{}{%
+	      \float@addtolists{\protect\addvspace{10\p@}}%
+	    }%
+	    \if@twocolumn
+	      \if@at@twocolumn
+	        \@makechapterhead{#2}%
+	      \else
+	        \@topnewpage[\@makechapterhead{#2}]%
+	      \fi
+	    \else
+	      \@makechapterhead{#2}%
+	    \@afterheading
+	  \fi
+	}
+	\renewcommand*{\@makechapterhead}[1]{%
+	  \use@chapter@o@preamble
+	  \@@makechapterhead{#1}%
+	  \use@preamble{chapter@u}\nobreak
+	}
+	\renewcommand*{\@@makechapterhead}[1]{\chapterheadstartvskip
+	  {\normalfont\sectfont\size@chapter
+	    \setlength{\parindent}{\z@}\setlength{\parfillskip}{\fill}%
+	    \if@chapterprefix
+	      \let\@tempa\raggedsection
+	    \else
+	      \let\@tempa\@hangfrom
+	    \fi
+	    \@tempa{\ifnum \c@secnumdepth >\m@ne%
+	        \chapterformat
+	      \fi
+	    }%
+	    \if@chapterprefix\par\nobreak\vskip.5\baselineskip\fi
+	    {\raggedsection \interlinepenalty \@M #1\par}}%
+	  \nobreak\chapterheadendvskip
+	}
+	\renewcommand*{\@schapter}[1]{%
+	  \if@twocolumn
+	    \if@at@twocolumn
+	      \@makeschapterhead{#1}%
+	    \else
+	      \@topnewpage[\@makeschapterhead{#1}]%
+	    \fi
+	  \else
+	    \@makeschapterhead{#1}%
+	    \@afterheading
+	  \fi
+	}
+	\renewcommand*{\@@makeschapterhead}[1]{%
+	  \chapterheadstartvskip%
+	  {\normalfont\sectfont\size@chapter
+	    \setlength{\parindent}{\z@}\setlength{\parfillskip}{\fill}%
+	    \raggedsection \interlinepenalty \@M #1\par}%
+	  \nobreak\chapterheadendvskip%
+	}
+	\renewcommand*{\@makeschapterhead}[1]{%
+	  \use@chapter@o@preamble
+	  \@@makeschapterhead{#1}%
+	  \use@preamble{chapter@u}\nobreak
+	}
+\makeatother
+
+% Formatierung von Gliederungen
+\usepackage{titlesec}
+\titleformat{\chapter}{\usekomafont{chapter}}{\thechapter}{2ex}{} 		% Marke, Schrift, Text, Abstand Prefix/Text
+\titleformat{\section}{\usekomafont{section}}{\thesection}{2ex}{} 		% Marke, Schrift, Text, Abstand Prefix/Text
+\titleformat{\subsection}{\usekomafont{subsection}}{\thesubsection}{2ex}{}	% Marke, Schrift, Text, Abstand Prefix/Text
+\titleformat{\subsubsection}{\usekomafont{subsubsection}}{\thesubsubsection}{2ex}{}	% Marke, Schrift, Text, Abstand Prefix/Text
+\titlespacing*{\chapter}{0pt}{-15pt}{15pt}	% Abstand: zum linken Rand, nach oben, nach unten
+\titlespacing*{\section}{0pt}{10pt}{5pt}		% Abstand: zum linken Rand, nach oben, nach unten
+\titlespacing*{\subsection}{0pt}{5pt}{-3pt}	% Abstand: zum linken Rand, nach oben, nach unten
+\titlespacing*{\subsubsection}{0pt}{5pt}{-3pt}	% Abstand: zum linken Rand, nach oben, nach unten
+
+% Paket um Textteile drehen zu können
+%\usepackage{rotating}
+
+% Erweiterte Tabellen
+\usepackage{tabularx}
+\usepackage{tabulary}
+\usepackage{multirow}	% Multirow erlauben
+%\usepackage{arydshln}	% Dashed Lines
+\usepackage{booktabs}	% Rules
+
+% Berechnungen zulassen
+\usepackage{calc}
+
+% Paket um auch Titelnamen referenzieren zu können (\nameref -> \label muss nach \chapter etc. und \caption stehen)
+\usepackage{nameref}
+\newcommand{\structgetref}[1]{\ref{#1} \glq \nameref{#1}\grq}
+\newcommand{\structgetfullref}[1]{Abschnitt \ref{#1} \glq \nameref{#1}\grq}
+\newcommand{\structgetfullrefgen}[1]{Abschnitts \ref{#1} \glq \nameref{#1}\grq}
+\newcommand{\structgetfullrefchap}[1]{Kapitel \ref{#1} \glq \nameref{#1}\grq}
+\newcommand{\structgetfullrefchapgen}[1]{Kapitels \ref{#1} \glq \nameref{#1}\grq}
+
+% Kopf- und Fußzeile (siehe auch Geometry)
+\usepackage[
+	headsepline,
+	footsepline,
+	plainheadsepline,
+	plainfootsepline
+	]{scrpage2}
+\pagestyle{scrheadings}
+\renewcommand{\headfont}{\footnotesize\sffamily\upshape\mdseries} % Headings
+\renewcommand{\pnumfont}{\footnotesize\sffamily\upshape\mdseries} % Seitenzahlen
+	% Formate: [verschiebung] (wenn nicht angeg. autom. zentriert) {breite}
+%\setheadwidth[0pt]{textwithmarginpar}	
+%\setfootwidth[0pt]{textwithmarginpar}
+	% Formate: [länge]{dicke}
+%\setheadsepline[17cm]{.1pt} 
+%\setfootsepline[17cm]{.1pt}
+\renewcommand*{\chapterpagestyle}{scrheadings}
+\clearscrheadfoot
+\newcommand{\headseplinespacetohead}{}
+\newcommand{\footseplinespacetofoot}{\vspace*{-3pt}}
+% Werte definieren
+\newcommand{\oheadval}{\headseplinespacetohead\upshape\pagemark}
+\newcommand{\iheadval}{\headseplinespacetohead\headmark}
+\newcommand{\cheadval}{\headseplinespacetohead}
+\newcommand{\ofootval}{\footseplinespacetofoot \myfootouter}
+\newcommand{\ifootval}{\footseplinespacetofoot \myfootinner}
+\newcommand{\cfootval}{\footseplinespacetofoot}
+\newcommand{\hfplainoverwritten}{
+	% Formate: [Plainstil] {normaler Stil}
+	\ohead[\oheadval]{\oheadval}
+	\ihead[\iheadval]{\iheadval}
+	\chead[\cheadval]{\cheadval}
+	\ofoot[\ofootval]{\ofootval}
+	\ifoot[\ifootval]{\ifootval}
+	\cfoot[\cfootval]{\cfootval}}
+\newcommand{\hfplainempty}{
+	% Formate: [Plainstil] {normaler Stil}
+	\ohead[]{\oheadval}
+	\ihead[]{\iheadval}
+	\chead[]{\cheadval}
+	\ofoot[]{\ofootval}
+	\ifoot[]{\ifootval}
+	\cfoot[]{\cfootval}}
+\hfplainoverwritten
+% Stile festlegen
+\newcommand{\hfstyleauto}{\pagestyle{scrheadings}}
+\newcommand{\hfstyleempty}{\pagestyle{empty}}
+\hfstyleauto
+
+% % [Plainstil] {normaler Stil}
+\newcommand{\mymanualmark}[1]{\manualmark\markboth{#1}{#1}}
+\newcommand{\myautomark}{\automark[chapter]{chapter}}
+\myautomark
+\setlength{\textheight}{24cm}
+
+% Inhaltsverzeichnis
+\makeatletter
+	\renewcommand{\tableofcontents}{%
+		\begingroup
+			\if@twocolumn
+				\@restonecoltrue\onecolumn
+			\else
+				\@restonecolfalse
+			\fi
+			\phantomsection
+			\addcontentsline{toc}{chapter}{\contentsname}
+			\chapter*{\contentsname\@mkboth{\contentsname}{\contentsname}}	%\toc@heading
+			\setparsizes{\z@}{\z@}{\z@\@plus 1fil}\par@updaterelative
+			\if@tocleft\before@starttoc{toc}\fi
+			\@starttoc{toc}%
+			\if@tocleft\after@starttoc{toc}\fi
+			\if@restonecol\twocolumn\fi
+		\endgroup
+	}
+\makeatother
+% Für Zugriff auch im Anhang(!)
+\newcounter{savedtocdepth}
+\newcommand*{\settocdepth}[1]{
+  \addtocontents{toc}{
+    \protect\setcounter{savedtocdepth}{\protect\value{tocdepth}}%
+    \protect\setcounter{tocdepth}{#1}
+  }}
+\newcommand*{\restoretocdepth}{
+  \addtocontents{toc}{%
+    \protect\setcounter{tocdepth}{\protect\value{savedtocdepth}}%
+  }}
+
+% Bibliographie
+\usepackage{bibgerm}
+%\usepackage{natbib}
+% Bibliographie neudefinieren (Aufnahme Gliederung als Section)
+\addto\captionsngerman{\renewcommand{\bibname}{Bibliographie}}
+\makeatletter
+	\renewenvironment{thebibliography}[1]{%
+			\phantomsection
+			\addcontentsline{toc}{chapter}{\bibname}
+			\chapter*{\bibname\@mkboth{\bibname}{\bibname}}%
+      \list{\@biblabel{\@arabic\c@enumiv}}%
+           {\settowidth\labelwidth{\@biblabel{#1}}%
+            \leftmargin\labelwidth
+            \advance\leftmargin\labelsep
+            \@openbib@code
+            \usecounter{enumiv}%
+            \let\p@enumiv\@empty
+            \renewcommand\theenumiv{\@arabic\c@enumiv}}%
+      \sloppy
+      \clubpenalty4000
+      \@clubpenalty \clubpenalty
+      \widowpenalty4000%
+      \sfcode`\.\@m}
+     {\def\@noitemerr
+       {\@latex@warning{Empty 'thebibliography' environment}}%
+      \endlist}
+\makeatother
+
+% Paket für die Indexerstellung
+%\usepackage{makeidx}
+
+% Darstellung des Glossars einstellen
+%\usepackage[style=super, header=none, border=none, number=none, cols=2, toc=true]{glossary}
+%\renewcommand{\glossaryname}{Glossar}
+%\makeglossary
+
+% Source-Code Ausgabe
+\usepackage{listings}
+\definecolor{lstcolorkeyword}{rgb}{0,0,1}
+\definecolor{lstcolorcomment}{rgb}{0,.501,0}
+\definecolor{lstcolorstring}{rgb}{.843,0,0}
+\lstset{
+  language=XML, caption={}, captionpos=t,
+  frame=single, frameround=ffff,
+  basicstyle={\ttfamily\footnotesize},
+  keywordstyle={\color{lstcolorkeyword}},
+  commentstyle={\color{lstcolorcomment}\textit},
+  stringstyle={\color{lstcolorstring}},
+  identifierstyle={},
+	backgroundcolor={},
+	showspaces=false, showstringspaces=false, showtabs=false,
+	tab=\rightarrowfill, tabsize=2, extendedchars=true,
+	numbers=left, numberstyle=\scriptsize, stepnumber=1, numbersep=10pt,
+	breaklines=true, breakautoindent=true, postbreak=\space,
+	xleftmargin=20pt, xrightmargin=20pt,
+	aboveskip=5pt, belowskip=12pt
+}
+\newskip\belowcaptionskipamount \smallskipamount=1pt
+\renewcommand{\belowcaptionskip}{\belowcaptionskipamount}
+\renewcommand{\lstlistingname}{Listing}
+\renewcommand{\lstlistlistingname}{Listingverzeichnis}
+\newcommand{\lstgetlistingref}[1]{\lstlistingname\ \ref{#1}}	% Eine Referenz zu Listing erhalten
+% Bugfix
+\makeatletter
+	\renewcommand*{\lstlistoflistings}{%
+	  \begingroup
+	    \if@twocolumn
+	      \@restonecoltrue\onecolumn
+	    \else
+	      \@restonecolfalse
+	    \fi
+	    \phantomsection
+	    \addcontentsline{toc}{chapter}{\lstlistlistingname}
+			\chapter*{\lstlistlistingname\@mkboth{\lstlistlistingname}{\lstlistlistingname}}		%\lol@heading
+	    \setparsizes{\z@}{\z@}{\z@\@plus 1fil}\par@updaterelative
+		\vskip0.4cm
+	    \@starttoc{lol}%
+	    \if@restonecol\twocolumn\fi
+	  \endgroup
+	}
+\makeatother
+
+% Zum Einbinden von Grafiken
+\usepackage{graphicx}
+\usepackage{floatflt}
+\usepackage{wrapfig}
+\newcommand{\setdefaultfiguresep}{\intextsep5pt}	% Abstand über und unter Figure
+\newcommand{\setfloatfiguresep}{\intextsep2pt}
+\newcommand{\setownfiguresep}[1]{\intextsep#1}
+\setdefaultfiguresep
+\abovecaptionskip2pt
+\belowcaptionskip2pt
+\setcapindent{1em}
+%\setcapwidth[c]{160pt} setzt Breite für Caption
+\addto\captionsngerman{\renewcommand{\figurename}{Abb.}}
+\newcommand{\graphgetref}[1]{\figurename\ \ref{#1}}
+\makeatletter
+	\renewcommand{\listoffigures}{%
+		\begingroup
+			\if@twocolumn
+				\@restonecoltrue\onecolumn
+			\else
+				\@restonecolfalse
+			\fi
+			\phantomsection
+			\addcontentsline{toc}{chapter}{\listfigurename}
+			\chapter*{\listfigurename\@mkboth{\listfigurename}{\listfigurename}} %\lof@heading
+			\setparsizes{\z@}{\z@}{\z@\@plus 1fil}\par@updaterelative %\setparsizes{0}{0}{\z@\@plus 1fil}\par@updaterelative
+			\@starttoc{lof}%
+			\if@restonecol\twocolumn\fi
+		\endgroup
+	}
+\makeatother
+
+% Paket für Links innerhalb des PDF Dokuments
+\usepackage{url}	% Zum Umbrechen langer URLs (keine Gewähr!!)
+\usepackage[pdftex]{hyperref}
+\hypersetup{
+		pdftitle={\mypdftitle},
+		pdfsubject={\mypdfsubject},
+		pdfauthor={\mypdfauthor},
+		pdfkeywords={\mypdfkeywords},
+		%pdfcreator={},
+		%pdfproducer={},
+		%bookmarks,
+		bookmarksopen,
+		pdfstartview={FitH},	% Fit, FitH, FitV
+		pdfpagelayout={SinglePage},
+		pdfpagemode={UseOutlines}
+}
+\definecolor{LinkColor}{rgb}{0,0,0.5}
+\hypersetup{colorlinks=true, linkcolor=LinkColor, citecolor=LinkColor,
+		filecolor=LinkColor, menucolor=LinkColor, pagecolor=LinkColor, urlcolor=LinkColor,
+		breaklinks=true
+}
+
+% Ein Paket, das die Darstellung von "Text, wie er eingegeben wird" erlaubt:
+%  \begin{verbatim} \end{document}\end{verbatim} erzeugt die Ausgabe von
+%  \end{document} im Typewrites-Style und beendet nicht das Dokument.
+\usepackage{verbatim}
+\usepackage{moreverb}
+
+% Mit \blindtext kann Dummytext verwendet werden
+%\usepackage{blindtext}
+
+% Auflistungen erweitern
+%\usepackage{paralist}
+%\setlength{\leftmargin}{5pt} ???
+
+% Itemize: Abstände verkleinern
+\let\origitemize\itemize
+\def\itemize{\origitemize\itemsep-2pt}
+% Enumerate: Abstände verkleinern
+\let\origenumerate\enumerate
+\def\enumerate{\origenumerate\itemsep-3pt}
+% Itemize / Enumerate: Einrückung verkleinern
+\setlength\leftmargini{18pt}
+\setlength\leftmarginii{7pt}

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Cleanup>
+	<Settings documentType="http://www.sidiff.org/org.sidiff.uml.model" />
+	<Configurations>
+		<Class name="classes.UMLAssociationEnd">
+			<Condition class="ParentMatchedCondition" />
+		</Class>
+		<Class name="classes.UMLAssociation">
+			<Condition class="ChildrenMatchedCondition" />
+		</Class>
+	</Configurations>
+</Cleanup>

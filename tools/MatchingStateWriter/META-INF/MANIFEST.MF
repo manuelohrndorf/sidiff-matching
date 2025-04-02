@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Writer Plug-in
+Bundle-SymbolicName: org.sidiff.matchingstatewriter
+Bundle-Version: 1.0.0
+Require-Bundle: org.eclipse.emf.ecore,
+ org.sidiff.common.emf,
+ org.sidiff.core.correspondences;bundle-version="0.0.1",
+ org.sidiff.core.annotation;bundle-version="0.0.1"
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: org.sidiff.matchingstatewriter
+Import-Package: org.osgi.framework;version="1.5.0"
+Bundle-Activator: org.sidiff.matchingstatewriter.Activator

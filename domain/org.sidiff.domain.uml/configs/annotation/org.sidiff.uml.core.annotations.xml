@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- <!DOCTYPE Preprocessing SYSTEM "http://pi.informatik.uni-siegen.de/SiDiff/org.sidiff.core.annotation.default.dtd" > -->
+<Annotations documentType="http://www.sidiff.org/org.sidiff.uml.model">
+	<Annotation nodeType="EObject">
+		<SyntheticAttribute attributeName="PATH" operation="TypePathAnnotator" />
+		<SyntheticAttribute attributeName="HASH" operation="HashAnnotator" parameter="
+			localPositionAnnotationKey=PATH,
+			referencedObjectsPositionAnnotationKey=PATH,
+			globalMoveAllowed=true" 
+			requires="PATH"/>
+	</Annotation>
+	<Annotation nodeType="core.UMLNamedElement">
+		<SyntheticAttribute attributeName="PATH" operation="AttributePathAnnotator" parameter="name" />
+	</Annotation>
+	<Annotation nodeType="core.UMLModel">
+		<SyntheticAttribute attributeName="HASH" operation="HashAnnotator" parameter="
+			localPositionAnnotationKey=PATH,
+			referencedObjectsPositionAnnotationKey=PATH,
+			globalMoveAllowed=false" 
+			requires="PATH"/>
+	</Annotation>
+	<Annotation nodeType="classes.UMLPrimitiveType">
+		<SyntheticAttribute attributeName="HASH" operation="HashAnnotator" parameter="
+			localPositionAnnotationKey=PATH,
+			referencedObjectsPositionAnnotationKey=PATH,
+			globalMoveAllowed=false" 
+			requires="PATH"/>
+	</Annotation>
+	<Annotation nodeType="classes.UMLLiteral">
+		<SyntheticAttribute attributeName="HASH" operation="HashAnnotator" parameter="
+			localPositionAnnotationKey=PATH,
+			referencedObjectsPositionAnnotationKey=PATH,
+			globalMoveAllowed=false" 
+			requires="PATH"/>
+	</Annotation>
+
+	<Annotation nodeType="classes.UMLParameter">
+		<SyntheticAttribute attributeName="HASH" operation="HashAnnotator" parameter="
+			localPositionAnnotationKey=PATH,
+			referencedObjectsPositionAnnotationKey=PATH,
+			globalMoveAllowed=false" 
+			requires="PATH"/>
+	</Annotation>
+	<Annotation nodeType="classes.UMLAssociationEnd">
+		<SyntheticAttribute attributeName="HASH" operation="HashAnnotator" parameter="
+			localPositionAnnotationKey=PATH,
+			referencedObjectsPositionAnnotationKey=PATH,
+			globalMoveAllowed=false" 
+			requires="PATH"/>
+	</Annotation>
+</Annotations>

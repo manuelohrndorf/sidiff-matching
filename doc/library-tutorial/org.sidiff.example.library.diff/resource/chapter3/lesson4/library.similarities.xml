@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Comparison>
+	<Settings documentType="http://www.eclipse.org/emf/jcrm/samples/emf/sample/Library"
+		normalizeWeights="false" />
+	
+	<Configurations>
+		<Class name="Writer" threshold="0.4">
+			<CompareFunction class="Self"
+				parameter="ECAttributeStatic[VCStringLCS[ci];name]" weight="0.4" />
+			<CompareFunction class="NeighboursSingleReference"
+				parameter="LCLongestCommonSubsequence[ECMatchedOrSimilar;0.5f];books"
+				policy="unfulfilled" weight="0.6" />
+		</Class>
+		<Class name="Book" threshold="0.4">
+			<CompareFunction class="Self"
+				parameter="ECAttributeStatic[VCStringLCS[ci];title]" weight="0.25" />
+			<CompareFunction class="Self"
+				parameter="ECAttributeStatic[VCGauss[0.7f];pages]" weight="0.25" />
+			<CompareFunction class="SingleNeighbour" parameter="ECMatchedOrSimilar;author"
+				weight="0.5" />			
+		</Class>
+	</Configurations>
+</Comparison>

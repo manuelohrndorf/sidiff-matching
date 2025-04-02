@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: EditrulesGenerator Test
+Bundle-SymbolicName: org.sidiff.tools.editrules.generator.test;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.sidiff.tools.editrules.generator.test.Activator
+Bundle-Vendor: sidiff.org
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.sidiff.tools.editrules.generator;bundle-version="1.0.0",
+ org.sidiff.common.services;bundle-version="1.0.0",
+ org.sidiff.common.emf;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy

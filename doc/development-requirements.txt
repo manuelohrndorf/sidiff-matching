@@ -1,0 +1,7 @@
+--------------------------------------------
+Development-Requirements
+--------------------------------------------
+
+- Eclipse 3.4 (Ganymede Release)
+- Subclipse (as Subversion Connector) (Update-Site: http://subclipse.tigris.org/update_1.4.x)
+- all EMF-Plugins 2.4.0 (Core, Runtime, Common) from "Ganymede update site"

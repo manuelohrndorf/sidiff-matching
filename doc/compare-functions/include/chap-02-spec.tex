@@ -1,0 +1,251 @@
+%
+% Dokumentation der Vergleichsfunktionen
+% ===========================================================================
+%
+
+\chapter{Dokumentation der Vergleichsfunktionen}
+\label{strct:spec}
+An dieser Stelle seien nun die einzelnen vom SiDiff-Kern bereitgestellten Vergleichsfunktionen dokumentiert. Die Vergleichsfunktionen werden dabei anhand ihrer Semantiken gruppiert oder, sofern diese sich keiner allgemeinen Gruppe zuordnen lassen, dem folgenden \structgetfullref{strct:spec:misc} zugeschrieben.
+
+\begin{tabular}[ht]{|l|l|}
+\hline
+new CF & reviewed \\
+\hline
+\hline
+CompareAttributeUsingEquals & \\
+\hline
+CompareAttributeUsingGauss & \\
+\hline
+CompareAttributeUsingIndexOf & \\
+\hline
+CompareAttributeUsingLcs & \\
+\hline
+
+\end{tabular}
+
+\begin{tabular}[ht]{|l|l|c|c|}
+\hline
+old CF & new CF & TestData & tested \\
+\hline
+\hline
+\textbf{org.sidiff.core.compare.comparefunctions.} & \multirow{2}{*}{ } & \multirow{2}{*}{ } & \multirow{2}{*}{ }\\
+\textbf{emf} & & & \\
+\hline
+\textit{Abstract} & & & \\
+\hline
+AbstractAllReferences & & & \\
+\hline
+AbstractAllReferencesHasThreshold & & & \\
+\hline
+AbstractAttribute & & & \\
+\hline
+AbstractChildren & & & \\
+\hline
+AbstractChildrenHasThreshold & & & \\
+\hline
+AbstractNumericAttribute & & & \\
+\hline
+AbstractParents & & & \\
+\hline
+AbstractReferences & & & \\
+\hline
+AbstractReferecnesHasThreshold & & & \\
+\hline
+AbstractRemoteNodes & & & \\
+\hline
+AbstractRemoteNodesHasThreshold & & & \\
+\hline
+AbstractStringAttribute & & & \\
+\hline
+\textit{Implementations} & & & \\
+\hline
+AllReferenceEqualViewingTypes & & & \\
+\hline
+BooleanAttribute & CompareAttributeUsingEquals & x & x\\	
+\hline
+ChildrenEqualViewingTypes & & &\\	
+\hline
+EnumerationAttribute & & &\\	
+\hline
+EqualID & & &\\	
+\hline
+ExplicitMatch & & &\\	
+\hline
+MaximumSimilarity & & &\\	
+\hline
+NoSimilarity & & &\\	
+\hline
+NumericAttributeEqualUsingDouble & CompareAttributeUsingEquals & x & x\\	
+\hline
+NumericAttributeEqualUsingFloat & CompareAttributeUsingEquals & x & x\\	
+\hline
+NumericAttributeEqualUsingInteger & CompareAttributeUsingEquals & x & x\\	
+\hline
+NumericAttributeEqualUsingLong & CompareAttributeUsingEquals & x & x\\	
+\hline
+NumericAttributeSimilarUsingGauss & CompareAttributeUsingGauss & x & x\\	
+\hline
+ReferenceExists & & &\\	
+\hline
+ReferencesEqualViewingTypes & & &\\	
+\hline
+RemoteNodesEqualViewingTypes & & &\\	
+\hline
+StringAttributeUsingBoyer & & &\\	
+\hline
+StringAttributeUsingEquals & CompareAttributeUsingEquals & x & x\\	
+\hline
+StringAttributeUsingIndexOf & CompareAttributeUsingIndexOf & x & x\\	
+\hline
+StringAttributeUsingLcs & CompareAttributeUsingLcs & x & x\\	
+\hline
+
+\end{tabular}
+
+\begin{tabular}[ht]{|l|l|c|c|}
+\hline
+old CF & new CF & TestData & tested \\
+\hline
+\hline
+\textbf{org.sidiff.core.compare.comparefunctions.} & \multirow{2}{*}{ } & \multirow{2}{*}{ } & \multirow{2}{*}{ }\\
+\textbf{annotations} & & & \\
+\hline
+\textit{Abstract} & & & \\
+\hline
+AbstractNumericAnnotations & & & \\
+\hline
+AbstractStringAnnotations & & & \\
+\hline
+\textit{Implementations} & & & \\
+\hline
+AllReferencesEqualViewingAnnotation & & & \\
+\hline
+NumericAnnotationEqualUsingDouble & & & \\
+\hline
+NumericAnnotationEqualUsingFloat & & & \\
+\hline
+NumericAnnotationEqualUsingInteger & & & \\
+\hline
+NumericAnnotationEqualUsingLong & & & \\
+\hline
+NumericAnnotationSimilarUsingGauss & & & \\
+\hline
+ReferencesEqualViewingAnnotation & & & \\
+\hline
+RemoteNodesEqualViewingAnnotation & & & \\
+\hline
+StringAnnotationsUsingBoyer & & & \\
+\hline
+StringAnnotationUsingEquals & & & \\
+\hline
+StringAnnotationsUsingIndexOf & & & \\
+\hline
+StringAnnotationUsingLcs & & & \\
+\hline
+
+\end{tabular}
+
+\begin{tabular}[ht]{|l|l|c|c|}
+\hline
+old CF & new CF & TestData & tested \\
+\hline
+\hline
+\textbf{org.sidiff.core.compare.comparefunctions.} & \multirow{2}{*}{ } & \multirow{2}{*}{ } & \multirow{2}{*}{ }\\
+\textbf{similarities} & & & \\
+\hline
+\textit{Implementations} & & & \\
+\hline
+AllReferencesSimilar & & & \\
+\hline
+ChildrenSimilar & & & \\
+\hline
+ParentsSimilar & & & \\
+\hline
+RefencesSimilar & & & \\
+\hline
+RemoteNodesSimilar & & & \\
+\hline
+
+\end{tabular}
+
+\begin{tabular}[ht]{|l|l|c|c|}
+\hline
+old CF & new CF & TestData & tested \\
+\hline
+\hline
+\textbf{org.sidiff.core.compare.comparefunctions.} & \multirow{2}{*}{ } & \multirow{2}{*}{ } & \multirow{2}{*}{ }\\
+\textbf{correspondences} & & & \\
+\hline
+\textit{Implementations} & & & \\
+\hline
+AllReferencesEqualViewingMatches & & & \\
+\hline
+AllReferencesMatched & & & \\
+\hline
+ChildrenEqualViewingMatches & & & \\
+\hline
+ChildrenMatched & & & \\
+\hline
+ParentsMatched & & & \\
+\hline
+ReferencesEqualVewingMatches & & & \\
+\hline
+ReferencesMatched & & & \\
+\hline
+RemoteNodesEqualViewingMatches & & & \\
+\hline
+RemoteNodesMatched & & & \\
+\hline
+
+\end{tabular}
+
+\begin{tabular}[ht]{|l|l|c|c|}
+\hline
+old CF & new CF & TestData & tested \\
+\hline
+\hline
+\textbf{org.sidiff.core.compare.comparefunctions.} & \multirow{2}{*}{ } & \multirow{2}{*}{ } & \multirow{2}{*}{ }\\
+\textbf{correspondencesorsimilarities} & & & \\
+\hline
+\textit{Implementations} & & & \\
+\hline
+AllReferencesMatchedOrSimilar & & & \\
+\hline
+ChildrenMatchedOrSimilar & & & \\
+\hline
+ParentsMatchedOrSimilar & & & \\
+\hline
+ReferencesMatchedOrSimilar & & & \\
+\hline
+RemoteNodesMatchedOrSimilar & & & \\
+\hline
+\end{tabular}
+
+
+\input{include/chap-02-01-misc}
+\newpage
+\input{include/chap-02-02-stringattr}
+\newpage
+\input{include/chap-02-03-numattr}
+\newpage
+\input{include/chap-02-04-parents}
+\newpage
+\input{include/chap-02-05-childrenio}
+\newpage
+\input{include/chap-02-06-childrenco}
+\newpage
+\input{include/chap-02-07-remotenodesio}
+\newpage
+\input{include/chap-02-08-remotenodesco}
+\newpage
+\input{include/chap-02-09-outrefsio}
+\newpage
+\input{include/chap-02-10-outrefsco}
+\newpage
+\input{include/chap-02-11-outref}
+\newpage
+\input{include/chap-02-12-inrefsio}
+\newpage
+\input{include/chap-02-13-inrefsco}
+\newpage
+\input{include/chap-02-14-inref}

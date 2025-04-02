@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Annotations documentType="http://www.eclipse.org/emf/jcrm/samples/emf/sample/Library" >
+
+	<Annotation nodeType="EObject">	
+		<SyntheticAttribute attributeName="PATH" operation="TypePathAnnotator"/>
+	</Annotation>
+	
+	<Annotation nodeType="Book">	
+		<SyntheticAttribute 
+			attributeName="HASH" 
+			operation="HashAnnotator" 
+			parameter="globalMoveAllowed=true,referencedObjectsPositionAnnotationKey=PATH"
+			requires="PATH"/>
+	</Annotation>
+	
+	<Annotation nodeType="Library">
+		<SyntheticAttribute attributeName="DERIVED_ID" operation="DerivedIDAnnotator" parameter="name" />
+	</Annotation>
+	
+	<Annotation nodeType="Writer">		
+		<SyntheticAttribute attributeName="PATH" operation="AttributePathAnnotator" parameter="name" />
+		<SyntheticAttribute attributeName="DERIVED_ID" operation="DerivedIDAnnotator" parameter="Parent#Library@name::name" />
+	</Annotation>
+		
+</Annotations>

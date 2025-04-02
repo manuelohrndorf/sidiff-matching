@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.sidiff.domain.extensionpoint">
+      <client
+            nsUri="http://www.omg.org/spec/BPMN/20100524/MODEL-XMI">
+      </client>
+   </extension>
+   <extension
+         point="org.sidiff.domain.modelloader.extensionpoint">
+      <client
+            class="org.sidiff.domain.bpmn2.SignavioLoader"></client>
+   </extension>
+   <extension
+         point="org.sidiff.domain.modelloader.extensionpoint">
+     <client
+            class="org.sidiff.domain.bpmn2.BPMN2Loader"></client>
+   </extension>
+
+</plugin>

@@ -1,0 +1,13 @@
+<project name="Personal Ant Tasks" basedir=".">
+	
+	<target name="tearUp">
+		<!-- Called bevor transformation tasks -->
+		<echo> Local Tear-Up</echo>
+	</target>
+	
+	<target name="tearDown">
+		<!-- Called after transformation tasks -->
+		<echo> Local Tear-Down</echo>
+	</target>
+
+</project>

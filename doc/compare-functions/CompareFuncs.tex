@@ -1,0 +1,70 @@
+%
+% Main document
+% ===========================================================================
+%
+\input{include/head-preamble}
+\input{include/head-macros}
+
+\begin{document}
+	\pagenumbering{Roman}
+	
+	% Titelseite
+	\input{include/spec-titlepage}
+	
+	% Inhaltsverzeichnis
+	\clearpage
+	\tableofcontents
+	
+	% Document History
+	\chapter*{Document History}
+	\begin{tabular}{|c|p{11cm}|}\hline
+		Date & Changes \\\hline\hline
+		17.02.09 & Initial Version \\\hline
+		02.03.09 & Beschreibung zur Erstellung von Testmodellen hinzugefügt (initial) \\\hline
+		08.03.09 & New todos and comments added \\\hline
+		11.03.09 & Ein Dokument für alle Compare-Funktionen angelegt (initial) \\\hline
+	\end{tabular}
+	
+	% todos and comments. Sollte zu gegebener Zeit wieder entfernt werden..
+	\input{include/chap-todos-comments}
+	
+	% Seitennummer speichern
+	\newcounter{lastromanpagenum}
+	\setcounter{lastromanpagenum}{\value{page}}
+	
+	% Kapitel
+	\clearpage
+	\pagenumbering{arabic}	
+
+	\input{include/chap-intro}
+	\input{include/chap-testdata}
+	\input{include/chap-junit}
+	\input{include/chap-02-spec}
+	
+	
+	% Anhang
+	%\clearpage
+	%\appendix
+	%\chapter{Anhang}
+	
+	% Weiterführende Materialien
+	%\input{include/appendix}
+	
+	% Alte Seitenzählung wiederherstellen
+	%\clearpage
+	%\pagenumbering{Roman}
+	%\addtocounter{lastromanpagenum}{1}
+	%\setcounter{page}{\value{lastromanpagenum}}
+
+	% Liste der Codebeispiele
+	%\clearpage
+	%\lstlistoflistings
+	
+	% Liste der Tabellen
+	%\clearpage
+	%\listoftables
+	
+	% Liste der Grafiken
+	%\clearpage
+	%\listoffigures
+\end{document}

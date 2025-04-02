@@ -1,0 +1,268 @@
+\documentclass[a4paper,DIV=10]{scrartcl}
+
+
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{float}
+
+
+\newcommand{\op}[6]{
+  \subsection{#1}
+  #2
+  
+  \subsubsection*{Signature:}
+  \ \ #3
+  
+  \subsubsection*{Context element (selectedEObject):}     
+  \ \ #4
+  
+  \subsubsection*{Additional parameters:} 
+  #5
+  
+  \subsubsection*{Precondition:}    
+  \ \ #6
+  
+  \subsubsection*{Implementation in EMF Henshin:}
+}
+
+\newcommand{\cond}[3]{
+	\subsection{#1}
+	\label{subsec:#2}
+	#3
+}
+
+
+\author{\textbf{Technical Report}\\
+\hfill\\
+Michaela Rindt, Timo Kehrer, Udo Kelter, Pit Pietsch\\
+Software Engineering Group\\
+University of Siegen}
+
+\title{Rules for Edit Operations in Class Diagrams}
+
+\date{rev. 2012-01-06}
+
+% \title{
+% A Catalog of Basic Edit Operations\\ for UML Class Models\\ \hfill \\
+% \LARGE{Informal Specifications and Rule-based Implementations with EMF Henshin \hfill \\ \hfill \\}
+% }
+
+\begin{document}
+\maketitle
+
+\newpage
+\tableofcontents
+
+\newpage
+\section{Introduction}
+
+This technical report specifies edit operations for UML
+class diagrams.
+ We assume that the class diagrams are represented as
+Ecore objects using the EMF technology.
+ Each operation is specified as follows:
+
+\begin{enumerate}
+\item by a short informal description from a users' point
+   of view
+
+\item by a suggested signature of a method which
+   implements this edit operation, and an informal
+   description of the parameters in this signature
+
+\item by the preconditions (informally specified) which must
+   hold to successfully perform the edit operation
+
+\item by an implementation of this edit operation as a
+   Henshin transformation rule, which acts as a formal,
+   precise specification.
+
+\end{enumerate}
+
+The main emphasis is on the formal specifications using
+Henshin. These edit rules can be translated into software
+which detects applications of these edit operations in 
+a difference between two models, s. \cite{KeKT2011ASE}
+for details.
+
+
+\paragraph{Coverage of the UML Metamodel.} This catalog of
+edit rules covers only the more important concepts of UML
+class diagrams. For example, details such as
+ValueSpecifications in multiplicities are not covered.
+Future versions of this document will extend the set of
+covered modelling concepts.
+
+\paragraph{Used UML Metamodel.}
+The creation of edit rules for class diagrams is based
+on an internally developed UML Metamodel which is highly
+truncated in comparison to the UML2.0 standard of the OMG \cite{OMG}.
+This internal UML Metamodel is restricted to class diagrams only.
+A concrete design difference lies e.g. in the construction of associations:
+UML2.0 associations contain property elements which refer to the
+target and source of the association. In the SiDiff UML Metamodel
+an UMLAssociation contains so called UMLAssociationEnds wich refer
+to the source and target of an association.
+This is just one example of how these meta models differ.
+If you are interested in how the SiDiff UML Metamodel is built,
+please take a look at the according link under the references \cite{SiDiff-UML}.
+
+\paragraph{Tooling.}
+The edit operations were designed
+with EMF-Henshin and EMF-Refactor.
+
+EMF-Henshin provides a graphical user interface for
+defining such edit operation, whereas EMF-Refactor is an
+extension with which one can define preconditions to the
+actual transformation process.
+
+More Information about EMF-Henshin can be found under
+their project page
+\cite{Henshin}. To find more information about
+EMF-Refactor visit the EMF-Refactor project page
+\cite{Refactor}.
+
+
+
+\subsection{Design Rules for Edit Operations} 
+
+Some edit operations are obviously needed, e.g. operations
+for creating and deleting model elements. This catalog
+contains many additional operations, mostly ``move
+operations'', which are not strictly necessary, but
+convenient. An example of this is the operation which
+moves a class into another package; instead of moving the
+class, it could be deleted and reconstructed from scratch
+in the other package.
+
+Whenever possible, we have avoided to use undefined or default values. For
+example, when creating a class, its name must be specified immediately in a parameter.
+
+Another design decision was that each edit operation should be
+implementable by one Henshin transformation.
+ There are some model modifications which could be
+implemented in different ways.
+
+ Since the creation of Henshin transformations for UML is
+still work in progress, this catalog of edit operations is
+not yet complete and sometimes discretionary.
+
+
+
+
+\subsection{Notations}
+
+In general, every transformation consists of two files:
+the (graphical) diagram file and the (more technical)
+Henshin-graph file. In the latter, one can create
+TransformationUnits which will define the execution
+sequence of rules in different ways. In some cases of the
+following transformations you will find excerpts of such
+unit graphs for a better understanding.
+
+Notations like 'nameValue/newName' show first the
+parameter name used in the mainUnit of the graph-file and
+secondly the placeholder name of the element in the
+diagram-file.
+
+Most conditions are very similar and are therefore just
+listed once under the section 'Conditions'. You will find
+a reference to these under relevant sections. 
+
+Please note that the conditions are not yet complete.
+
+
+
+
+
+\section{Conditions}
+\input{Conditions}
+
+\newpage
+\section{Packages}
+\input{Package}
+
+\newpage
+\section{Classes}
+\input{Class}
+
+\newpage
+\section{Interfaces}
+\input{Interface}
+
+\newpage
+\section{Enumerations}
+\input{Enumeration}
+
+\newpage
+\section{Literals}
+\input{Literal}
+
+\newpage
+\section{PrimitiveTypes}
+\input{PrimitiveType}
+
+\newpage
+\section{Stereotypes}
+\input{Stereotype}
+
+\newpage
+\section{Associations}
+\input{Association}
+
+\newpage
+\section{AssociationClasses}
+\input{AssociationClass}
+
+\newpage
+\section{AssociationEnds}
+\input{AssociationEnd}
+
+\newpage
+\section{Generalizations}
+\input{Generalization}
+
+\newpage
+\section{Operations}
+\input{Operation}
+
+\newpage
+\section{Parameters}
+\input{Parameter}
+
+\newpage
+\section{Attributes}
+\input{Attribute}
+
+
+
+
+%================== Bibliography ===============================================================
+\newpage
+\section{References}
+\begin{thebibliography}{WW}
+
+\bibitem {Henshin} \href{http://www.eclipse.org/modeling/emft/henshin/} {http://www.eclipse.org/modeling/emft/henshin/}.
+ 
+\bibitem {Refactor} \href{http://www.eclipse.org/modeling/emft/refactor/} {http://www.eclipse.org/modeling/emft/refactor/}
+
+\bibitem {SiDiff-UML} \href{http://pi.informatik.uni-siegen.de/qudimo/org.sidiff.uml/} {http://pi.informatik.uni-siegen.de/qudimo/org.sidiff.uml/}
+
+\bibitem {OMG} \href{http://www.omg.org/} {http://www.omg.org/}
+
+\bibitem {KeKT2011ASE} Kehrer, Timo; Kelter, Udo; Taentzer,
+Gabriele: A Rule-Based Approach to the Semantic Lifting of
+Model Differences in the Context of Model Versioning;
+p.163-172 in: Proc. 26th IEEE/ACM International Conference
+on Automated Software Engineering (ASE'11), 6-11 Nov 2011,
+Lawrence, Kansas, USA; ACM; 2011
+
+\end{thebibliography}
+
+
+
+
+
+
+\end{document}
+

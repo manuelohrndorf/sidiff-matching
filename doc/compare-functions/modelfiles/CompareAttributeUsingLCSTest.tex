@@ -1,0 +1,87 @@
+\documentclass[a4paper]{article}
+\usepackage{multirow}
+\usepackage{longtable}
+
+\begin{document}
+
+\subsubsection{CompareAttributeUsingLCS}
+
+\begin{longtable}{|l|l|l|l|l|}
+\hline
+\textbf{Testcase} & \textbf{Models} & \textbf{Attributes} & \textbf{Similarity} & \textbf{Regular Expression}\\
+\hline
+\hline
+testcase\_01 & model1 & eString=aabbaa & 0 & Case-Insensitive\\
+\hline
+ 		  			 & model2 & eString=ccddcc & & \\
+\hline
+\hline
+testcase\_02 & model1 & eString=aabbaa & 0 & Case-Sensitive\\
+\hline
+						 & model2 & eString=ccddcc & & \\
+\hline
+\hline
+testcase\_03 & model1 & eString=aaBBaa & 0.75 & Case-Insensitive\\
+\hline
+             & model2 & eString=aacBBcaa & &\\
+\hline
+\hline
+testcase\_04 & model1 & eString=aadBBaa & 0.75 & Case-Sensitive\\
+\hline
+             & model2 & eString=aacBBaad & &\\
+\hline
+\hline
+testcase\_05 & model1 & eString=AAbbAA & 0.75 & Case-Insensitive\\
+\hline
+             & model2 & eString=aacBBcaa & &\\
+\hline
+\hline
+testcase\_06 & model1 & eString=AAbbAA & 0 & Case-Sensitive\\
+\hline
+             & model2 & eString=aacBBcaa & &\\
+\hline
+\hline
+testcase\_07 & model1 & eString=aAbbAa & 0.75 & Case-Insensitive\\
+\hline
+             & model2 & eString=aacBBcaa & &\\
+\hline
+\hline
+testcase\_08 & model1 & eString=aAbbAa & 0.25 & Case-Sensitive\\
+\hline
+             & model2 & eString=aacBBcaa & &\\
+\hline
+\hline
+testcase\_09 & model1 & eString=aAABA & 1 & Case-Sensitive\\
+\hline
+             & model2 & eString=aAABA & &\\
+\hline
+\hline
+testcase\_10 & model1 & eString=aAABA & 1 & Case-Insensitive\\
+\hline
+             & model2 & eString=aAABA & &\\
+\hline
+\hline
+testcase\_11 & model1 & eString=Aaaba & 1 & Case-Insensitive\\
+\hline
+             & model2 & eString=aAABA & &\\
+\hline
+\hline
+testcase\_12 & model1 & eString=Aaaba & 0.2 & Case-Sensitive\\
+\hline
+             & model2 & eString=aAABA & &\\
+\hline
+\hline
+testcase\_13 & model1 & eString=null & 0 & Case-Insensitive\\
+\hline
+             & model2 & eString=aAABA & &\\
+\hline
+\hline
+testcase\_14 & model1 & eString=null & 0 & Case-Sensitive\\
+\hline
+                      & model2 & eString=aAABA & &\\
+\hline
+
+\end{longtable}
+
+
+\end{document}

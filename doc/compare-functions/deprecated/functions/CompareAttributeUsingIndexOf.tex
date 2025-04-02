@@ -1,0 +1,111 @@
+\comparefunction{CompareAttributeUsingIndexOf}
+
+\allowedtypes
+eString
+
+\precondition
+-
+
+\semantics
+Compares two nodes based on the string values of their attributes.
+
+\returnvalue
+This compare functions test if the strings of the attribute are contained by
+one another. E.g when the attribute value of Node B is contained in the
+attribute value of Node A the similarity is the ratio of the shorter attribute
+value of Node B and the attribute value of Node A.
+
+\parameters
+The Attribute to be compared 
+The case-sensitive value
+
+
+\exceptions
+
+
+\test	
+Allgemeine Testaquivalenzklasse \\\\
+
+compareAttributeUsingIndexOfTest1\\\\
+Different Strings\\
+case-insensitive test (sim = 0)\\
+Model1: eString = aabbaa\\
+Model2: eString = ccddcc\\\\
+
+compareAttributeUsingIndexOfTest2\\\\
+Different Strings\\
+case-sensitive test (sim = 0)\\
+Model1: eString = aabbaa\\
+Model2: eString = ccddcc\\\\
+
+compareAttributeUsingIndexOfTest3\\\\
+Zeichenketten mit case-sensitive gemeinsame Zeichen\\
+case-sensitive test (sim = 0.75)\\
+Model1: eString = AABBAA\\
+Model2: eString = acAABBAA\\\\
+
+compareAttributeUsingIndexOfTest4\\\\
+Zeichenketten mit case-sensitive gemeinsame Zeichen\\
+case-insensitive test (sim = 0.75)\\
+Model1: eString = AABBAA\\
+Model2: eString = acAABBAA\\\\
+
+compareAttributeUsingIndexOfTest5\\\\
+Zeichenketten mit case-insensitive gemeinsame Zeichen\\
+case-sensitive test (sim = 0)\\
+Model1: eString = aabbaa\\
+Model2: eString = acAABBAA\\\\
+
+compareAttributeUsingIndexOfTest6\\\\
+Zeichenketten mit case-sensitive gemeinsame Zeichen\\
+case-insensitive test (sim = 0.75)\\
+Model1: eString = aabbaa\\
+Model2: eString = acAABBAA\\\\
+
+compareAttributeUsingIndexOfTest7\\\\
+Zeichenketten mit case-sensitiven und case insensitiven gemeinsamen Zeichen\\
+case-sensitive test (sim = 0)\\
+Model1: eString = aabBaA\\
+Model2: eString = acaABBAa\\\\
+
+compareAttributeUsingIndexOfTest8\\\\
+Zeichenketten mit case-sensitiven und case insensitiven gemeinsamen Zeichen\\
+case-insensitive test (sim = 0.75)\\
+Model1: eString = aabBaA\\
+Model2: eString = acaABBAa\\\\
+
+compareAttributeUsingIndexOfTest9\\\\
+Identische Strings case-sensitive\\
+case-sensitive test (sim = 1)\\
+Model1: eString = aaBBaa\\
+Model2: eString = aaBBaa\\\\
+
+compareAttributeUsingIndexOfTest10\\\\
+Identische Strings case-sensitive\\
+case-insensitive test (sim = 1)\\
+Model1: eString = aaBBaa\\
+Model2: eString = aaBBaa\\\\
+
+compareAttributeUsingIndexOfTest11\\\\
+Identische Strings case-insensitive\\
+case-sensitive test (sim = 0)\\
+Model1: eString = aaBBaa\\
+Model2: eString = aABBAa\\\\
+
+compareAttributeUsingIndexOfTest12\\\\
+Identische Strings case-insensitive\\
+case-sensitive test (sim = 1)\\
+Model1: eString = aaBBaa\\
+Model2: eString = aABBAa\\\\
+
+compareAttributeUsingIndexOfTest14\\\\
+null-werte\\
+case-sensitive test \\
+Model1: eString = null\\
+Model2: eString = aaBBaa\\\\
+
+compareAttributeUsingIndexOfTest15\\\\
+null-werte\\
+case-insensitive test \\
+Model1: eString = null\\
+Model2: eString = aaBBaa\\\\

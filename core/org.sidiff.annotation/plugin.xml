@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="org.sidiff.annotator.extensionpoint" name="Annotator" schema="schema/org.sidiff.annotator.extensionpoint.exsd"/>
+   <extension-point id="org.sidiff.annotation.extensionpoint" name="Annotation" schema="schema/org.sidiff.annotation.extensionpoint.exsd"/>
+
+</plugin>

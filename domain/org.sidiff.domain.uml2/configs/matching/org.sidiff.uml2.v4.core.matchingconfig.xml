@@ -1,0 +1,854 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Matching>
+	<Settings
+		defaultSequencedMatcher="DefaultMatcher"
+		defaultTopDownMatcher="Propagation"
+		documentType="http://www.eclipse.org/uml2/4.0.0/UML"
+		firstPassSequencedMatcher="UniqueSimilarityMatcher"
+		matcherPrefix="org.sidiff.matcher.similarity.flooding.matcher" />
+	<Configurations>
+
+<!-- START CLASSIDAGRAMM -->
+
+		<MatchingConfiguration
+			className="Model"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.4"
+			topDownMatcher="Propagation" />
+
+		<MatchingConfiguration
+			className="Operation"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="Propagation" />
+
+		<MatchingConfiguration
+			className="Property"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.4"
+			topDownMatcher="Propagation" />
+
+		<MatchingConfiguration
+			className="Parameter"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.4"
+			topDownMatcher="Propagation" />
+
+		<MatchingConfiguration
+			className="Package"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="Propagation" />
+
+		<MatchingConfiguration
+			className="Association"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="NoPropagation" />
+
+		<MatchingConfiguration
+			className="Generalization"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="NoPropagation" />
+
+		<MatchingConfiguration
+			className="Class"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="Propagation" />
+
+		<MatchingConfiguration
+			className="Enumeration"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="Propagation" />
+
+		<MatchingConfiguration
+			className="EnumerationLiteral"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="NoPropagation" />
+
+		<MatchingConfiguration
+			className="LiteralInteger"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.3"
+			topDownMatcher="NoPropagation" />
+
+		<MatchingConfiguration
+			className="LiteralUnlimitedNatural"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.3"
+			topDownMatcher="NoPropagation" />
+
+
+		<MatchingConfiguration
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			className="Interface"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="Propagation" />
+
+		<MatchingConfiguration
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			className="PrimitiveType"
+			independentMatching="true"
+			threshold="1.0"
+			topDownMatcher="NoPropagation" />
+
+		<MatchingConfiguration
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			className="RedefinableTemplateSignature"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="NoPropagation" />
+
+		<MatchingConfiguration
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			className="ClassifierTemplateParameter"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="NoPropagation" />
+
+		<MatchingConfiguration
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			className="Artifact"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="NoPropagation" />
+
+		<MatchingConfiguration
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			className="Dependency"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="NoPropagation" />
+			
+	
+		
+	
+			
+<!-- END CLASSDIAGRAMM -->
+
+
+		<MatchingConfiguration
+			className="Comment"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.6"
+			topDownMatcher="NoPropagation" />
+
+		<MatchingConfiguration
+			className="StateMachine"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.3"
+			topDownMatcher="Propagation" />
+		<MatchingConfiguration
+			className="Region"
+			allowGlobalMove="false"
+			allowLocalMove="false"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.3"
+			topDownMatcher="Propagation" />
+		<MatchingConfiguration
+			className="State"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.3"
+			topDownMatcher="Propagation" />
+		<MatchingConfiguration
+			className="Activity"
+			allowGlobalMove="false"
+			allowLocalMove="false"
+			alwaysComputeSimilarity="false"
+			independentMatching="true"
+			threshold="0.4"
+			topDownMatcher="NoPropagation" />
+		<MatchingConfiguration
+			className="Pseudostate"
+			allowGlobalMove="false"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.4"
+			topDownMatcher="NoPropagation" />
+		<MatchingConfiguration
+			className="Transition"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.65"
+			topDownMatcher="GreedyPropagation" />
+		<MatchingConfiguration
+			className="Trigger"
+			allowGlobalMove="false"
+			allowLocalMove="false"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="NoPropagation" />
+		<MatchingConfiguration
+			className="FinalState"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="NoPropagation" />
+		<MatchingConfiguration
+			allowGlobalMove="true"
+			className="Constraint"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="NoPropagation" />
+		<MatchingConfiguration
+			className="Expression"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.2"
+			topDownMatcher="Propagation" />
+		<MatchingConfiguration
+			allowGlobalMove="true"
+			className="ConnectionPointReference"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="Propagation" />
+		<MatchingConfiguration
+			allowGlobalMove="true"
+			className="Port"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="Propagation" />
+
+		<MatchingConfiguration
+			className="LiteralString"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.3"
+			topDownMatcher="NoPropagation" />
+		<MatchingConfiguration
+			className="LiteralBoolean"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.3"
+			topDownMatcher="NoPropagation" />
+		<MatchingConfiguration
+			className="LiteralNull"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.3"
+			topDownMatcher="NoPropagation" />
+
+		<MatchingConfiguration
+			className="Duration"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="NoPropagation" />
+		<MatchingConfiguration
+			className="DurationInterval"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="NoPropagation" />
+		<MatchingConfiguration
+			className="Interval"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="NoPropagation" />
+		<MatchingConfiguration
+			className="TimeInterval"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="NoPropagation" />
+		<MatchingConfiguration
+			className="TimeExpression"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="NoPropagation" />
+		<MatchingConfiguration
+			className="OpaqueExpression"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="NoPropagation" />
+		<MatchingConfiguration
+			className="StringExpression"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="NoPropagation" />
+		<MatchingConfiguration
+			className="InstanceValue"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="NoPropagation" />
+		s<!-- 
+		<MatchingConfiguration className="ExecutionEvent"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="NoPropagation" />
+		
+		<MatchingConfiguration className="CreationEvent"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="NoPropagation" />
+			
+		<MatchingConfiguration className="DestructionEvent"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="NoPropagation" />
+			
+		<MatchingConfiguration className="SendOperationEvent"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="Propagation" />
+			
+		<MatchingConfiguration className="SendSignalEvent"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="Propagation" />
+			
+		<MatchingConfiguration className="ReceiveOperationEvent"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="Propagation" />
+		<MatchingConfiguration className="ReceiveSignalEvent"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true" 
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="Propagation" />
+		<MatchingConfiguration className="CallEvent"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="Propagation" />
+		<MatchingConfiguration className="ChangeEvent"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="Propagation" />
+		<MatchingConfiguration className="SignalEvent"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="Propagation" />
+		<MatchingConfiguration className="AnyReceiveEvent"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="NoPropagation" />
+		<MatchingConfiguration className="TimeEvent"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="Propagation" />
+		-->
+
+<!-- ActivityDiagramm Extention ___________________________________________________________________ -->
+
+		<MatchingConfiguration
+			className="OpaqueAction"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.3"
+			topDownMatcher="Propagation" />
+			
+		<MatchingConfiguration
+			className="ActivityPartition"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="NoPropagation" />
+		<MatchingConfiguration
+			className="InterruptibleActivityRegion"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="NoPropagation" />
+		<MatchingConfiguration
+			className="CallBehaviorAction"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="Propagation" />
+		<MatchingConfiguration
+			className="CallOperationAction"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="Propagation" />
+
+		<MatchingConfiguration
+			className="ControlFlow"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.3"
+			topDownMatcher="Propagation" />
+		<MatchingConfiguration
+			className="InputPin"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.3"
+			topDownMatcher="Propagation" />
+		<MatchingConfiguration
+			className="OutputPin"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.3"
+			topDownMatcher="Propagation" />
+		<MatchingConfiguration
+			className="ActionInputPin"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.3"
+			topDownMatcher="Propagation" />
+		<MatchingConfiguration
+			className="ValuePin"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.3"
+			topDownMatcher="Propagation" />
+		<MatchingConfiguration
+			className="SendObjectAction"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.4"
+			topDownMatcher="Propagation" />
+		<MatchingConfiguration
+			className="SendSignalAction"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.4"
+			topDownMatcher="Propagation" />
+		<MatchingConfiguration
+			className="Signal"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.4"
+			topDownMatcher="Propagation" />
+
+		<MatchingConfiguration
+			className="AcceptEventAction"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.4"
+			topDownMatcher="Propagation" />
+		<MatchingConfiguration
+			className="ValueSpecificationAction"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.4"
+			topDownMatcher="Propagation" />
+		<MatchingConfiguration
+			className="StructuredActivityNode"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.4"
+			topDownMatcher="Propagation" />
+		<MatchingConfiguration
+			className="ReadSelfAction"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.4"
+			topDownMatcher="Propagation" />
+		<MatchingConfiguration
+			className="InitialNode"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.4"
+			topDownMatcher="Propagation" />
+		<MatchingConfiguration
+			className="ActivityFinalNode"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.4"
+			topDownMatcher="Propagation" />
+		<MatchingConfiguration
+			className="FlowFinalNode"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.4"
+			topDownMatcher="Propagation" />
+		<MatchingConfiguration
+			className="DecisionNode"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.4"
+			topDownMatcher="Propagation" />
+		<MatchingConfiguration
+			className="MergeNode"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.4"
+			topDownMatcher="Propagation" />
+		<MatchingConfiguration
+			className="JoinNode"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.4"
+			topDownMatcher="Propagation" />
+		<MatchingConfiguration
+			className="ForkNode"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.4"
+			topDownMatcher="Propagation" />
+		<MatchingConfiguration
+			className="ActivityParameterNode"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.4"
+			topDownMatcher="Propagation" />
+		<MatchingConfiguration
+			className="DataStoreNode"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.4"
+			topDownMatcher="Propagation" />
+		<MatchingConfiguration
+			className="ConditionalNode"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.4"
+			topDownMatcher="Propagation" />
+		<MatchingConfiguration
+			className="LoopNode"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.4"
+			topDownMatcher="Propagation" />
+		<MatchingConfiguration
+			className="SequenceNode"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.4"
+			topDownMatcher="Propagation" />
+
+		<MatchingConfiguration
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			className="ExpansionRegion"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.4"
+			topDownMatcher="Propagation" />
+		<MatchingConfiguration
+			className="ExpansionNode"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.4"
+			topDownMatcher="Propagation" />
+		<MatchingConfiguration
+			className="ObjectFlow"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.3"
+			topDownMatcher="Propagation" />
+		<MatchingConfiguration
+			className="ExceptionHandler"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.4"
+			topDownMatcher="Propagation" />
+
+<!-- Elements of other diagram types -->
+
+		<MatchingConfiguration
+			className="OpaqueBehavior"
+			allowGlobalMove="true"
+			allowLocalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			threshold="0.5"
+			topDownMatcher="NoPropagation" />
+
+	</Configurations>
+
+	<Sequence>
+		<Sequence>
+			<Class name="Model" />
+			<Class name="Package" />
+			<Class name="Class" />
+			<Class name="Interface" />
+			<Class name="Property" />
+			<Class name="Operation" />
+			<Class name="Parameter" />
+			<Class name="Association" />
+			<Class name="Generalization" />
+			<Class name="Enumeration" />
+			<Class name="EnumerationLiteral" />
+			<Class name="PrimitiveType" />
+			<Class name="RedefinableTemplateSignature" />
+			<Class name="ClassifierTemplateParameter" />
+			<Class name="Artifact" />
+			<Class name="Dependency" />
+			<Class name="LiteralInteger" />
+			<Class name="LiteralUnlimitedNatural" />
+		</Sequence>
+
+		<Sequence>
+			<Class name="Comment" />
+			<Class name="Activity" />
+			<Class name="ActivityPartition" />
+			<Class name="InterruptibleActivityRegion" />
+			<Class name="ControlFlow" />
+			<Class name="ObjectFlow" />
+			<Class name="ExceptionHandler" />
+			<Class name="CallBehaviorAction" />
+			<Class name="CallOperationAction" />
+			<Class name="Operation" />
+			<Class name="InputPin" />
+			<Class name="OutputPin" />
+			<Class name="ActionInputPin" />
+			<Class name="ValuePin" />
+			<Class name="SendObjectAction" />
+			<Class name="SendSignalAction" />
+			<Class name="Signal" />
+			<Class name="Property" />
+		<!-- <Class name="AcceptEventAction" /> -->
+			<Class name="ValueSpecificationAction" />
+			<Class name="StructuredActivityNode" />
+			<Class name="ReadSelfAction" />
+			<Class name="InitialNode" />
+			<Class name="ActivityFinalNode" />
+			<Class name="FlowFinalNode" />
+			<Class name="DecisionNode" />
+			<Class name="MergeNode" />
+			<Class name="JoinNode" />
+			<Class name="ForkNode" />
+			<Class name="ActivityParameterNode" />
+			<Class name="DataStoreNode" />
+			<Class name="ConditionalNode" />
+			<Class name="LoopNode" />
+			<Class name="SequenceNode" />
+			<Class name="Parameter" />
+			<Class name="ExpansionRegion" />
+			<Class name="ExpansionNode" />
+
+			<Sequence>
+				<Class name="OpaqueAction" />
+			</Sequence>
+
+			<Class name="Trigger" />
+
+			<Sequence>
+				<Sequence initial="2">
+					<Class name="Pseudostate" />
+					<Class name="State" />
+					<Class name="Transition" />
+					<Class name="Constraint" />
+					<Class name="Expression" />
+					<Class name="LiteralString" />
+					<Class name="LiteralInteger" />
+					<Class name="LiteralBoolean" />
+					<Class name="LiteralUnlimitedNatural" />
+					<Class name="LiteralNull" />
+					<Class name="Duration" />
+					<Class name="DurationInterval" />
+					<Class name="Interval" />
+					<Class name="TimeInterval" />
+					<Class name="TimeExpression" />
+					<Class name="OpaqueExpression" />
+					<Class name="StringExpression" />
+					<Class name="InstanceValue" />
+				</Sequence>
+
+				<Class name="Region" />
+				<Class name="State" />
+				<Class name="ConnectionPointReference" />
+				<Class name="StateMachine" />
+				<Class name="Model" />
+			</Sequence>
+		</Sequence>
+		<Sequence>
+			<Class name="OpaqueBehavior" />
+		</Sequence>
+	</Sequence>
+</Matching>
