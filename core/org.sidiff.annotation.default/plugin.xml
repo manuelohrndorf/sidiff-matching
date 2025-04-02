@@ -71,13 +71,5 @@
             class="org.sidiff.annotation.impl.DefaultAnnotation">
       </client>
    </extension>
-   <extension
-         id="org.sidiff.service.extensionpoint"
-         name="Service"
-         point="org.sidiff.service.extensionpoint">
-      <client
-            class="org.sidiff.annotation.impl.DefaultAnnotation">
-      </client>
-   </extension>
 
 </plugin>

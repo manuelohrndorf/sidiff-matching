@@ -1,6 +1,7 @@
 package org.sidiff.annotator.metric;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.eclipse.emf.ecore.*;
 import org.sidiff.annotator.common.Annotator;
@@ -17,6 +18,7 @@ public class CountChildNodesTypes extends Annotator {
 
 	private static final String ANNOTATOR_ID = "CountChildNodesTypes";
 
+	@Override
 	public void init(EPackage documentType, String annotationKey, String parameter, EClass acceptedType,
 			Collection<String> requiredAnnotations) {
 
@@ -28,16 +30,16 @@ public class CountChildNodesTypes extends Annotator {
 		EClass cls = (EClass) EMFMetaAccess.getMetaObjectByName(getDocumentType().getNsURI(), this.getParameter());
 		if (cls == null)
 			return 0f;
-		return new Float(EMFModelAccess.getChildren(object, cls).size());
+		return EMFModelAccess.getChildren(object, cls).size();
 	}
 
 	@Override
-	public String getAnnotatorID() {
+	public String getKey() {
 		return ANNOTATOR_ID;
 	}
 
 	@Override
-	public String getDescription() {
-		return "Zaehlt Kind-Elemente eines bestimmten Typs (Parameter 1).";
+	public Optional<String> getDescription() {
+		return Optional.of("Zaehlt Kind-Elemente eines bestimmten Typs (Parameter 1).");
 	}
 }

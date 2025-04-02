@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+   <extension-point id="sat_solver_adapter" name="Sat Solver Adapter" schema="schema/sat_solver_adapter.exsd"/>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated Formula -->
+      <package
+            uri="http://www.sidiff.org/formula/model/1.0"
+            class="org.sidiff.formula.FormulaPackage"
+            genModel="model/Formula.genmodel"/>
+   </extension>
+
+</plugin>

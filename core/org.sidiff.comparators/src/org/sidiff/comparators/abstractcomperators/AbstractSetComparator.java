@@ -2,7 +2,6 @@ package org.sidiff.comparators.abstractcomperators;
 
 import java.util.Collection;
 
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 
 /**

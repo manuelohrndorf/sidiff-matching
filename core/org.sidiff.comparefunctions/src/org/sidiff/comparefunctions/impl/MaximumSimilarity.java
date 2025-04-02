@@ -1,8 +1,12 @@
 package org.sidiff.comparefunctions.impl;
 
+import java.util.Optional;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.sidiff.comparefunctions.exceptions.NothingToCompareException;
+import org.sidiff.correspondences.ICorrespondences;
+import org.sidiff.similarities.ISimilarities;
 
 /**
  * If both nodes are not <code>null</code>, which is checked by an assert
@@ -10,11 +14,11 @@ import org.sidiff.comparefunctions.exceptions.NothingToCompareException;
  * This compare function has no parameters.
  */
 public class MaximumSimilarity extends AbstractCompareFunction {
-	public static final String COMPAREFUNCTION_ID = "MaximumSimilarity";
 
 	@Override
-	public void init(EClass dedicatedClass, EvaluationPolicy policy, float weight, String parameter) {
-		super.init(dedicatedClass, policy, weight, null);
+	public void init(EClass dedicatedClass, EvaluationPolicy policy, float weight, String parameter,
+			ICorrespondences correspondences, ISimilarities similarities) {
+		super.init(dedicatedClass, policy, weight, null, correspondences, similarities);
 	}
 
 	@Override
@@ -26,15 +30,9 @@ public class MaximumSimilarity extends AbstractCompareFunction {
 	}
 
 	@Override
-	public String getCompareFunctionID() {
-		return COMPAREFUNCTION_ID;
-	}
-
-	@Override
-	public String getDescription() {
-		return " * If both nodes are not <code>null</code>, which is checked by an assert statement, "
+	public Optional<String> getDescription() {
+		return Optional.of(" * If both nodes are not <code>null</code>, which is checked by an assert statement, "
 				+ "this compare functions returns <code>1</code> in all cases."
-				+ " This compare function has no parameters.";
+				+ " This compare function has no parameters.");
 	}
-
 }

@@ -2,6 +2,7 @@ package org.sidiff.similaritiescalculation;
 
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.Optional;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -10,6 +11,8 @@ import org.sidiff.common.logging.LogEvent;
 import org.sidiff.common.logging.LogUtil;
 import org.sidiff.comparefunctions.ICompareFunction;
 import org.sidiff.conditions.ICondition;
+import org.sidiff.correspondences.ICorrespondences;
+import org.sidiff.similarities.ISimilarities;
 import org.sidiff.similaritiescalculation.configuration.CompareConfiguration;
 
 
@@ -39,8 +42,8 @@ public class IfThenElse implements ICompareFunction {
 
 	/** The if-then-else modules. */
 	private ICondition condition = null;
-	private Collection<ICompareFunction> thenItems = new LinkedList<ICompareFunction>();
-	private Collection<ICompareFunction> elseItems = new LinkedList<ICompareFunction>();
+	private Collection<ICompareFunction> thenItems = new LinkedList<>();
+	private Collection<ICompareFunction> elseItems = new LinkedList<>();
 
 	/** The state */
 	private boolean normalize = false;
@@ -61,11 +64,7 @@ public class IfThenElse implements ICompareFunction {
 			CompareConfiguration compareConfiguration) {
 
 		assert (dedicatedClass != null && condition != null && epolicy != null) : "Missing Argument (null)";
-		assert (condition.getEClass() == dedicatedClass); // Conditions
-															// dedicatedClass
-															// and if-then-else
-															// dedicatedClass
-															// must match!
+		assert (condition.getEClass() == dedicatedClass);
 
 		this.dedicatedClass = dedicatedClass;
 		this.condition = condition;
@@ -75,14 +74,15 @@ public class IfThenElse implements ICompareFunction {
 	}
 	
 	@Override
-	public void init(EClass dedicatedClass, EvaluationPolicy policy, float weight, String parameter) {
-		
+	public void init(EClass dedicatedClass, EvaluationPolicy policy, float weight, String parameter,
+			ICorrespondences correspondences, ISimilarities similarities) {
 	}
 
 	/**
 	 * Evaluates the condition and triggers the compare functions of the if- or
 	 * the else-block respectively.
 	 */
+	@Override
 	public float compare(EObject nodeInA, EObject nodeInB) {
 
 		float result = 0.0f;
@@ -93,7 +93,7 @@ public class IfThenElse implements ICompareFunction {
 					+ " (Parameter " + condition.getParameter() + ")" + " with nodes " + EMFUtil.getEObjectID(nodeInA)
 					+ "," + EMFUtil.getEObjectID(nodeInB) + " evaluated as True"));
 
-			result = DefaultSimilaritiesCalculation.computeSimilarity(nodeInA, nodeInB, this.thenItems);
+			result = compareConfiguration.getSimilaritiesCalculation().computeSimilarity(nodeInA, nodeInB, this.thenItems);
 
 			if (normalize) {
 				result = result / thenSum;
@@ -106,7 +106,7 @@ public class IfThenElse implements ICompareFunction {
 					+ "," + EMFUtil.getEObjectID(nodeInB) + " evaluated as False"));
 
 			if (elseItems.size() > 0) {
-				result = DefaultSimilaritiesCalculation.computeSimilarity(nodeInA, nodeInB, this.elseItems);
+				result = compareConfiguration.getSimilaritiesCalculation().computeSimilarity(nodeInA, nodeInB, this.elseItems);
 
 				if (normalize) {
 					result = result / elseSum;
@@ -186,18 +186,16 @@ public class IfThenElse implements ICompareFunction {
 		return this.weight;
 	}
 
-
-
 	@Override
-	public String getCompareFunctionID() {
+	public String getKey() {
 		return "IfThenElse";
 	}
 
 	@Override
-	public String getDescription() {
-		return "IfThenElse";
+	public Optional<String> getDescription() {
+		return Optional.of("This compare function compares two nodes depending on a condition. "
+				+ "If the condition is true the similarity is going the be calculated "
+				+ "using the compare functions nested in the Then element, "
+				+ "otherwise the compare functions in the Else element are going to be executed.");
 	}
-
-
-
 }

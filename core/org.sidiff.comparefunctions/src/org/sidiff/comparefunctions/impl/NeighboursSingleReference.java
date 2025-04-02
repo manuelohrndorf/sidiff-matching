@@ -1,9 +1,12 @@
 package org.sidiff.comparefunctions.impl;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.eclipse.emf.ecore.*;
 import org.sidiff.common.emf.EMFUtil;
+import org.sidiff.correspondences.ICorrespondences;
+import org.sidiff.similarities.ISimilarities;
 
 /**
  * This is a compare function for comparing two nodes' neighbours.<br>
@@ -18,7 +21,6 @@ import org.sidiff.common.emf.EMFUtil;
  * @author Pit Pietsch
  */
 public class NeighboursSingleReference extends AbstractComparatorCompareFunction {
-	public static final String COMPAREFUNCTION_ID = "NeighboursSingleReference";
 
 	/**
 	 * The references to be compared
@@ -49,8 +51,9 @@ public class NeighboursSingleReference extends AbstractComparatorCompareFunction
 	 *            collections "children of A" and "children of B".
 	 */
 	@Override
-	public void init(EClass dedicatedClass, EvaluationPolicy policy, float weight, String parameter) {
-		super.init(dedicatedClass, policy, weight, parameter);
+	public void init(EClass dedicatedClass, EvaluationPolicy policy, float weight, String parameter,
+			ICorrespondences correspondences, ISimilarities similarities) {
+		super.init(dedicatedClass, policy, weight, parameter, correspondences, similarities);
 		// assert: Structural Feature exists and is an EReference?
 		assert((getEClass().getEStructuralFeature(paramItems[1]) != null)) : "StructuralFeature " + paramItems[1]
 				+ " does not exist in metamodel";
@@ -63,16 +66,12 @@ public class NeighboursSingleReference extends AbstractComparatorCompareFunction
 
 	@Override
 	protected Collection<EObject> getToBeCompared(EObject context) {
-		return EMFUtil.getObjectListFromReference(context, reference);
+		return EMFUtil.getReferenceTargets(context, reference);
 	}
 
 	@Override
-	public String getCompareFunctionID() {
-		return COMPAREFUNCTION_ID;
-	}
-
-	@Override
-	public String getDescription() {
-		return "This is a compare function for comparing two nodes' neighbours. The neighbours are defined by the specific rolename of the reference.";
+	public Optional<String> getDescription() {
+		return Optional.of("This is a compare function for comparing two nodes' neighbours. "
+				+ "The neighbours are defined by the specific rolename of the reference.");
 	}
 }

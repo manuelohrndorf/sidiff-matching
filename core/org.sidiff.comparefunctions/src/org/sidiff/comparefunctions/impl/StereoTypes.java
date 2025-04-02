@@ -1,8 +1,15 @@
 package org.sidiff.comparefunctions.impl;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
-import org.eclipse.emf.ecore.*;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.sidiff.common.collections.CollectionUtil;
 import org.sidiff.common.emf.access.EMFMetaAccess;
 import org.sidiff.common.emf.collections.EMFComparators;
 import org.sidiff.comparefunctions.exceptions.CompareException;
@@ -18,22 +25,13 @@ import org.sidiff.comparefunctions.exceptions.CompareException;
  */
 public class StereoTypes extends AbstractComparatorCompareFunction {
 
-	public static final String COMPAREFUNCTION_ID = "StereoTypes";
-
-
 	@Override
 	protected Collection<EObject> getToBeCompared(EObject context) {
-
-		ArrayList<EObject> toBeCompared = new ArrayList<EObject>();
-
-		Iterator<EObject> it = context.eResource().getAllContents();
-		while (it.hasNext()) {
-
-			// Iterate through all elements of resource
-			EObject obj = it.next();
+		List<EObject> toBeCompared = new ArrayList<>();
+		for (EObject obj : CollectionUtil.asIterable(context.eResource().getAllContents())) {
 
 			// Possible stereoType Class
-			EClass stereoType = (EClass) obj.eClass();
+			EClass stereoType = obj.eClass();
 
 			// Check whether this stereotype has already been
 			// added to the list. This is not allowed, as no element
@@ -74,13 +72,8 @@ public class StereoTypes extends AbstractComparatorCompareFunction {
 	}
 
 	@Override
-	public String getCompareFunctionID() {
-		return COMPAREFUNCTION_ID;
-	}
-
-	@Override
-	public String getDescription() {
-		return "Compare function for comparing two nodes' stereotypes This compare function expects exactly one parameter fragment: "
-				+ "The comparator that should be used to compare the two collections 'stereotypes of A' and 'stereotypes of B'";
+	public Optional<String> getDescription() {
+		return Optional.of("Compare function for comparing two nodes' stereotypes. This compare function expects exactly one parameter fragment: "
+				+ "The comparator that should be used to compare the two collections 'stereotypes of A' and 'stereotypes of B'");
 	}
 }

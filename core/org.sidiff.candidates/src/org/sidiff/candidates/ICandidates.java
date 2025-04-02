@@ -4,12 +4,17 @@ import java.util.Collection;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.sidiff.service.IService;
+import org.sidiff.common.extension.ExtensionManager;
+import org.sidiff.common.extension.IExtension;
+import org.sidiff.common.extension.storage.NoExtensionManagerStorage;
 
-public interface ICandidates extends IService {
-	public static final String EXTENSION_POINT_ID = "org.sidiff.candidates.extensionpoint";
-	public static final String SERVICE_ID = "ICandidates";
+public interface ICandidates extends IExtension {
 	
+	Description<ICandidates> DESCRIPTION = Description.of(ICandidates.class,
+			"org.sidiff.candidates.extensionpoint", "client", "class");
+	
+	ExtensionManager<ICandidates> MANAGER = new ExtensionManager<>(new NoExtensionManagerStorage<>(DESCRIPTION));
+
 	/**
 	 * Checks whether the given candidate object(s) is/are candidate(s) for each other
 	 * 
@@ -18,6 +23,7 @@ public interface ICandidates extends IService {
 	 * @throws Exception
 	 */
 	public boolean isCandidate(EObject... candidates);
+	public boolean isCandidate(Collection<EObject> candidates);
 
 	/**
 	 * Checks whether the given element has candidates. This is equal to the
@@ -54,27 +60,14 @@ public interface ICandidates extends IService {
 	 * @return
 	 */
 	public void removeCandidate(EObject candidate);
-	
-	/**
-	 * Removes all candidates
-	 * 
-	 * @param candidates
-	 * @return
-	 */
-	public void removeCandidates(EObject... candidates);
 
-	
 	/**
 	 * initialize the Service with the models
 	 * 
 	 * @param models
 	 */
 	void init(Collection<Resource> models);
-	
-	/**
-	 * 
-	 * @return the id of the candidateservice
-	 */
-	public String getServiceID();
+
+	void reset();
 	
 }

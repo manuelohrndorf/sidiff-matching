@@ -1,13 +1,12 @@
 package org.sidiff.matching.api.util;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.resource.Resource;
-import org.sidiff.common.emf.modelstorage.EMFStorage;
 import org.sidiff.matcher.IMatcher;
-import org.sidiff.matcher.MatcherUtil;
 
 /**
  * Utility functions which are made publicly available to any clients using the
@@ -18,65 +17,62 @@ import org.sidiff.matcher.MatcherUtil;
  * @author kehrer, mohrndorf, cpietsch
  */
 public class MatchingUtils {
-	
+
 	/**
-	 * Load EMF resource.
-	 * 
-	 * @param path
-	 *            The EMF-file path.
-	 * @return The loaded EMF-object.
-	 */
-	public static Resource loadModel(String path) {
-		return EMFStorage.eLoad(EMFStorage.pathToUri(path)).eResource();
-	}
-	
-	/**
-	 * Find all available matchers matching the document types of the given models.
+	 * Returns all registered matchers matching the document types of the given
+	 * models.
 	 * 
 	 * @param modelA
-	 *            Model A of the comparison.
+	 *            the {@link Resource} of model A of the comparison.
 	 * @param modelB
-	 *            Model B of the comparison.
-	 * @return All available matchers matching the document types of the given models.
+	 *            the {@link Resource} of model B of the comparison.
+	 * @return all registered {@link IMatcher}s matching the document types of the given
+	 *         models
 	 */
 	public static List<IMatcher> getAvailableMatchers(Resource modelA, Resource modelB) {
-		return MatcherUtil.getAvailableMatchers(Arrays.asList(modelA,modelB));
+		return IMatcher.MANAGER.getMatchers(Arrays.asList(modelA,modelB));
 	}
 	
 	/**
-	 * Find all available matchers matching the given document types.
+	 * Returns all registered matchers matching the given document types.
 	 * 
 	 * @param documentTypes
-	 * 			
-	 * @return All available matchers matching the given document types.
-	 * @see LiftingFacade#getDocumentType(Resource)
+	 *            The document types, i.e. the package namespace URI of a model.
+	 *            There can be more than one.
+	 * 
+	 * @return all registered {@link IMatcher}s matching the given document types.
 	 */
 	public static List<IMatcher> getAvailableMatchers(Set<String> documentTypes) {
-		return MatcherUtil.getAvailableMatchers(documentTypes);
+		return new ArrayList<>(IMatcher.MANAGER.getExtensions(documentTypes, true));
 	}
 	
 	/**
-	 * Find all generic matchers.
+	 * Find all registered matchers.
+	 * 			
+	 * @return all registered {@link IMatcher}s
+	 */
+	public static List<IMatcher> getAllAvailableMatchers() {
+		return new ArrayList<>(IMatcher.MANAGER.getExtensions());
+	}
+	
+	/**
+	 * Returns all generic matchers.
 	 * 
-	 * @return All generic matchers.
+	 * @return all generic {@link IMatcher}s
 	 */
 	public static List<IMatcher> getGenericMatchers() {
-		return MatcherUtil.getGenericMatchers();
+		return new ArrayList<>(IMatcher.MANAGER.getGenericExtensions());
 	}
 	
 	/**
-	 * Get matcher by its key name.
+	 * Returns the matcher identified by its key.
 	 * 
 	 * @param key
-	 *            The key name of the matcher.
-	 * @param modelA
-	 *            Model A of the comparison.
-	 * @param modelB
-	 *            Model B of the comparison.
-	 * @return The matcher with the key name; null otherwise.
+	 *            The key of the {@link IMatcher}.
+	 * @return the {@link IMatcher} with the key; null otherwise.
 	 * @see IMatcher#getKey()
 	 */
 	public static IMatcher getMatcherByKey(String key) {
-		return MatcherUtil.getMatcher(key);
+		return IMatcher.MANAGER.getExtension(key).orElse(null);
 	}
 }

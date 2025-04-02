@@ -2,36 +2,37 @@ package org.sidiff.conditions;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.sidiff.common.extension.ExtensionManager;
+import org.sidiff.common.extension.IExtension;
+import org.sidiff.common.extension.storage.NoExtensionManagerStorage;
 import org.sidiff.comparefunctions.ICompareFunction.EvaluationPolicy;
+import org.sidiff.correspondences.ICorrespondences;
+import org.sidiff.similarities.ISimilarities;
 
-public interface ICondition {
-	public static final String EXTENSION_POINT_ID = "org.sidiff.conditions.extensionpoint";
-	public static final String CONDITION_ID = "ICondition";
+public interface ICondition extends IExtension {
 
-	public String getParameter();
+	Description<ICondition> DESCRIPTION = Description.of(ICondition.class,
+			"org.sidiff.conditions.extensionpoint", "client", "class");
+	ExtensionManager<ICondition> MANAGER = new ExtensionManager<>(new NoExtensionManagerStorage<>(DESCRIPTION));
+
+	String getParameter();
 
 	/**
 	 * Get the compare function's Meta-Model
 	 * 
 	 * @return Returns the compare function's weight
 	 */
-	public EClass getEClass();
+	EClass getEClass();
 
 	/**
 	 * Get the compare function's policy
 	 * 
 	 * @return Returns the compare function's policy
 	 */
-	public EvaluationPolicy getPolicy();
+	EvaluationPolicy getPolicy();
 
-	void init(EClass dedicatedClass, EvaluationPolicy policy, String parameter);
+	void init(EClass dedicatedClass, EvaluationPolicy policy, String parameter,
+			ICorrespondences correspondences, ISimilarities similarities);
 
-	void init(EClass dedicatedClass, EvaluationPolicy policy);
-
-	public boolean check(EObject node1, EObject node2);
-
-	public abstract String getConditionID();
-
-	public abstract String getDescription();
-
+	boolean check(EObject node1, EObject node2);
 }

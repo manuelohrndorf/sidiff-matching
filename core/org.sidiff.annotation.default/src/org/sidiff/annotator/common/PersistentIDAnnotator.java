@@ -1,6 +1,7 @@
 package org.sidiff.annotator.common;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -21,6 +22,7 @@ public class PersistentIDAnnotator extends Annotator {
 
 	private static final String ANNOTATOR_ID = "PersistentIDAnnotator";
 
+	@Override
 	public void init(EPackage documentType, String annotationKey, String parameter, EClass acceptedType,
 			Collection<String> requiredAnnotations) {
 
@@ -34,13 +36,13 @@ public class PersistentIDAnnotator extends Annotator {
 	}
 
 	@Override
-	public String getAnnotatorID() {
+	public String getKey() {
 		return ANNOTATOR_ID;
 	}
 
 	@Override
-	public String getDescription() {
-		return "This PersistantIDAnnotator set the persistant XMI-ID as a derived ID. The key is 'DERIVED ID'";
+	public Optional<String> getDescription() {
+		return Optional.of("This PersistantIDAnnotator set the persistant XMI-ID as a derived ID. The key is 'DERIVED ID'");
 			
 	}
 }

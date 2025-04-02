@@ -1,9 +1,11 @@
 package org.sidiff.similaritiescalculation.configuration;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import org.eclipse.emf.ecore.EClass;
-import org.sidiff.common.util.StringUtil;
+import org.sidiff.common.stringresolver.StringUtil;
 import org.sidiff.comparefunctions.ICompareFunction;
 import org.sidiff.similaritiescalculation.exceptions.DuplicateCompareItemException;
 
@@ -13,20 +15,17 @@ import org.sidiff.similaritiescalculation.exceptions.DuplicateCompareItemExcepti
  */
 public class TypeConfiguration {
 
-	private EClass eClass = null;	
-	private float threshold =0.0f;
+	private final EClass eClass;	
+	private final float threshold;
 
-	protected List<ICompareFunction> rwCompareFunctions = null;
-	protected List<ICompareFunction> roCompareFunctions = null;
+	private final List<ICompareFunction> compareFunctions;
 
-	public TypeConfiguration(EClass eClass,float threshold) {
-
+	public TypeConfiguration(EClass eClass, float threshold) {
 		this.eClass = eClass;
 		this.threshold = threshold;	
-		this.rwCompareFunctions = new LinkedList<ICompareFunction>();
-		this.roCompareFunctions = Collections.unmodifiableList(this.rwCompareFunctions);
+		this.compareFunctions = new ArrayList<>();
 	}
-	
+
 	public EClass getType(){
 		return this.eClass;
 	}
@@ -36,21 +35,18 @@ public class TypeConfiguration {
 	}
 
 	boolean addCompareFunction(ICompareFunction compareFunction) {
-
-		if(!this.rwCompareFunctions.contains(compareFunction)){
-			return this.rwCompareFunctions.add(compareFunction);
-		} else {
-			throw new DuplicateCompareItemException(this,compareFunction);
+		if(!this.compareFunctions.contains(compareFunction)){
+			return this.compareFunctions.add(compareFunction);
 		}
+		throw new DuplicateCompareItemException(this,compareFunction);
 	}
 
 	public List<ICompareFunction> getCompareFunctions() {
-		return this.roCompareFunctions;
-		
+		return Collections.unmodifiableList(compareFunctions);
 	}
-		
+
+	@Override
 	public String toString(){
-		return "NTC("+((eClass!=null)?eClass.getName():"null")+":{"+StringUtil.resolve(this.roCompareFunctions)+"})";
+		return "NTC("+((eClass!=null)?eClass.getName():"null")+":{"+StringUtil.resolve(compareFunctions)+"})";
 	}
-	
 }

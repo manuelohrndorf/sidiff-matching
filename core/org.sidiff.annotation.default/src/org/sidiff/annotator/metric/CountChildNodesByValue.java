@@ -1,6 +1,7 @@
 package org.sidiff.annotator.metric;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.StringTokenizer;
 
 import org.eclipse.emf.ecore.*;
@@ -22,6 +23,7 @@ public class CountChildNodesByValue extends Annotator {
 	private String attributeString = null;
 	private String value = null;
 
+	@Override
 	public void init(EPackage documentType, String annotationKey, String parameter, EClass acceptedType,
 			Collection<String> requiredAnnotations) {
 
@@ -44,17 +46,17 @@ public class CountChildNodesByValue extends Annotator {
 			if (attribute != null && value.equals(child.eGet(attribute).toString()))
 				answer++;
 		}
-		return new Float(answer);
+		return answer;
 	}
 
 	@Override
-	public String getAnnotatorID() {
+	public String getKey() {
 		return ANNOTATOR_ID;
 	}
 
 	@Override
-	public String getDescription() {
-		return "Zaehlt Kind-Elemente eines bestimmten Typs (Parameter 1), deren Attribut"
-				+ " (Parameter 2) einen bestimmten Wert (Parameter 3) hat.";
+	public Optional<String> getDescription() {
+		return Optional.of("Zaehlt Kind-Elemente eines bestimmten Typs (Parameter 1), deren Attribut"
+				+ " (Parameter 2) einen bestimmten Wert (Parameter 3) hat.");
 	}
 }

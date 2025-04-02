@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -16,25 +15,11 @@ import org.eclipse.emf.ecore.EObject;
  */
 public abstract class AbstractGreedySetComparator extends AbstractSetComparator {
 
-	/**
-	 * init.
-	 * 
-	 * @param dedicatedClass
-	 *            the context class of this comparator
-	 * @param targetClasses
-	 *            the classes this comparator is used on
-	 * @param parameter
-	 *            the parameter for this comparator
-	 */
 	@Override
-	public void init(EClass dedicatedClass, EClass targetClass, String parameter) {
-		super.init(dedicatedClass, targetClass, null);
-	}
-
 	protected float calculateSetSimilarity(EObject contextElementA, EObject contextElementB,
 			Collection<EObject> collectionA, Collection<EObject> collectionB) {
 
-		SortedSet<Entry> pairs = new TreeSet<Entry>();
+		SortedSet<Entry> pairs = new TreeSet<>();
 		for (EObject objectA : collectionA) {
 			for (EObject objectB : collectionB) {
 				float sim = getRating(objectA, objectB);

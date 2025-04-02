@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="superimposition" nsURI="http://www.sidiff.org/superimposition/model/1.0"
+    nsPrefix="superimposition">
+  <eClassifiers xsi:type="ecore:EClass" name="SuperimposedModel">
+    <eOperations name="getElements" upperBound="-1" eType="#//SuperimposedElement">
+      <eParameters name="signature" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eOperations name="getEntities" upperBound="-1" eType="ecore:EClass ../../org.sidiff.entities/model/EntitiesModel.ecore#//Entity">
+      <eParameters name="filter" eType="ecore:EDataType ../../org.sidiff.entities/model/EntitiesModel.ecore#//IExporterFilter"/>
+    </eOperations>
+    <eOperations name="createConflictSet" lowerBound="1" eType="#//ConflictSet">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Creates a new ConflictSet for this SuperimposedModel using its elements, references and attributes as input."/>
+      </eAnnotations>
+      <eParameters name="filter" eType="ecore:EDataType ../../org.sidiff.entities/model/EntitiesModel.ecore#//IExporterFilter"/>
+    </eOperations>
+    <eOperations name="getAnnotation" eType="ecore:EClass ../../org.sidiff.entities/model/EntitiesModel.ecore#//Annotation">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Returns the first annotation of this superimposed model with the body equal to the argument."/>
+      </eAnnotations>
+      <eParameters name="body" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eOperations name="getAnnotation" eType="ecore:EClass ../../org.sidiff.entities/model/EntitiesModel.ecore#//Annotation">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Returns the first annotation of this superimposed model that is equal to the argument."/>
+      </eAnnotations>
+      <eParameters name="annotation" eType="ecore:EClass ../../org.sidiff.entities/model/EntitiesModel.ecore#//Annotation"/>
+    </eOperations>
+    <eOperations name="getOrAddAnnotation" lowerBound="1" eType="ecore:EClass ../../org.sidiff.entities/model/EntitiesModel.ecore#//Annotation">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Returns the first annotation of this superimposed model that is equal to the argument,&#xD;&#xA;adding it to the superimposed model and returning it, if none is found."/>
+      </eAnnotations>
+      <eParameters name="annotation" eType="ecore:EClass ../../org.sidiff.entities/model/EntitiesModel.ecore#//Annotation"/>
+    </eOperations>
+    <eOperations name="calculateSignature" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Calculates a signature for the given EObject using the signature calculators of this superimposed model.&#xD;&#xA;&#x9; * The signature calculators are used in order, and the first non-null, non-empty signature is returned.&#xD;&#xA;&#x9; * Else null is returned."/>
+      </eAnnotations>
+      <eParameters name="object" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="docType" lowerBound="1"
+        upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        changeable="false" volatile="true" transient="true" derived="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="get" value="return getType().stream().map(EPackage::getNsURI).collect(Collectors.toCollection(() -> ECollections.newBasicEListWithCapacity(getType().size())));"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="elements" ordered="false"
+        upperBound="-1" eType="#//SuperimposedElement" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" upperBound="-1"
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EPackage"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="annotations" upperBound="-1"
+        eType="ecore:EClass ../../org.sidiff.entities/model/EntitiesModel.ecore#//Annotation"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="signatureCalculators" lowerBound="1"
+        upperBound="-1" eType="#//ISignatureCalculator"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SuperimposedElement" eSuperTypes="../../org.sidiff.entities/model/EntitiesModel.ecore#//Element">
+    <eOperations name="getContainer" eType="#//SuperimposedElement">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Returns the first SuperimposedElement that contains this element with containment reference, or null if none."/>
+      </eAnnotations>
+    </eOperations>
+    <eOperations name="getContained" upperBound="-1" eType="#//SuperimposedElement">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Returns all SuperimposedElements that are contained by this element with a containment reference."/>
+      </eAnnotations>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="objects" upperBound="-1"
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ownedAttributes" upperBound="-1"
+        eType="ecore:EClass ../../org.sidiff.entities/model/EntitiesModel.ecore#//Attribute"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ownedReferences" upperBound="-1"
+        eType="ecore:EClass ../../org.sidiff.entities/model/EntitiesModel.ecore#//Reference"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="objectAnnotations" upperBound="-1"
+        eType="#//EObjectToAnnotationsMapEntry" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="ISignatureCalculator" instanceClassName="org.sidiff.superimposition.signature.ISignatureCalculator">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="create" value="return ExtensionSerialization.createExtension(ISignatureCalculator.MANAGER, it);"/>
+      <details key="convert" value="return ExtensionSerialization.convertToString(it);"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ConflictingEntities">
+    <eOperations name="getAttributes" upperBound="-1" eType="ecore:EClass ../../org.sidiff.entities/model/EntitiesModel.ecore#//Attribute">
+      <eParameters name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EAttribute"/>
+    </eOperations>
+    <eOperations name="getReferences" upperBound="-1" eType="ecore:EClass ../../org.sidiff.entities/model/EntitiesModel.ecore#//Reference">
+      <eParameters name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EReference"/>
+    </eOperations>
+    <eOperations name="getElements" upperBound="-1" eType="ecore:EClass ../../org.sidiff.entities/model/EntitiesModel.ecore#//Element">
+      <eParameters name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
+    </eOperations>
+    <eOperations name="isInvalidated" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Returns whether the conflicting entities refer to entities which have been removed or otherwise become invalid."/>
+      </eAnnotations>
+    </eOperations>
+    <eOperations name="getNumberOfConflictingFeatures" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="context" eType="#//SuperimposedElement"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="conflictSet" lowerBound="1"
+        eType="#//ConflictSet" eOpposite="#//ConflictSet/conflicting"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="entities" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFeatureMapEntry">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="group"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="references" upperBound="-1"
+        eType="ecore:EClass ../../org.sidiff.entities/model/EntitiesModel.ecore#//Reference"
+        volatile="true" transient="true" derived="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="group" value="#entities"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
+        eType="ecore:EClass ../../org.sidiff.entities/model/EntitiesModel.ecore#//Element"
+        volatile="true" transient="true" derived="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="group" value="#entities"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" upperBound="-1"
+        eType="ecore:EClass ../../org.sidiff.entities/model/EntitiesModel.ecore#//Attribute"
+        volatile="true" transient="true" derived="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="group" value="#entities"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="ConflictSeverity">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="The severity of a Conflict. The literals are ordered by decreasing severity."/>
+    </eAnnotations>
+    <eLiterals name="ERROR" literal="ERROR"/>
+    <eLiterals name="WARNING" value="1" literal="WARNING"/>
+    <eLiterals name="NOTICE" value="2" literal="NOTICE"/>
+    <eLiterals name="OK" value="3"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Conflict">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="message" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="severity" lowerBound="1"
+        eType="#//ConflictSeverity"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="conflicting" upperBound="-1"
+        eType="#//ConflictingEntities"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="conflictSet" lowerBound="1"
+        eType="#//ConflictSet" eOpposite="#//ConflictSet/conflicts"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" lowerBound="1" eType="#//ConflictType"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ConflictSet">
+    <eOperations name="computeSeverity" lowerBound="1" eType="#//ConflictSeverity">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Returns the highest severity of all contained conflicts."/>
+      </eAnnotations>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="context" lowerBound="1"
+        eType="#//SuperimposedModel"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="conflicting" upperBound="-1"
+        eType="#//ConflictingEntities" containment="true" eOpposite="#//ConflictingEntities/conflictSet"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="conflicts" upperBound="-1"
+        eType="#//Conflict" containment="true" eOpposite="#//Conflict/conflictSet"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="inputs" upperBound="-1"
+        eType="#//ConflictingEntities"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="ConflictType">
+    <eLiterals name="UNSPECIFIED"/>
+    <eLiterals name="SYNTACTIC" value="1"/>
+    <eLiterals name="SEMANTIC" value="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EObjectToAnnotationsMapEntry" instanceClassName="java.util.Map$Entry">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="key" lowerBound="1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="value" upperBound="-1"
+        eType="ecore:EClass ../../org.sidiff.entities/model/EntitiesModel.ecore#//Annotation"/>
+  </eClassifiers>
+</ecore:EPackage>

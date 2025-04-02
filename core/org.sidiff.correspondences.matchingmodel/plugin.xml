@@ -7,9 +7,13 @@
    <extension
          id="org.sidiff.correspondences.extensionpoint"
          point="org.sidiff.correspondences.extensionpoint">
-      <client
-            class="org.sidiff.correspondences.matchingmodel.MatchingModelCorrespondences">
-      </client>
+      <correspondences
+            class="org.sidiff.correspondences.matchingmodel.MatchingModelCorrespondences"
+            description="This is an `MatchingModel` implementation of the CorrespondenceService."
+            key="MatchingModelCorrespondences"
+            name="Matching Model Correspondences">
+      </correspondences>
+
    </extension>
 
 

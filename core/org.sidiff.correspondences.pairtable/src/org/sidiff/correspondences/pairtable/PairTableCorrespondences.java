@@ -4,85 +4,70 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.sidiff.common.collections.ClassificationUtil;
-import org.sidiff.common.collections.ViewUtil;
-import org.sidiff.common.emf.EMFUtil;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.sidiff.common.collections.CollectionUtil;
 import org.sidiff.common.emf.collections.EMFClassifiers;
 import org.sidiff.common.logging.LogEvent;
 import org.sidiff.common.logging.LogUtil;
-import org.sidiff.correspondences.ICorrespondences;
+import org.sidiff.correspondences.AbstractCorrespondences;
 import org.sidiff.correspondences.exceptions.ExternalElementException;
 import org.sidiff.correspondences.exceptions.NoMatchException;
 import org.sidiff.correspondences.exceptions.OverlappingMatchException;
 
-public class PairTableCorrespondences implements ICorrespondences {
-	
-	//TODO VDUECK has commented fireEvents of "fireMatchRevoked and fireMatchCreated... 
-	
-	public static final String SERVICE_ID = "PairtableCorrespondences";
+public class PairTableCorrespondences extends AbstractCorrespondences {
 
-	private Resource modelA = null;
-	private Resource modelB = null;
-	private Map<EClass, Set<EObject>> unmatchedInA = null;
-	private Set<EObject> allUnmatchedInA = null;
-	private Map<EClass, Set<EObject>> unmatchedInB = null;
-	private Set<EObject> allUnmatchedInB = null;
-	private Map<EObject, EObject> matchedAB = null;
-	private Map<EObject, EObject> matchedBA = null;
+	private Resource modelA;
+	private Resource modelB;
+	private Map<EClass, Set<EObject>> unmatchedInA;
+	private Set<EObject> allUnmatchedInA;
+	private Map<EClass, Set<EObject>> unmatchedInB;
+	private Set<EObject> allUnmatchedInB;
+	private Map<EObject, EObject> matchedAB;
+	private Map<EObject, EObject> matchedBA;
 
 	@Override
 	public void init(Collection<Resource> models)  {
-		
 		if (!canHandle(models)) {
-			throw new UnsupportedOperationException(); // only pairwise matches
-														// allowed
-		}	
-		
-		Iterator<Resource> it = models.iterator();
-		Resource inputModelA = it.next();
-		Resource inputModelB = it.next();		
-	
+			throw new IllegalArgumentException("only pairwise matches allowed");
+		}
 
-		this.modelA = inputModelA;
-		this.modelB = inputModelB;
+		Iterator<Resource> it = models.iterator();
+		this.modelA = it.next();
+		this.modelB = it.next();
 
 		//FIXME
 		//This should be done using the current @see{ICandidates}
-		this.unmatchedInA = ClassificationUtil.classifiedSets(EMFUtil.createListFromEAllContents(modelA),
-				EMFClassifiers.ELEMENT_BY_CLASS);
-		this.allUnmatchedInA = ViewUtil.unifiedSetView(unmatchedInA.values());
-		this.unmatchedInB = ClassificationUtil.classifiedSets(EMFUtil.createListFromEAllContents(modelB),
-				EMFClassifiers.ELEMENT_BY_CLASS);
-		this.allUnmatchedInB = ViewUtil.unifiedSetView(unmatchedInB.values());
-		this.matchedAB = new HashMap<EObject, EObject>();
-		this.matchedBA = new HashMap<EObject, EObject>();
+		this.unmatchedInA = CollectionUtil.asStream(modelA.getAllContents())
+				.collect(Collectors.groupingBy(EMFClassifiers.ELEMENT_BY_CLASS, Collectors.toSet()));
+		this.allUnmatchedInA = CollectionUtil.combineSets(unmatchedInA.values());
+		this.unmatchedInB = CollectionUtil.asStream(modelB.getAllContents())
+				.collect(Collectors.groupingBy(EMFClassifiers.ELEMENT_BY_CLASS, Collectors.toSet()));
+		this.allUnmatchedInB = CollectionUtil.combineSets(unmatchedInB.values());
+		this.matchedAB = new HashMap<>();
+		this.matchedBA = new HashMap<>();
 	}
 
 	@Override
-	public void addCorrespondence(EObject... elements) {
-		if (elements.length != 2) {
-			throw new UnsupportedOperationException(); // only pairwise matches
-														// allowed
-		}		
-		addCorrespondence(elements[0], elements[1]);
+	public void addCorrespondence(List<? extends EObject> elements) {
+		Assert.isLegal(elements.size() == 2, "Only pairwise matches allowed: Size " + elements.size());
+		addCorrespondence(elements.get(0), elements.get(1));
 	}
-	
+
 	public void addCorrespondence(EObject elem1, EObject elem2)  {
 		if (elem1.eResource() != modelA) {
-			throw new UnsupportedOperationException(); // first element is not
-														// an element of the
-														// first model
+			throw new IllegalArgumentException("first element is not an element of the first model");
 		}
 		if (elem2.eResource() != modelB) {
-			throw new UnsupportedOperationException(); // second element is not
-														// an element of the
-														// second model
+			throw new IllegalArgumentException("second element is not an element of the second model");
 		}
 
 		Set<EObject> unmatchedInA = this.unmatchedInA.get(elem1.eClass());
@@ -95,19 +80,19 @@ public class PairTableCorrespondences implements ICorrespondences {
 				matchedAB.put(elem1, elem2);
 				matchedBA.put(elem2, elem1);
 			}
-			// fireMatchCreated(nodeFromA, nodeFromB);
 		} else {
-			throw new OverlappingMatchException("Cannot match ", elem1, " and ", elem2, "\n Reason:" + elem1 + " is "
-					+ ((matchedAB.get(elem1) != null) ? ("already matched with " + matchedAB.get(elem1)) : "unmatched")
+			throw new OverlappingMatchException("Cannot match " + elem1 + " and " + elem2 + "\n Reason:" + elem1 + " is "
+					+ (matchedAB.get(elem1) != null ? "already matched with " + matchedAB.get(elem1) : "unmatched")
 					+ "\n        " + elem2 + " is "
-					+ ((matchedBA.get(elem2) != null) ? ("already matched with " + matchedBA.get(elem2)) : "unmatched"));
+					+ (matchedBA.get(elem2) != null ? "already matched with " + matchedBA.get(elem2) : "unmatched"));
 		}
 	}
 
 	@Override
 	public Collection<EObject> getCorrespondences(EObject element)  {
-		if (!hasCorrespondences(element))
+		if (!hasCorrespondences(element)) {
 			return Collections.emptyList();
+		}
 		if (element.eResource() == modelA) {
 			return Collections.singleton(matchedAB.get(element));
 		} else if (element.eResource() == modelB) {
@@ -131,26 +116,20 @@ public class PairTableCorrespondences implements ICorrespondences {
 	}
 
 	@Override
-	public boolean isCorresponding(EObject... elements) {
-		if (elements.length != 2) {
-			throw new UnsupportedOperationException(); // only pairwise matches
-														// allowed
-		}		
-		return isCorresponding(elements[0], elements[1]);
+	public boolean isCorresponding(List<? extends EObject> elements) {
+		Assert.isLegal(elements.size() == 2, "Only pairwise matches allowed: Size " + elements.size());
+		return isCorresponding(elements.get(0), elements.get(1));
 	}
-	
 
-		
 	public boolean isCorresponding(EObject elem1, EObject elem2) {
-
-		if ((elem1.eResource() == modelA && elem2.eResource() == modelB)
-				|| (elem1.eResource() == modelB && elem2.eResource() == modelA)) {
+		Resource res1 = elem1.eResource();
+		Resource res2 = elem2.eResource();
+		if (res1 == modelA && res2 == modelB || res1 == modelB && res2 == modelA) {
 			return matchedAB.get(elem1) == elem2 || matchedBA.get(elem1) == elem2;
-		} else if ((elem1.eResource() != modelA && elem1.eResource() != modelB)
-				|| (elem2.eResource() != modelA && elem2.eResource() != modelB)) {
-			return EMFUtil.getEObjectURI(elem1).equals(EMFUtil.getEObjectURI(elem2));
-		} else
-			return false;
+		} else if (res1 != modelA && res1 != modelB || res2 != modelA && res2 != modelB) {
+			return EcoreUtil.getURI(elem1).equals(EcoreUtil.getURI(elem2));
+		}
+		return false;
 	}
 
 	@Override
@@ -160,7 +139,7 @@ public class PairTableCorrespondences implements ICorrespondences {
 		} else if (model == modelB) {
 			return Collections.unmodifiableSet(matchedBA.keySet());
 		} else {
-			throw new UnsupportedOperationException("given model is not one of the compared models");
+			throw new IllegalArgumentException("given model is not one of the compared models");
 		}
 	}
 
@@ -171,25 +150,18 @@ public class PairTableCorrespondences implements ICorrespondences {
 		} else if (model == modelB) {
 			return Collections.unmodifiableSet(allUnmatchedInB);
 		} else {
-			throw new UnsupportedOperationException(); // given model is not one
-														// of the compared
-														// models
+			throw new IllegalArgumentException("given model is not one of the compared models");
 		}
 	}
 
-	
-	
 	public void removeCorrespondence(EObject elem1, EObject elem2)  {
 		if (elem1.eResource() != modelA) {
-			throw new UnsupportedOperationException(); // first element is not
-														// an element of the
-														// first model
+			throw new IllegalArgumentException("first element is not an element of the first model");
 		}
 		if (elem2.eResource() != modelB) {
-			throw new UnsupportedOperationException(); // second element is not
-														// an element of the
-														// second model
+			throw new IllegalArgumentException("second element is not an element of the second model");
 		}
+
 		if (matchedAB.get(elem1) == elem2 && matchedBA.get(elem2) == elem1) {
 			Set<EObject> unmatchedInA = this.unmatchedInA.get(elem1.eClass());
 			Set<EObject> unmatchedInB = this.unmatchedInB.get(elem2.eClass());
@@ -200,70 +172,43 @@ public class PairTableCorrespondences implements ICorrespondences {
 				unmatchedInB.add(elem2);
 			}
 		} else {
-			throw new NoMatchException("Cannot find match between ", elem1, " and ", elem2, "! (", elem1,
-					" is matched with ", matchedAB.get(elem1), ", ", elem2, " is matched with ", matchedBA.get(elem2),
-					")");
+			throw new NoMatchException("Cannot find match between " + elem1 + " and " + elem2 + "! (" + elem1 +
+					" is matched with " + matchedAB.get(elem1) + ", " + elem2 + " is matched with " + matchedBA.get(elem2) + ")");
 		}
 	}
 
 	@Override
-	public void removeCorrespondence(EObject... elements) {
-		if (elements.length != 2) {
-			throw new UnsupportedOperationException(); // only pairwise matches
-														// allowed
-		}
-		removeCorrespondence(elements[0], elements[1]);
+	public void removeCorrespondence(List<? extends EObject> elements) {
+		Assert.isLegal(elements.size() == 2, "Only pairwise matches allowed: Size " + elements.size());
+		removeCorrespondence(elements.get(0), elements.get(1));
 	}
-	
-		
 
 	@Override
 	public void removeFromCorrespondence(EObject element) {
-		
 		//As we only support pairwise correspondences, we remove the whole correspondence itself
-		if(element.eResource().equals(modelA)){
+		if(element.eResource().equals(modelA)) {
 			EObject partner = matchedAB.get(element);
-			removeCorrespondence(element, partner);			
-		}
-		else{
+			removeCorrespondence(element, partner);
+		} else {
 			EObject partner = matchedBA.get(element);
-			removeCorrespondence(partner,element);			
-			
-		}	
-
-		
-	}
-
-	
-	
-	@Override
-	public String getServiceID() {
-		return SERVICE_ID;
+			removeCorrespondence(partner, element);
+		}
 	}
 
 	@Override
 	public void reset() {
 		this.modelA = null;
-		this.modelB=null;
-		this.allUnmatchedInA.clear(); 
-		this.allUnmatchedInB.clear(); 
+		this.modelB = null;
+		this.allUnmatchedInA.clear();
+		this.allUnmatchedInB.clear();
 		this.matchedAB.clear();
-		this.matchedBA.clear(); 
+		this.matchedBA.clear();
 		this.unmatchedInA.clear();
 		this.unmatchedInB.clear();
-		
-	}
-
-	@Override
-	public String getDescription() {
-		return "This is the standard implementation of the CorrespondenceService.";
 	}
 
 	@Override
 	public boolean canHandle(Collection<Resource> models) {
-		if(models.size() > 2)
-			return false;
-		return true;
+		return models.size() <= 2;
 	}
-
 }

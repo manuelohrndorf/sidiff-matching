@@ -1,11 +1,11 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: PresenceConditionSimplifier
-Bundle-SymbolicName: org.sidiff.imotep.tools.pcsimplifier
+Bundle-Name: Presence Condition Simplifier
+Bundle-SymbolicName: org.sidiff.imotep.tools.pcsimplifier;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Require-Bundle: org.eclipse.emf.ecore,
- org.sidiff.imotep.tools.pcsimplifier.expressionmodel;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Bundle-ClassPath: lib/,
- .
+Require-Bundle: org.sidiff.formula.adapter.z3
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: .
 Export-Package: org.sidiff.imotep.tools.pcsimplifier
+Automatic-Module-Name: org.sidiff.imotep.tools.pcsimplifier

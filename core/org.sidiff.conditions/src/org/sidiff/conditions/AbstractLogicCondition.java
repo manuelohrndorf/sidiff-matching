@@ -1,20 +1,24 @@
 package org.sidiff.conditions;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import org.eclipse.emf.ecore.EClass;
 import org.sidiff.comparefunctions.ICompareFunction.EvaluationPolicy;
+import org.sidiff.correspondences.ICorrespondences;
+import org.sidiff.similarities.ISimilarities;
 
-@Deprecated
 public abstract class AbstractLogicCondition extends AbstractCondition {
 
-	protected ArrayList<ICondition> conditions;
-	
-	public void init(EClass dedicatedClass){
-		super.init(dedicatedClass, EvaluationPolicy.mandatory);
-		this.conditions = new ArrayList<ICondition>();
+	protected List<ICondition> conditions = new ArrayList<>();
+
+	@Override
+	public void init(EClass dedicatedClass, EvaluationPolicy policy, String parameter, ICorrespondences correspondences,
+			ISimilarities similarities) {
+		super.init(dedicatedClass, EvaluationPolicy.mandatory, null, correspondences, similarities);
 	}
-	
+
 	public void addCondition(ICondition condition) {
 		assert(getEClass().equals(condition.getEClass()));
 		this.conditions.add(condition);
@@ -23,13 +27,4 @@ public abstract class AbstractLogicCondition extends AbstractCondition {
 	public List<ICondition> getConditions() {
 		return Collections.unmodifiableList(this.conditions);
 	}
-	
-	//TODO VDUECK...wie ist dies zu realisieren?
-//	@Override
-//	public void init() {
-//		for (ICondition condition : this.conditions) {
-//			condition.init();
-//		}
-//	}
-
 }

@@ -1,5 +1,6 @@
 package org.sidiff.configuration;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -8,20 +9,16 @@ import org.w3c.dom.Document;
 
 public class ConfigurationManagement {
 	
-	private ValueMap<String,Document> availableConfigurations = new 
-			ValueMap<String, Document>();
-	private static String docT;
+	private ValueMap<String,Document> availableConfigurations = new ValueMap<>();
 	
-	private static ConfigurationManagement instance;
-	
+	private String docType;
+
 	public ConfigurationManagement(String docType) {
-		docT = docType;
+		this.docType = docType;
 	}
 	
 	public static ConfigurationManagement getInstance(String docType){
-		if(instance == null || !docType.equals(docT))
-			instance = new ConfigurationManagement(docType);
-		return instance;
+		return new ConfigurationManagement(docType);
 	}
 	
 	public ValueMap<String, Document> getAvailableConfigurations(){
@@ -38,20 +35,18 @@ public class ConfigurationManagement {
 		return docs;
 	}
 	
-	private void loadConfigs(String type){
-		Set<Document> docs = ConfigurationLoader.loadAvailableConfigs(docT, type);
+	private void loadConfigs(String type) throws IOException {
+		Set<Document> docs = ConfigurationLoader.loadAvailableConfigs(docType, type);
 		for(Document doc : docs){
 			availableConfigurations.put(doc, type);
 		}
 	}
-	public Document getRandomConfiguration(String type){	
+
+	public Document getRandomConfiguration(String type) throws IOException{	
 		if(!availableConfigurations.containsValue(type)){
 			loadConfigs(type);
 		}
-		if(availableConfigurations.getObjects(type).size() > 0)
-			return availableConfigurations.getObjects(type).iterator().next();
-		else
-			return null;
+		return availableConfigurations.getObjects(type).stream().findFirst().orElse(null);
 	}
 	
 }

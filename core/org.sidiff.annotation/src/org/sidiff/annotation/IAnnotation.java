@@ -1,22 +1,27 @@
 package org.sidiff.annotation;
 
+import java.io.IOException;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.resource.Resource;
-import org.sidiff.configuration.IConfigurationCapable;
-import org.sidiff.service.IService;
+import org.sidiff.common.extension.ExtensionManager;
+import org.sidiff.common.extension.configuration.IConfigurableExtension;
 
 /**
  * this class is the interface service for an annotationservice. An
  * annotationsservice can be configured by a configuration. it calculate and
  * annotate the values for a given model.
  */
-public interface IAnnotation extends IService,IConfigurationCapable {
+public interface IAnnotation extends IConfigurableExtension {
 
-	public static final String EXTENSION_POINT_ID = "org.sidiff.annotation.extensionpoint";
-	public static final String SERVICE_ID = "IAnnotation";
+	Description<IAnnotation> DESCRIPTION = Description.of(IAnnotation.class, "org.sidiff.annotation.extensionpoint", "client", "class");
+
+	ExtensionManager<IAnnotation> MANAGER = new ExtensionManager<>(DESCRIPTION);
+
+
+	public void init(Resource model) throws IOException;
 	
-	public void init(Resource model);
+	public void reset();
 
 	/**
 	 * Annotates configured annotations to all elements of the given model.

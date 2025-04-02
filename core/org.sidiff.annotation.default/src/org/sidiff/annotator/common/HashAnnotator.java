@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EAttribute;
@@ -16,10 +17,10 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.sidiff.common.emf.EMFAdapter;
 import org.sidiff.common.emf.EMFUtil;
 import org.sidiff.common.emf.access.EMFMetaAccess;
-import org.sidiff.common.emf.access.EdgeSemantic;
 import org.sidiff.common.emf.annotation.AnnotateableElement;
 import org.sidiff.common.emf.collections.EMFComparators;
 import org.sidiff.common.exceptions.SiDiffRuntimeException;
@@ -87,6 +88,7 @@ public class HashAnnotator extends Annotator {
 	 * @param requiredAnnotations
 	 * @param order
 	 */
+	@Override
 	@SuppressWarnings({ "rawtypes" })
 	public void init(EPackage documentType, String annotationKey, String parameter, EClass acceptedType,
 			Collection<String> requiredAnnotations) {
@@ -218,7 +220,7 @@ public class HashAnnotator extends Annotator {
 
 		// HASHING the References
 		if (referencedObjectsPositionAnnotationKey != null)
-			hashReferencedObjects(object, EMFMetaAccess.getReferences(object.eClass(), EdgeSemantic.Outgoing),
+			hashReferencedObjects(object, EMFMetaAccess.getReferences(object.eClass()),
 					referencedObjectsPositionAnnotationKey);
 
 		// Return the generated hash value
@@ -249,7 +251,7 @@ public class HashAnnotator extends Annotator {
 
 		List<EAttribute> attributes = new ArrayList<EAttribute>(object.eClass().getEAllAttributes());
 
-		Collections.sort(attributes, EMFComparators.ATTRIBUTE_BY_NAME);
+		Collections.sort(attributes, EMFComparators.NAMED_ELEMENT_BY_NAME);
 
 		for (EAttribute attrib : attributes) {
 			if (attrib.isID() || attrib.getEAnnotation(NO_HASH_ECORE_ANNOTATION) != null)
@@ -303,7 +305,7 @@ public class HashAnnotator extends Annotator {
 	private void hashReferencedObjects(EObject object, List<EReference> references, String annotationKey) {
 
 		ArrayList<EReference> sortedRefs = new ArrayList<EReference>(references);
-		Collections.sort(sortedRefs, EMFComparators.REFERENCE_BY_NAME);
+		Collections.sort(sortedRefs, EMFComparators.NAMED_ELEMENT_BY_NAME);
 
 		for (EReference reference : sortedRefs) {
 			if (reference.getEAnnotation(NO_HASH_ECORE_ANNOTATION) != null)
@@ -316,8 +318,7 @@ public class HashAnnotator extends Annotator {
 				continue;
 
 			// Get the target nodes that are referenced
-			ArrayList<EObject> targets = new ArrayList<EObject>();
-			EMFUtil.fillObjectListFromReference(targets, object, reference);
+			List<EObject> targets = EMFUtil.getReferenceTargets(object, reference);
 
 			// If order is irrelevant, sort the list of target nodes
 			if (!reference.isOrdered() || ignoreOrder.contains(reference)) {
@@ -335,7 +336,7 @@ public class HashAnnotator extends Annotator {
 				String anno = annoTarget.getAnnotation(annotationKey, String.class);
 				if (anno == null) {
 					// externe (proxy) elemente mit der URI einhashen
-					anno = EMFUtil.getEObjectURI(target);
+					anno = EcoreUtil.getURI(target).toString();
 				}
 
 				this.md.update(anno.getBytes());
@@ -376,19 +377,19 @@ public class HashAnnotator extends Annotator {
 	}
 
 	@Override
-	public String getAnnotatorID() {
+	public String getKey() {
 		return ANNOTATOR_ID;
 	}
 
 	@Override
-	public String getDescription() {
-		return "Annotator to compute hash values. This annotator builds signatures in a subtractive way."
+	public Optional<String> getDescription() {
+		return Optional.of("Annotator to compute hash values. This annotator builds signatures in a subtractive way."
 				+ " It includes a fixed set of information in the hash value, whereas some of these information"
 				+ " can be subtracted by the use of configuration parameters (see below)."
 				+ " ParameterString (Die Reihenfolge spielt hier keine Rolle):  localPositionAnnotationKey = <KEY>,"
 				+ " (required wenn globalMoveAllowed=false, sonst optional) referencedObjectsPositionAnnotationKey = <KEY>,"
 				+ " (optional) Achtung: Wenn nicht angegeben, werden keine referenzierten Objekte gehasht! globalMoveAllowed = true|false,"
 				+ " (required) suppressChildren = <containment1>;<containment2> ... (optional) ignoreOrder = <ref1>;<ref2> ... (optional) "
-				+ "exclude = <feature1>;<feature2> ... (optional)";
+				+ "exclude = <feature1>;<feature2> ... (optional)");
 	}
 }

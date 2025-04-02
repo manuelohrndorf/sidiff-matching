@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="formula" nsURI="http://www.sidiff.org/formula/model/1.0" nsPrefix="formula">
+  <eClassifiers xsi:type="ecore:EClass" name="Formula" abstract="true">
+    <eOperations name="eval" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="config" eType="#//Configuration"/>
+    </eOperations>
+    <eOperations name="equivalent" lowerBound="1" eType="#//Formula"/>
+    <eOperations name="deMorgan" lowerBound="1" eType="#//Formula"/>
+    <eOperations name="distributive" lowerBound="1" eType="#//Formula">
+      <eParameters name="op" lowerBound="1" eType="#//Operator"/>
+    </eOperations>
+    <eOperations name="associative" lowerBound="1" eType="#//Formula"/>
+    <eOperations name="simplify" lowerBound="1" eType="#//Formula" eExceptions="#//SatSolverAdapterException"/>
+    <eOperations name="cnf" lowerBound="1" eType="#//Formula"/>
+    <eOperations name="dnf" lowerBound="1" eType="#//Formula"/>
+    <eOperations name="getPriority" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eOperations name="getValidConfigurations" upperBound="-1" eType="#//Configuration"
+        eExceptions="#//SatSolverAdapterException">
+      <eParameters name="timeout" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    </eOperations>
+    <eOperations name="getAssociativeFormulas" lowerBound="1" upperBound="-1" eType="#//Formula">
+      <eParameters name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
+    </eOperations>
+    <eOperations name="isSatisfiable" lowerBound="1" eType="#//SatResult" eExceptions="#//SatSolverAdapterException"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="variables" lowerBound="1"
+        upperBound="-1" eType="#//Variable" changeable="false" volatile="true" transient="true"
+        derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="satSolverAdapter" eType="#//ISatSolverAdapter"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BinaryFormula" abstract="true" eSuperTypes="#//Formula">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="left" lowerBound="1" eType="#//Formula"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="right" lowerBound="1" eType="#//Formula"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="UnaryFormula" abstract="true" eSuperTypes="#//Formula">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="formula" eType="#//Formula"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Variable" eSuperTypes="#//Formula">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="priority" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" changeable="false"
+        defaultValueLiteral="0"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" lowerBound="1" eType="#//VariationType"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Not" eSuperTypes="#//UnaryFormula">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="priority" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" changeable="false"
+        defaultValueLiteral="1"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="And" eSuperTypes="#//BinaryFormula">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="priority" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" changeable="false"
+        defaultValueLiteral="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Or" eSuperTypes="#//BinaryFormula">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="priority" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" changeable="false"
+        defaultValueLiteral="3"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Xor" eSuperTypes="#//BinaryFormula">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="priority" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" changeable="false"
+        defaultValueLiteral="3"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Implies" eSuperTypes="#//BinaryFormula">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="priority" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" changeable="false"
+        defaultValueLiteral="4"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Configuration">
+    <eOperations name="init">
+      <eParameters name="formula" eType="#//Formula"/>
+    </eOperations>
+    <eOperations name="export" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="variableAssignments" upperBound="-1"
+        eType="#//VariableAssignment" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="VariableAssignment" instanceClassName="java.util.Map$Entry">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="key" lowerBound="1" eType="#//Variable"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBooleanObject"
+        defaultValueLiteral="false"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="Operator">
+    <eLiterals name="NOT" literal="NOT"/>
+    <eLiterals name="AND" value="1"/>
+    <eLiterals name="OR" value="2"/>
+    <eLiterals name="XOR" value="3" literal="XOR"/>
+    <eLiterals name="IMPLIES" value="4"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="ISatSolverAdapter" instanceClassName="org.sidiff.formula.adapter.ISatSolverAdapter">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="create" value="return ExtensionSerialization.createExtension(ISatSolverAdapter.MANAGER, it);"/>
+      <details key="convert" value="return ExtensionSerialization.convertToString(it);"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="SatResult" instanceClassName="org.sidiff.formula.adapter.SatResult"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="SatSolverAdapterException" instanceClassName="org.sidiff.formula.adapter.exceptions.SatSolverAdapterException"
+      serializable="false"/>
+  <eClassifiers xsi:type="ecore:EEnum" name="VariationType">
+    <eLiterals name="UNDEFINED"/>
+    <eLiterals name="MANDATORY" value="1"/>
+    <eLiterals name="OPTIONAL" value="2"/>
+  </eClassifiers>
+</ecore:EPackage>

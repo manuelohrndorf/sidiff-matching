@@ -1,95 +1,68 @@
 package org.sidiff.candidates.type;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.sidiff.candidates.ICandidates;
-import org.sidiff.common.collections.ClassificationUtil;
+import org.sidiff.candidates.AbstractCandidates;
+import org.sidiff.common.collections.CollectionUtil;
 import org.sidiff.common.collections.ValueMap;
-import org.sidiff.common.emf.EMFUtil;
 import org.sidiff.common.emf.collections.EMFClassifiers;
 
+public abstract class TypeCandidates extends AbstractCandidates {
 
-public abstract class TypeCandidates implements ICandidates {
-
-	protected Collection<Resource> models = null;
-
-	protected Map<Resource,ValueMap<EClass, EObject>> candidates;
+	private final Map<Resource,ValueMap<EClass, EObject>> candidates = new HashMap<>();
 
 	@Override
 	public void init(Collection<Resource> models) {
+		reset();
 
-
-			this.candidates = new HashMap<Resource, ValueMap<EClass,EObject>>();
-			this.models = models;
-
-			for (Iterator<Resource> iterator = models.iterator(); iterator.hasNext();) {
-				Resource resource = (Resource) iterator.next();
-				Map<EClass, Set<EObject>> typeMap;
-				List<EObject> allElements = new ArrayList<EObject>();
-				for(EObject obj : EMFUtil.getAllContentAsIterable(resource)){
-					allElements.add(obj);
+		for (Resource resource : models) {
+			Map<EClass, Set<EObject>> typeMap;
+			List<EObject> allElements = CollectionUtil.asStream(resource.getAllContents()).collect(Collectors.toList());
+			typeMap = CollectionUtil.groupSet(allElements, EMFClassifiers.ELEMENT_BY_CLASS);
+			ValueMap<EClass, EObject> types = new ValueMap<>();
+			for(EClass type : typeMap.keySet()) {
+				for(EObject obj : typeMap.get(type)) {
+					types.put(obj, type);
 				}
-				typeMap = ClassificationUtil.classifiedSets(allElements, EMFClassifiers.ELEMENT_BY_CLASS);
-				ValueMap<EClass, EObject> types = new ValueMap<EClass, EObject>();
-				for(EClass type : typeMap.keySet()){
-					for(EObject obj : typeMap.get(type)){
-						types.put(obj, type);
-					}
-				}
-				this.candidates.put(resource, types);
+			}
+			this.candidates.put(resource, types);
 		}
-
-	}	
-
-
+	}
 
 	@Override
 	public void reset() {
-		this.models = null;
-		this.candidates = null;
+		this.candidates.clear();
 	}
 
 	@Override
 	public boolean hasCandidates(EObject element) throws Exception {
-		
-		return getCandidates(element).size() > 0;
-		
+		return !getCandidates(element).isEmpty();
 	}
 
 	@Override
 	public void addCandidate(EObject candidate) {
-		
 		Resource originatingModel = candidate.eResource();
 		EClass candidateType = candidate.eClass();
 		this.candidates.get(originatingModel).put(candidate, candidateType);		
-		
 	}
 
 	@Override
 	public void removeCandidate(EObject candidate) {
-		
 		Resource originatingModel = candidate.eResource();
 		this.candidates.get(originatingModel).containsObject(candidate);
 		this.candidates.get(originatingModel).removeObject(candidate);		
 	}
-	
 
-	@Override
-	public void removeCandidates(EObject... candidates) {
-		for(EObject candidate : candidates){
-			removeCandidate(candidate);
-		}
-		
+	protected Map<Resource, ValueMap<EClass, EObject>> getCandidates() {
+		return Collections.unmodifiableMap(candidates);
 	}
-	
-
 }

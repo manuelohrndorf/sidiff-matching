@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText="(c), Christopher Pietsch and Dennis Reuling, Software Engineering Group, University of Siegen 2017 all rights reserved"
+    modelDirectory="/org.sidiff.entities/src" modelPluginID="org.sidiff.entities"
+    modelName="EntitiesModel" modelPluginClass="org.sidiff.entities.EntitiesModelPlugin"
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="8.0" colorProviders="true" usedGenPackages="../../org.sidiff.formula/model/Formula.genmodel#//formula"
+    interfaceNamePattern="" operationReflection="true" importOrganizing="true" styleProviders="true">
+  <foreignModel>EntitiesModel.ecore</foreignModel>
+  <genPackages prefix="Entities" basePackage="org.sidiff" disposableProviderFactory="true"
+      loadInitialization="true" ecorePackage="EntitiesModel.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="EntitiesModel.ecore#//AnnotationType">
+      <genEnumLiterals ecoreEnumLiteral="EntitiesModel.ecore#//AnnotationType/Comment"/>
+      <genEnumLiterals ecoreEnumLiteral="EntitiesModel.ecore#//AnnotationType/Condition"/>
+      <genEnumLiterals ecoreEnumLiteral="EntitiesModel.ecore#//AnnotationType/Model"/>
+    </genEnums>
+    <genDataTypes ecoreDataType="EntitiesModel.ecore#//IExporterFilter"/>
+    <genClasses image="false" ecoreClass="EntitiesModel.ecore#//Entity">
+      <genFeatures notify="false" createChild="false" propertyMultiLine="true" propertySortChoices="true"
+          ecoreFeature="ecore:EReference EntitiesModel.ecore#//Entity/annotations"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute EntitiesModel.ecore#//Entity/signature"/>
+    </genClasses>
+    <genClasses ecoreClass="EntitiesModel.ecore#//Element">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference EntitiesModel.ecore#//Element/outgoings"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference EntitiesModel.ecore#//Element/incomings"/>
+      <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference EntitiesModel.ecore#//Element/attributes"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference EntitiesModel.ecore#//Element/object"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference EntitiesModel.ecore#//Element/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute EntitiesModel.ecore#//Element/external"/>
+      <genOperations ecoreOperation="EntitiesModel.ecore#//Element/getAttributes">
+        <genParameters ecoreParameter="EntitiesModel.ecore#//Element/getAttributes/type"/>
+      </genOperations>
+      <genOperations ecoreOperation="EntitiesModel.ecore#//Element/getReferences">
+        <genParameters ecoreParameter="EntitiesModel.ecore#//Element/getReferences/type"/>
+      </genOperations>
+      <genOperations ecoreOperation="EntitiesModel.ecore#//Element/updateExternal"/>
+    </genClasses>
+    <genClasses ecoreClass="EntitiesModel.ecore#//Reference">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference EntitiesModel.ecore#//Reference/source"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference EntitiesModel.ecore#//Reference/target"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference EntitiesModel.ecore#//Reference/type"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference EntitiesModel.ecore#//Reference/opposite"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute EntitiesModel.ecore#//Reference/containment"
+          get="return getType().isContainment();"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute EntitiesModel.ecore#//Reference/container"
+          get="return getType().isContainer();"/>
+    </genClasses>
+    <genClasses ecoreClass="EntitiesModel.ecore#//Attribute">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference EntitiesModel.ecore#//Attribute/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute EntitiesModel.ecore#//Attribute/value"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference EntitiesModel.ecore#//Attribute/container"/>
+    </genClasses>
+    <genClasses ecoreClass="EntitiesModel.ecore#//Annotation">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute EntitiesModel.ecore#//Annotation/body"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference EntitiesModel.ecore#//Annotation/formula"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute EntitiesModel.ecore#//Annotation/type"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference EntitiesModel.ecore#//Annotation/entities"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="EntitiesModel.ecore#//IdentifiableEntity">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute EntitiesModel.ecore#//IdentifiableEntity/uuid"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

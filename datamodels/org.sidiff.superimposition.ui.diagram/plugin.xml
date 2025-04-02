@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+  <extension point="org.eclipse.sirius.componentization">
+    <component class="org.sidiff.superimposition.ui.diagram.Activator"
+               id="org.sidiff.superimposition.ui.diagram"
+	       name="SuperimpositionModel">
+    </component>
+  </extension>
+</plugin>

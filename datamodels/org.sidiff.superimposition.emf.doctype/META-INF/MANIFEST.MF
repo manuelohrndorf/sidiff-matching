@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: org.sidiff.superimposition.emf.doctype;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.eclipse.core.runtime,
+ org.sidiff.common.emf.doctype,
+ org.eclipse.core.resources,
+ org.sidiff.superimposition
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: org.sidiff.deltamodeling.superimposition.emf.doctype
+Bundle-ActivationPolicy: lazy
+Bundle-Vendor: %providerName

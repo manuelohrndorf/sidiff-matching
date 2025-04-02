@@ -1,10 +1,10 @@
 package org.sidiff.correspondences.exceptions;
 
-@SuppressWarnings("serial")
 public class NoMatchException extends CannotMatchException {
 
-	public NoMatchException(Object... message) {
+	private static final long serialVersionUID = 7622988671166787301L;
+
+	public NoMatchException(String message) {
 		super(message);
 	}
-
 }

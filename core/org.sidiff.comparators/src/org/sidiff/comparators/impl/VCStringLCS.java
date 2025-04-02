@@ -1,6 +1,7 @@
 package org.sidiff.comparators.impl;
 
-import org.eclipse.emf.ecore.EClass;
+import java.util.Optional;
+
 import org.eclipse.emf.ecore.EObject;
 import org.sidiff.common.lcs.StringLCSUtil;
 import org.sidiff.comparators.abstractcomperators.AbstractValueComparator;
@@ -31,21 +32,19 @@ import org.sidiff.comparators.abstractcomperators.AbstractValueComparator;
  */
 
 public class VCStringLCS extends AbstractValueComparator {
-	public static final String COMPARATOR_ID = "VCStringLCS";
+
 	/**
 	 * indicates whether a case-sensitive (false) or case-insensitive (true)
 	 * comparison is to be used.
 	 */
-	private boolean ci = false;;
+	private boolean ci = false;
 
 	@Override
-	public void init(EClass dedicatedClass, EClass targetClass, String parameter) {
-		super.init(dedicatedClass, targetClass, parameter);
+	public void init(String parameter) {
 		// case sensitivity ? default: case-sensitive
 		if (parameter.equals("ci")) {
 			this.ci = true;
 		}
-
 	}
 
 	/**
@@ -60,24 +59,18 @@ public class VCStringLCS extends AbstractValueComparator {
 	protected float calculateSimilarity(EObject contextElementA, EObject contextElementB, Object objectA,
 			Object objectB) {
 
-		// typecheck
-		assert(objectA instanceof String && objectB instanceof String) : "Works only with Strings!";
+		String stringA = (String) objectA;
+		String stringB = (String) objectB;
 
 		if (ci) {
-			return StringLCSUtil.compareStringIgnoringCase((String) objectA, (String) objectB);
-		} else {
-			return StringLCSUtil.compareStringConsideringCase((String) objectA, (String) objectB);
+			return StringLCSUtil.compareStringIgnoringCase(stringA, stringB);
 		}
+		return StringLCSUtil.compareStringConsideringCase(stringA, stringB);
 	}
 
 	@Override
-	public String getComparatorID() {
-		return COMPARATOR_ID;
-	}
-
-	@Override
-	public String getDescription() {
-		return "This comparator compares two string values based on a longest common subsequence calculation. "
-				+ "It is assured by assertion that the two values are of the type string.";
+	public Optional<String> getDescription() {
+		return Optional.of("This comparator compares two string values based on a longest common subsequence calculation. "
+				+ "It is assured by assertion that the two values are of the type string.");
 	}
 }

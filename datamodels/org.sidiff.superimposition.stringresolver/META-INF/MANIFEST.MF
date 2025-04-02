@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: org.sidiff.superimposition.stringresolver;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: org.sidiff.superimposition.stringresolver
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-Vendor: %providerName
+Require-Bundle: org.eclipse.core.runtime,
+ org.sidiff.common.emf.stringresolver,
+ org.sidiff.entities.stringresolver,
+ org.sidiff.superimposition

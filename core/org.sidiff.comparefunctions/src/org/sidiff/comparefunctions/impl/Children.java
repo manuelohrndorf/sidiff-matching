@@ -1,6 +1,7 @@
 package org.sidiff.comparefunctions.impl;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -17,11 +18,9 @@ import org.sidiff.common.emf.access.EMFMetaAccess;
  * @author Pit Pietsch
  */
 public class Children extends AbstractComparatorCompareFunction {
-	public static final String COMPAREFUNCTION_ID = "Children";
 
 	@Override
 	protected Collection<EObject> getToBeCompared(EObject context) {
-
 		return context.eContents();
 	}
 
@@ -31,15 +30,9 @@ public class Children extends AbstractComparatorCompareFunction {
 	}
 
 	@Override
-	public String getCompareFunctionID() {
-		return COMPAREFUNCTION_ID;
-	}
-
-	@Override
-	public String getDescription() {
-		return "Compare function for comparing two nodes' direct children."
+	public Optional<String> getDescription() {
+		return Optional.of("Compare function for comparing two nodes' direct children."
 				+ "This compare function expects exactly one parameter fragment: The comparator"
-				+ " that should be used to compare the two collections 'children of A' and 'children of B";
+				+ " that should be used to compare the two collections 'children of A' and 'children of B");
 	}
-
 }

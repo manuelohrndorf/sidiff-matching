@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.sidiff.formula.sat_solver_adapter">
+      <sat_solver_adapter
+            class="org.sidiff.formula.adapter.z3.Z3SatSolverAdapter">
+      </sat_solver_adapter>
+   </extension>
+
+</plugin>

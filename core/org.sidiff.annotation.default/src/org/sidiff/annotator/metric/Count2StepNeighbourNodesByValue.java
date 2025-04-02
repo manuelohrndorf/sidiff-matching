@@ -23,6 +23,7 @@ public class Count2StepNeighbourNodesByValue extends Annotator {
 	private String attributeString;
 	private String value = null;
 
+	@Override
 	public void init(EPackage documentType, String annotationKey, String parameter, EClass acceptedType,
 			Collection<String> requiredAnnotations) {
 
@@ -49,19 +50,19 @@ public class Count2StepNeighbourNodesByValue extends Annotator {
 					answer++;
 			}
 		}
-		return new Float(answer);
+		return answer;
 	}
 
 	@Override
-	public String getAnnotatorID() {
+	public String getKey() {
 		return ANNOTATOR_ID;
 	}
 
 	@Override
-	public String getDescription() {
-		return "Zaehlt Elemente, die ueber das aufeinanderfolgende Traversieren zweier"
+	public Optional<String> getDescription() {
+		return Optional.of("Zaehlt Elemente, die ueber das aufeinanderfolgende Traversieren zweier"
 				+ " Referenzen (Parameter 1+2) erreicht werden, solange das gegebene Attribut "
-				+ "(Parameter 3) der erreichten Elemente einen bestimmten Wert (Parameter 4) hat";
+				+ "(Parameter 3) der erreichten Elemente einen bestimmten Wert (Parameter 4) hat");
 	}
 
 }

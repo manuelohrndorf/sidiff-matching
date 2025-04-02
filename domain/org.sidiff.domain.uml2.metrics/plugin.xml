@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.sidiff.common.emf.metrics.metrics_extension">
+      <metric
+            class="org.sidiff.domain.uml.metrics.RatioOfAbstractToConcreteClasses"
+            key="uml.RatioOfAbstractToConcreteClasses"
+            name="Ratio of abstract to concrete Classes">
+         <documentType>
+            http://www.eclipse.org/uml2/5.0.0/UML
+         </documentType>
+      </metric>
+      <metric
+            class="org.sidiff.domain.uml.metrics.NumberOfElementsAndProperties"
+            comparisonType="UNSPECIFIED"
+            key="uml.NumberOfElementAndProperties"
+            name="Number of Elements and Properties">
+         <documentType>
+            http://www.eclipse.org/uml2/5.0.0/UML
+         </documentType>
+      </metric>
+   </extension>
+
+</plugin>

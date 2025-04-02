@@ -7,7 +7,6 @@ import java.util.List;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
-import org.sidiff.annotator.AnnotatorUtil;
 import org.sidiff.annotator.IAnnotator;
 import org.sidiff.common.emf.access.EMFMetaAccess;
 import org.sidiff.common.emf.exceptions.UnknownDocumentTypeException;
@@ -87,12 +86,11 @@ public class XMLConfigurationHandler {
 				requiredAttributes = Collections.emptyList();
 			}
 
-			IAnnotator availableAnnotator = AnnotatorUtil.getAvailableAnnotator(className);
+			IAnnotator availableAnnotator = IAnnotator.MANAGER.getExtension(className).get();
 			availableAnnotator.init(documentType, attributeName, parameter, currentClassifier, requiredAttributes);
 			this.annotators.add(availableAnnotator);
 		} else {
-			throw new SiDiffRuntimeException(this,
-					"Synthetic Attribute must have attributes 'attributeName' and 'operation'!");
+			throw new SiDiffRuntimeException("Synthetic Attribute must have attributes 'attributeName' and 'operation'!");
 		}
 	}
 
@@ -122,7 +120,7 @@ public class XMLConfigurationHandler {
 			if (EPackage.Registry.INSTANCE.getEPackage(documentType) != null) {
 				this.documentType = EPackage.Registry.INSTANCE.getEPackage(documentType);
 			} else {
-				throw new UnknownDocumentTypeException("Document type unknown ", documentType);
+				throw new UnknownDocumentTypeException(documentType);
 			}
 		} else {
 			throw new SiDiffRuntimeException("Missing Documenttype!");

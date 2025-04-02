@@ -22,6 +22,7 @@ public class Count2StepNeighbourTypes extends Annotator {
 	private String secondReferenceString;
 	private String classString;
 
+	@Override
 	public void init(EPackage documentType, String annotationKey, String parameter, EClass acceptedType,
 			Collection<String> requiredAnnotations) {
 
@@ -46,17 +47,17 @@ public class Count2StepNeighbourTypes extends Annotator {
 					answer++;
 			}
 		}
-		return new Float(answer);
+		return answer;
 	}
 
 	@Override
-	public String getAnnotatorID() {
+	public String getKey() {
 		return ANNOTATOR_ID;
 	}
 
 	@Override
-	public String getDescription() {
-		return "  Zaehlt Elemente, die ueber das aufeinanderfolgende Traversieren zweier"
-				+ " Referenzen (Parameter 1+2) erreicht werden, solange einen bestimmten Typ " + "(Parameter 3) haben.";
+	public Optional<String> getDescription() {
+		return Optional.of("Zaehlt Elemente, die ueber das aufeinanderfolgende Traversieren zweier"
+				+ " Referenzen (Parameter 1+2) erreicht werden, solange einen bestimmten Typ " + "(Parameter 3) haben.");
 	}
 }

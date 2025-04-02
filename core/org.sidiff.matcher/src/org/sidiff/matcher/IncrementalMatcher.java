@@ -1,10 +1,15 @@
 package org.sidiff.matcher;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.sidiff.candidates.ICandidates;
 import org.sidiff.common.emf.access.EMFModelAccess;
@@ -15,15 +20,17 @@ import org.sidiff.correspondences.ICorrespondences;
 import org.sidiff.matcher.mode.MatcherMode;
 
 /**
- * Incremental matcher which must be initialized with a list of IMatchers. When
+ * <p>Incremental matcher which must be initialized with a list of IMatchers. When
  * the matching is computed, this incremental matcher invokes all sub-matchers
- * in the order which is given by the list of matchers. 
+ * in the order which is given by the list of matchers.</p>
  * 
- * Note that this matcher is not registered via an extension point and will not
- * be shown in the UI. If the user selects more than one @link{IMatcher} in the 
- * @link{MatchingEngineWidget} this class will be created dynamically and all chosen matchers will
- * be added.
+ * <p>Note that this matcher is not registered via an extension point and will not
+ * be shown in the UI. If the user selects more than one {@link IMatcher} in the 
+ * {@link MatchingEngineWidget} this class will be created dynamically and all chosen matchers will
+ * be added.</p>
  * 
+ * <p>The incremental matcher overrides <code>equals</code> and <code>hashCode</code>,
+ * so that two incremental matchers with the same list of sub-matchers are considered equal.</p>
  * 
  * @author kehrer
  */
@@ -43,26 +50,22 @@ public class IncrementalMatcher implements IMatcher {
 	 */
 	public IncrementalMatcher(List<IMatcher> matchers) {
 		super();
+		Assert.isNotNull(matchers, "matchers must not be null");
+		Assert.isLegal(matchers.size() > 1, "Incremental matchers should only be used with more than one sub-matcher");
 		this.matchers = matchers;
 	}
 
 	@Override
 	public void startMatching(Collection<Resource> models, Scope scope) {
-
+		reset();
 		LogUtil.log(LogEvent.NOTICE, "Starting incremental matching");
 
-		boolean initialized = false;
 		for (int i = 0; i < matchers.size(); i++) {
 			IMatcher nextMatcher = matchers.get(i);
 			if (nextMatcher.canHandleModels(models)) {
 				LogUtil.log(LogEvent.NOTICE, "Next matcher (" + i + "): " + nextMatcher.getName());
-				if(initialized){
-					nextMatcher.setMode(MatcherMode.INCREMENTAL);
-					nextMatcher.setCandidatesService(matchers.get(i-1).getCandidatesService());
-					nextMatcher.setCorrespondencesService(matchers.get(i-1).getCorrespondencesService());
-				}
+				nextMatcher.setMode(i > 0 ? MatcherMode.INCREMENTAL : MatcherMode.SINGLE);
 				nextMatcher.startMatching(models, scope);
-				initialized = true;
 			} else {
 				LogUtil.log(LogEvent.NOTICE, "Next matcher (" + i + "): " + nextMatcher.getName()
 				+ ": Skip because cannot handle resources " + models );
@@ -74,53 +77,31 @@ public class IncrementalMatcher implements IMatcher {
 	}
 
 	@Override
-	public void reset() {		
-		for (int i = 0; i < matchers.size(); i++) {
-			IMatcher nextMatcher = matchers.get(i);
-			nextMatcher.reset();
+	public void reset() {
+		matchers.forEach(IMatcher::reset);	
+	}
 
-		}		
-	}
-	
-	@Override
-	public boolean canHandleDocTypes(Set<String> documentTypes) {
-		return getDocumentTypes().containsAll(documentTypes);
-	}
-	
 	@Override
 	public boolean canHandleModels(Collection<Resource> models) {
-		Set<String> docTypes = new HashSet<String>();
-		for(Resource model : models){
-			if(isResourceSetCapable()){
-				docTypes.addAll(EMFModelAccess.getDocumentTypes(model,
-						Scope.RESOURCE_SET));
-			}else{
-				docTypes.addAll(EMFModelAccess.getDocumentTypes(model, Scope.RESOURCE));
-			}
+		Set<String> docTypes = new HashSet<>();
+		for(Resource model : models) {
+			docTypes.addAll(EMFModelAccess.getDocumentTypes(model,
+					isResourceSetCapable() ? Scope.RESOURCE_SET : Scope.RESOURCE));
 		}
-
-		return canHandleDocTypes(docTypes);
+		return canHandle(docTypes);
 	}
 
 	@Override
 	public boolean isResourceSetCapable() {
-		// true if at least one of the matchers is resource set capable
-		for (IMatcher matcher : matchers) {
-			if (matcher.isResourceSetCapable()) {
-				return true;
-			}
-		}
-
-		return false;
-	}	
+		return matchers.stream().anyMatch(IMatcher::isResourceSetCapable);
+	}
 
 	@Override
 	public Set<String> getDocumentTypes() {
-		Set<String> docTypes = new HashSet<String>();
-		for(IMatcher matcher : matchers){
-			docTypes.addAll(matcher.getDocumentTypes());
-		}
-		return docTypes;
+		return matchers.stream()
+			.map(IMatcher::getDocumentTypes)
+			.flatMap(Collection::stream)
+			.collect(Collectors.toSet());
 	}
 
 	@Override
@@ -133,41 +114,32 @@ public class IncrementalMatcher implements IMatcher {
 		return getClass().getName();
 	}
 
-
 	@Override
-	public String getDescription() {
-		return "This matcher incrementally invokes all sub-matchers in the order which is given by the list of matchers.";
-
+	public Optional<String> getDescription() {
+		return Optional.of("This matcher incrementally invokes all sub-matchers in the order which is given by the list of matchers.");
 	}
 
-	@Override
-	public String getServiceID() {
-		return SERVICE_ID+"."+getKey();
-	}
-
-	public void setMatchers(List<IMatcher> imatchers) {
-	
-		this.matchers = imatchers;
-		
+	public void setMatchers(List<IMatcher> matchers) {
+		this.matchers = new ArrayList<>(matchers);
 	}
 	
 	public List<IMatcher> getMatchers() {
-		return matchers;
+		return Collections.unmodifiableList(matchers);
 	}
 
 	@Override
-	public Collection<Resource> getModels() {
+	public List<Resource> getModels() {
 		return matchers.get(0).getModels();
 	}
 
 	@Override
 	public ICorrespondences getCorrespondencesService() {
-		return matchers.iterator().next().getCorrespondencesService();
+		return matchers.get(0).getCorrespondencesService();
 	}
 
 	@Override
 	public ICandidates getCandidatesService() {
-		return matchers.iterator().next().getCandidatesService();
+		return matchers.get(0).getCandidatesService();
 
 	}
 
@@ -191,10 +163,33 @@ public class IncrementalMatcher implements IMatcher {
 		return MatcherMode.INCREMENTAL;
 	}
 
+	/**
+	 * Not supported by the incremental matcher.
+	 */
 	@Override
 	public void setMode(MatcherMode mode) {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException("IncrementalMatcher does not support setMode");
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == this) {
+			return true;
+		} else if(!(obj instanceof IncrementalMatcher)) {
+			return false;
+		}
+		return matchers.equals(((IncrementalMatcher)obj).matchers);
+	}
+
+	@Override
+	public int hashCode() {
+		return matchers.hashCode();
+	}
+	
+	@Override
+	public String toString() {
+		return matchers.stream()
+				.map(IMatcher::getName)
+				.collect(Collectors.joining(", ", "IncrementalMatcher[", "]"));
+	}
 }

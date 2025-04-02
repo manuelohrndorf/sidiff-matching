@@ -1,10 +1,13 @@
 package org.sidiff.candidates.type;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -17,62 +20,48 @@ import org.eclipse.emf.ecore.resource.Resource;
  *
  */
 public class InterModelTypeCandidates extends TypeCandidates {
-	
-	public static final String SERVICE_ID = "InterModelTypeCandidates";
 
 	@Override
-	public boolean isCandidate(EObject... candidates) {
-		
-		EObject candidate = candidates[0];
+	public boolean isCandidate(Collection<EObject> candidates) {
+		Assert.isLegal(!candidates.isEmpty());
+		Iterator<EObject> it = candidates.iterator();
+		EObject candidate = it.next();
 
 		//first check resource
 		Resource originatingModel = candidate.eResource();
-		for(int i = 1; i < candidates.length; i++){
-			if(candidates[i].eResource().equals(originatingModel))
-				return false;
+		for(; it.hasNext(); ){
+			if(it.next().eResource().equals(originatingModel)) {
+				return false;				
+			}
 		}
-		
-		Set<EObject> cands = new HashSet<EObject>(Arrays.asList(candidates));
+
+		Set<EObject> cands = new HashSet<>(candidates);
 		cands.remove(candidate);
 		
 		//then type
-		if(!getCandidates(candidate).containsAll(cands))
-			return false;
-		
-		return true;
+		return getCandidates(candidate).containsAll(cands);
 	}
-
 
 	@Override
 	public Collection<EObject> getCandidates(EObject element) {
-		
 		Resource originatingModel = element.eResource();
 		EClass elementType = element.eClass();
-		
-		Set<EObject> candidates = new HashSet<EObject>();
-		for(Resource res : this.candidates.keySet()){
-			if(!res.equals(originatingModel)){
-				candidates.addAll(this.candidates.get(res).getObjects(elementType));
-			}
-			
-		}
-		
-		return candidates;
-	}
 
-
-	@Override
-	public String getServiceID() {
-		return SERVICE_ID;
+		return getCandidates().entrySet().stream()
+			.filter(candidate -> !candidate.getKey().equals(originatingModel))
+			.map(candidate -> candidate.getValue().getObjects(elementType))
+			.flatMap(Collection::stream)
+			.collect(Collectors.toSet());
 	}
 
 	@Override
-	public String getDescription() {
-		return "This implementation of the TypeCandidates assumes that no two model elements may be candidates" + 
-				"to each other, if they are originating from the same model.";
+	public String getKey() {
+		return "InterModelTypeCandidates";
 	}
 
-
-
-
+	@Override
+	public Optional<String> getDescription() {
+		return Optional.of("This implementation of the TypeCandidates assumes that no two model elements may be candidates" + 
+				" to each other, if they are originating from the same model.");
+	}
 }

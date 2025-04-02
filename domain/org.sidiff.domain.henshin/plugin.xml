@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.sidiff.domain.extensionpoint">
+      <client
+            nsUri="http://www.eclipse.org/emf/2011/Henshin">
+      </client>
+   </extension>
+   <extension
+         point="org.sidiff.domain.modelloader.extensionpoint">
+      <client class="org.sidiff.domain.henshin.HenshinModelLoader">
+      </client>
+   </extension>
+
+</plugin>

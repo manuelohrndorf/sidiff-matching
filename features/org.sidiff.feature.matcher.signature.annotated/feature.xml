@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.sidiff.feature.matcher.signature.annotated"
-      label="SiDiff - Signature Annotation Matcher"
-      version="1.0.0.qualifier">
+      label="SiDiff Matching - Signature Annotation Matcher"
+      version="1.2.0.qualifier"
+      provider-name="Software Engineering Group, University of Siegen"
+      plugin="org.sidiff.branding.core">
 
    <description url="http://www.sidiff.org">
       A signature annotation matcher for the SiDiff Framework.
@@ -15,6 +17,14 @@
    <license url="http://www.sidiff.org">
       [Enter License Description here.]
    </license>
+
+   <url>
+      <update label="SiLift UpdateSite" url="http://pi.informatik.uni-siegen.de/projects/SiLift/updatesite"/>
+   </url>
+
+   <requires>
+      <import feature="org.sidiff.feature.matching" version="1.2.0" match="greaterOrEqual"/>
+   </requires>
 
    <plugin
          id="org.sidiff.matcher.signature.annotated"

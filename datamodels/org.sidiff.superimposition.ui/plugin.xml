@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ (c), Christopher Pietsch, Software Engineering Group, University of Siegen 2017 all rights reserved
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated SuperimpositionModel -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="org.sidiff.superimposition.presentation.SuperimpositionModelModelWizardID"
+            name="%_UI_SuperimpositionModelModelWizard_label"
+            class="org.sidiff.superimposition.presentation.SuperimpositionModelModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/SuperimpositionModelModelFile.gif">
+         <description>%_UI_SuperimpositionModelModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated SuperimpositionModel -->
+      <editor
+            id="org.sidiff.superimposition.presentation.SuperimpositionModelEditorID"
+            name="%_UI_SuperimpositionModelEditor_label"
+            icon="icons/full/obj16/SuperimpositionModelModelFile.gif"
+            extensions="sim"
+            class="org.sidiff.superimposition.presentation.SuperimpositionModelEditor"
+            contributorClass="org.sidiff.superimposition.presentation.SuperimpositionModelActionBarContributor">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="org.sidiff.superimposition.ui.category"
+            name="SiDiff Superimposition Model"
+            parentCategory="org.sidiff.ui.category">
+      </category>
+      <view
+            category="org.sidiff.superimposition.ui.category"
+            class="org.sidiff.superimposition.ui.views.ModelImportView"
+            icon="icons/sample.png"
+            id="org.sidiff.superimposition.ui.views.ModelImportView"
+            inject="true"
+            name="Model Import View">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.help.contexts">
+      <contexts
+            file="contexts.xml">
+      </contexts>
+   </extension>
+	 <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+         <menu
+               id="org.sidiff.superimposition.ui.menu"
+               label="Superimposition">
+         </menu>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:org.sidiff.superimposition.ui.menu">
+         <command
+               commandId="org.sidiff.superimposition.ui.command.import"
+               style="push">
+         </command>
+         <command
+               commandId="org.sidiff.superimposition.ui.command.show_import_view"
+               style="push">
+         </command>
+         <command
+               commandId="org.sidiff.superimposition.ui.command.export"
+               style="push">
+         </command>
+         <command
+               commandId="org.sidiff.superimposition.ui.command.detect_and_resolve_conflicts"
+               style="push">
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            id="org.sidiff.superimposition.ui.command.import"
+            name="Import Model">
+      </command>
+      <command
+            id="org.sidiff.superimposition.ui.command.show_import_view"
+            name="Show in Model Import View">
+      </command>
+      <command
+            id="org.sidiff.superimposition.ui.command.export"
+            name="Export Superimposition Model">
+      </command>
+      <command
+            id="org.sidiff.superimposition.ui.command.detect_and_resolve_conflicts"
+            name="Detect and Resolve conflicts">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="org.sidiff.superimposition.ui.handlers.ImportModelsHandler"
+            commandId="org.sidiff.superimposition.ui.command.import">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false">
+                  <adapt
+                        type="org.eclipse.core.resources.IFile">
+                  </adapt>
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      <handler
+            class="org.sidiff.superimposition.ui.handlers.ExportModelHandler"
+            commandId="org.sidiff.superimposition.ui.command.export">
+         <enabledWhen>
+            <reference
+                  definitionId="org.sidiff.superimposition.ui.definition.superimposedModel">
+            </reference>
+         </enabledWhen>
+      </handler>
+      <handler
+            class="org.sidiff.superimposition.ui.handlers.ConflictDetectResolveHandler"
+            commandId="org.sidiff.superimposition.ui.command.detect_and_resolve_conflicts">
+         <enabledWhen>
+            <reference
+                  definitionId="org.sidiff.superimposition.ui.definition.superimposedModel">
+            </reference>
+         </enabledWhen>
+      </handler>
+      <handler
+            class="org.sidiff.superimposition.ui.handlers.ShowImportModelViewHandler"
+            commandId="org.sidiff.superimposition.ui.command.show_import_view">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <and>
+                  <iterate
+                        ifEmpty="false">
+                     <adapt
+                           type="org.eclipse.core.resources.IFile">
+                     </adapt>
+                  </iterate>
+                  <count
+                        value="1">
+                  </count>
+               </and>
+            </with>
+         </enabledWhen>
+      </handler>
+   </extension>
+   <extension
+         point="org.sidiff.superimposition.conflict_resolver">
+      <conflictResolver
+            class="org.sidiff.superimposition.conflict.resolver.DialogConflictResolver"
+            key="Dialog"
+            mode="INTERACTIVE"
+            name="Dialog Conflict Resolver">
+         <supportedConflict>
+            Ecore.ENamedElement.Name.Duplicated
+         </supportedConflict>
+      </conflictResolver>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.definitions">
+      <definition
+            id="org.sidiff.superimposition.ui.definition.superimposedModel">
+         <or>
+	         <with
+	               variable="selection">
+	            <count
+	                  value="1">
+	            </count>
+	            <iterate
+	                  ifEmpty="false">
+	               <or>
+	                  <adapt
+	                        type="org.eclipse.core.resources.IFile">
+	                     <test
+	                           property="org.eclipse.core.resources.extension"
+	                           value="sim">
+	                     </test>
+	                  </adapt>
+	                  <instanceof
+	                        value="org.sidiff.superimposition.SuperimposedModel">
+	                  </instanceof>
+	               </or>
+	            </iterate>
+	         </with>
+          <with
+                variable="activeEditorId">
+             <equals
+                   value="org.sidiff.superimposition.presentation.SuperimpositionModelEditorID">
+             </equals>
+          </with>
+         </or>
+         
+      </definition>
+   </extension>
+</plugin>

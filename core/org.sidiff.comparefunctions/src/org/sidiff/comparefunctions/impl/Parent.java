@@ -2,6 +2,7 @@ package org.sidiff.comparefunctions.impl;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Optional;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -17,24 +18,6 @@ import org.eclipse.emf.ecore.EObject;
  * @author Pit Pietsch
  */
 public class Parent extends AbstractComparatorCompareFunction {
-	public static final String COMPAREFUNCTION_ID = "Parent";
-
-	/**
-	 * init.
-	 * 
-	 * @param dedicatedClass
-	 *            The compare function's meta-model.
-	 * @param policy
-	 *            The compare function's policy.
-	 * @param weight
-	 *            The compare function's weight.
-	 * @param parameter
-	 *            The compare function's parameter.
-	 */
-	@Override
-	public void init(EClass dedicatedClass, EvaluationPolicy policy, float weight, String parameter) {
-		super.init(dedicatedClass, policy, weight, parameter);
-	}
 
 	@Override
 	protected EClass getComparedType(EClass context) {
@@ -43,18 +26,14 @@ public class Parent extends AbstractComparatorCompareFunction {
 
 	@Override
 	protected Collection<EObject> getToBeCompared(EObject context) {
-		if (context.eContainer() == null)
-			return Collections.emptyList();
-		else
-			return Collections.singleton(context.eContainer());
-	}
-	@Override
-	public String getCompareFunctionID() {
-		return COMPAREFUNCTION_ID;
+		if (context.eContainer() == null) {
+			return Collections.emptyList();			
+		}
+		return Collections.singleton(context.eContainer());
 	}
 
 	@Override
-	public String getDescription() {
-		return "Compare function for comparing two nodes' parents.";
+	public Optional<String> getDescription() {
+		return Optional.of("Compare function for comparing two nodes' parents.");
 	}
 }

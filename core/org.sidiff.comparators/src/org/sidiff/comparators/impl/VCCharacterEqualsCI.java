@@ -1,5 +1,7 @@
 package org.sidiff.comparators.impl;
 
+import java.util.Optional;
+
 import org.eclipse.emf.ecore.EObject;
 import org.sidiff.comparators.abstractcomperators.AbstractValueComparator;
 
@@ -21,9 +23,7 @@ import org.sidiff.comparators.abstractcomperators.AbstractValueComparator;
  * @see CEquals
  * @author Pit Pietsch
  */
-@Deprecated
 public class VCCharacterEqualsCI extends AbstractValueComparator {
-	public static final String COMPARATOR_ID = "VCCharacterEqualsCI";
 
 	@Override
 	protected float calculateSimilarity(EObject contextElementA, EObject contextElementB, Object objectA,
@@ -33,14 +33,9 @@ public class VCCharacterEqualsCI extends AbstractValueComparator {
 	}
 
 	@Override
-	public String getComparatorID() {
-		return COMPARATOR_ID;
-	}
-
-	@Override
-	public String getDescription() {
-		return "This comparator performs an case-insensitive .equals()-comparison between two Character."
+	public Optional<String> getDescription() {
+		return Optional.of("This comparator performs an case-insensitive .equals()-comparison between two Character."
 				+ " In case they are equals 1f is returned, 0f otherwise. "
-				+ "The CEquals comparator should be used for case-sensitive equal-comparison instead.";
+				+ "The CEquals comparator should be used for case-sensitive equal-comparison instead.");
 	}
 }

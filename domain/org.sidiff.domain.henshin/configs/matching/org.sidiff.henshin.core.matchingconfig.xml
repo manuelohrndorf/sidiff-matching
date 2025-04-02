@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- <!DOCTYPE Matching SYSTEM "http://pi.informatik.uni-siegen.de/SiDiff/org.sidiff.core.matching.iterative.dtd">-->
+
+<Matching>
+	<Settings matcherPrefix="org.sidiff.matcher.similarity.flooding.matcher"
+			  documentType="http://www.eclipse.org/emf/2011/Henshin"
+			  firstPassSequencedMatcher="UniqueSimilarityMatcher"
+			  defaultSequencedMatcher="DefaultMatcher"
+			  defaultTopDownMatcher="Propagation" />
+			  
+	<Configurations>
+
+		<MatchingConfiguration className="Node"
+			threshold="0.5"
+			allowLocalMove="true"
+			allowGlobalMove="true"
+			alwaysComputeSimilarity="true"
+			independentMatching="true"
+			topDownMatcher="GreedyForcedPropagation" />	
+	
+	</Configurations>
+	
+	<Sequence>
+		<Class name="Node" />
+		
+	</Sequence>
+	
+</Matching>

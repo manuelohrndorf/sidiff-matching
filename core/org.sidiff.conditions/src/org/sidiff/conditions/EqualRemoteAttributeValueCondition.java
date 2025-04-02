@@ -1,6 +1,7 @@
 package org.sidiff.conditions;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -12,6 +13,8 @@ import org.sidiff.common.emf.access.path.EMFPath;
 import org.sidiff.comparefunctions.ICompareFunction.EvaluationPolicy;
 import org.sidiff.conditions.exceptions.AttributeNotExistsException;
 import org.sidiff.conditions.exceptions.NothingToCompareException;
+import org.sidiff.correspondences.ICorrespondences;
+import org.sidiff.similarities.ISimilarities;
 
 
 /**
@@ -24,46 +27,37 @@ import org.sidiff.conditions.exceptions.NothingToCompareException;
  * @author Sven Wenzel
  */
 public class EqualRemoteAttributeValueCondition extends AbstractCondition {
-	public static final String CONDITION_ID = "EqualRemoteAttributeValueCondition";
+
 	/**
 	 * The EAttribute to be compared.
 	 */
 	private EAttribute attribute = null;
-	
+
 	/**
 	 * The object the attribute values of the nodes is compared with
 	 */
 	private EMFPath path = null;
-	
-	/**
-	 * @param dedicatedClass
-	 * @param policy
-	 * @param parameter the attribute-name
-	 */
+
 	@Override
-	public void init(EClass dedicatedClass, EvaluationPolicy policy,
-			String parameter) {
-		super.init(dedicatedClass, policy, parameter);
+	public void init(EClass dedicatedClass, EvaluationPolicy policy, String parameter, ICorrespondences correspondences,
+			ISimilarities similarities) {
+		super.init(dedicatedClass, policy, parameter, correspondences, similarities);
+		String[] splitParameter = parameter.split(",");
+		this.path = EMFMetaAccess.translatePath(dedicatedClass, splitParameter[0]);
 
-		this.path = EMFMetaAccess.translatePath(dedicatedClass, parameter.split(",")[0]);
-
-		EStructuralFeature feature = EMFMetaAccess.inferResultType(path).getEStructuralFeature(parameter.split(",")[1]);
+		EStructuralFeature feature = EMFMetaAccess.inferResultType(path).getEStructuralFeature(splitParameter[1]);
 
 		if (feature == null)
-			throw new AttributeNotExistsException("Attribute does not exist: " + parameter.split(",")[1]);
+			throw new AttributeNotExistsException("Attribute does not exist: " + splitParameter[1]);
 		try {
 			attribute = (EAttribute) feature;			
 		} catch (ClassCastException exc) { // Is no attribute
-			throw new AttributeNotExistsException("Attribute does not exist: " + parameter.split(",")[1]);
+			throw new AttributeNotExistsException("Attribute does not exist: " + splitParameter[1]);
 		}
-
 	}
-	
-	
 
 	@Override
 	public boolean check(EObject node1, EObject node2) {
-		
 		Collection<EObject> targets1 = EMFModelAccess.evaluatePath(node1, path);
 		Collection<EObject> targets2 = EMFModelAccess.evaluatePath(node2, path);
 		
@@ -78,15 +72,8 @@ public class EqualRemoteAttributeValueCondition extends AbstractCondition {
 	}
 
 	@Override
-	public String getConditionID() {
-		return CONDITION_ID;
+	public Optional<String> getDescription() {
+		return Optional.of(
+				" This condition tests whether two remote attribute values are equal. In case they are true is returned, otherwise false.");
 	}
-
-
-
-	@Override
-	public String getDescription() {
-		return " This condition tests whether two remote attribute values are equal. In case they are true is returned, otherwise false.";
-	}
-
 }

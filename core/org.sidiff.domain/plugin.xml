@@ -3,11 +3,5 @@
 <plugin>
    <extension-point id="org.sidiff.domain.modelloader.extensionpoint" name="IModelLoader" schema="schema/org.sidiff.domain.modelloader.extensionpoint.exsd"/>
    <extension-point id="org.sidiff.domain.extensionpoint" name="org.sidiff.domain.extensionpoint" schema="schema/org.sidiff.domain.extensionpoint.exsd"/>
-   <extension
-         point="org.sidiff.service.extensionpoint">
-      <client
-            class="org.sidiff.domain.IDomain">
-      </client>
-   </extension>
 
 </plugin>

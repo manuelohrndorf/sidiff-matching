@@ -17,6 +17,7 @@ public abstract class AbstractPathAnnotator extends Annotator {
 
 	public static final String PATH_DELIMITER = "/";
 
+	@Override
 	public void init(EPackage documentType, String annotationKey, String parameter, EClass acceptedType,
 			Collection<String> requiredAnnotations) {
 		super.init(documentType, annotationKey, parameter, acceptedType, requiredAnnotations, ExecutionOrder.PRE);

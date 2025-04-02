@@ -5,15 +5,19 @@ import java.util.Collection;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.sidiff.common.extension.ExtensionManager;
+import org.sidiff.common.extension.IExtension;
+import org.sidiff.common.extension.storage.NoExtensionManagerStorage;
 
 /**
  * this class defines an interface for an annotator. 
  *
  */
-public interface IAnnotator {
+public interface IAnnotator extends IExtension {
 
-	static final String EXTENSION_POINT_ID = "org.sidiff.annotator.extensionpoint";
-	static final String ANNOTATOR_ID = "IAnnotator";
+	Description<IAnnotator> DESCRIPTION = Description.of(IAnnotator.class,
+			"org.sidiff.annotator.extensionpoint", "client", "class");
+	ExtensionManager<IAnnotator> MANAGER = new ExtensionManager<>(new NoExtensionManagerStorage<>(DESCRIPTION));
 
 	void annotate(EObject object);
 
@@ -33,9 +37,5 @@ public interface IAnnotator {
 
 	public void init(EPackage documentType, String annotationKey, String parameter, EClass acceptedType,
 			Collection<String> requiredAnnotations);
-
-	public String getAnnotatorID();
-
-	public String getDescription();
 
 }

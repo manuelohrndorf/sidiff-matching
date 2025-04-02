@@ -1,17 +1,20 @@
 package org.sidiff.matcher;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.resource.Resource;
-import org.sidiff.candidates.CandidatesUtil;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.sidiff.candidates.ICandidates;
 import org.sidiff.common.emf.access.EMFModelAccess;
 import org.sidiff.common.emf.access.Scope;
 import org.sidiff.common.logging.LogEvent;
 import org.sidiff.common.logging.LogUtil;
-import org.sidiff.correspondences.CorrespondencesUtil;
 import org.sidiff.correspondences.ICorrespondences;
 import org.sidiff.matcher.mode.MatcherMode;
 
@@ -34,7 +37,7 @@ public abstract class BaseMatcher implements IMatcher {
 	/**
 	 * 
 	 */
-	private Collection<Resource> models;
+	private List<Resource> models;
 	
 	private MatcherMode mode = MatcherMode.SINGLE;
 
@@ -88,53 +91,56 @@ public abstract class BaseMatcher implements IMatcher {
 	 */
 	protected void init(Collection<Resource> models,  Scope scope) {
 		LogUtil.log(LogEvent.DEBUG, "Initializing Matcher...");
-		this.models = models;
-		this.scope = scope;	
-		if(correspondencesService == null){
-			this.correspondencesService = CorrespondencesUtil.getDefaultCorrespondencesService();
+		this.models = new ArrayList<>(models);
+		this.scope = Objects.requireNonNull(scope);
+
+		//Resolving all models, this is necessary for correct matching of reference objects
+		//(e.g., Registry)
+		for(Resource r : models) {
+			EcoreUtil.resolveAll(r);
 		}
-		this.candidatesService = CandidatesUtil.getCandidatesServiceInstance();
-		
-		if(this.mode.equals(MatcherMode.SINGLE)){
-			this.correspondencesService.init(models);
-			this.candidatesService.init(models);
+		if(correspondencesService == null) {
+			correspondencesService = ICorrespondences.MANAGER.getDefaultExtension()
+					.orElseThrow(() -> new RuntimeException("No correspondences service is available"));
 		}
+		if(candidatesService == null) {
+			candidatesService = ICandidates.MANAGER.getDefaultExtension()
+					.orElseThrow(() -> new RuntimeException("No candidates service is available"));
+		}
+
+		if(getMode() == MatcherMode.SINGLE) {
+			correspondencesService.init(models);
+		}
+		candidatesService.init(models);
 		LogUtil.log(LogEvent.DEBUG, "Matcher initialized!");
 	}
 	
 	@Override
 	public void reset() {
-		this.models = null;
-		if(candidatesService != null){
-			this.candidatesService.reset();
-		}
-		if(correspondencesService != null){
-			this.correspondencesService.reset();
+		if(getMode() == MatcherMode.SINGLE) {
+			models = null;
+			if(candidatesService != null) {
+				candidatesService.reset();
+			}
+			if(correspondencesService != null) {
+				correspondencesService.reset();
+			}
+		} else {
+			setMode(MatcherMode.SINGLE);
 		}
 	}
-	
-	
-	@Override
-	public boolean canHandleDocTypes(Set<String> documentTypes) {
-		
-		return getDocumentTypes().contains(EMFModelAccess.GENERIC_DOCUMENT_TYPE)
-				|| getDocumentTypes().containsAll(documentTypes);
 
-	}
-	
 	@Override
 	public boolean canHandleModels(Collection<Resource> models) {
 		Set<String> docTypes = new HashSet<String>();
-		for(Resource model : models){
-			if(isResourceSetCapable()){
-				docTypes.addAll(EMFModelAccess.getDocumentTypes(model,
-						Scope.RESOURCE_SET));
-			}else{
+		for(Resource model : models) {
+			if(isResourceSetCapable()) {
+				docTypes.addAll(EMFModelAccess.getDocumentTypes(model, Scope.RESOURCE_SET));
+			} else {
 				docTypes.addAll(EMFModelAccess.getDocumentTypes(model, Scope.RESOURCE));
 			}
 		}
-		
-		return canHandleDocTypes(docTypes);
+		return canHandle(docTypes);
 	}
 	
 	@Override
@@ -145,22 +151,22 @@ public abstract class BaseMatcher implements IMatcher {
 	
 	// ---------- Getter and Setter Methods----------
 	
-	public String getKey(){
+	@Override
+	public String getKey() {
 		return getClass().getSimpleName();
 	}
-	
-	public String getServiceID(){
-		return SERVICE_ID+"."+getKey();
-	}
-	
-	public Collection<Resource> getModels() {
-		return models;
+
+	@Override
+	public List<Resource> getModels() {
+		return Collections.unmodifiableList(models);
 	}	
 
+	@Override
 	public void setCorrespondencesService(ICorrespondences correspondencesService){
 		this.correspondencesService = correspondencesService;
 	}
 	
+	@Override
 	public ICorrespondences getCorrespondencesService() {
 		return correspondencesService;
 	}
@@ -170,17 +176,18 @@ public abstract class BaseMatcher implements IMatcher {
 		this.candidatesService = candidatesService;
 	}
 	
+	@Override
 	public ICandidates getCandidatesService() {
 		return candidatesService;
 	}
 
+	@Override
 	public MatcherMode getMode() {
 		return mode;
 	}
 
+	@Override
 	public void setMode(MatcherMode mode) {
-		this.mode = mode;
+		this.mode = Objects.requireNonNull(mode);
 	}
-	
-	
 }

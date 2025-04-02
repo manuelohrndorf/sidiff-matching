@@ -2,11 +2,11 @@ package org.sidiff.correspondences.exceptions;
 
 import org.sidiff.common.exceptions.SiDiffRuntimeException;
 
-@SuppressWarnings("serial")
 public class CannotMatchException extends SiDiffRuntimeException {
 
-	public CannotMatchException(Object... message) {
+	private static final long serialVersionUID = -2400201267392929125L;
+
+	public CannotMatchException(String message) {
 		super(message);
 	}
-
 }

@@ -1,6 +1,7 @@
 package org.sidiff.annotator.common;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -15,6 +16,7 @@ public class AnnotationPathAnnotator extends AbstractPathAnnotator {
 
 	private String annotationKey = null;
 
+	@Override
 	public void init(EPackage documentType, String annotationKey, String parameter, EClass acceptedType,
 			Collection<String> requiredAnnotations) {
 		super.init(documentType, annotationKey, parameter, acceptedType,
@@ -41,12 +43,12 @@ public class AnnotationPathAnnotator extends AbstractPathAnnotator {
 	}
 	
 	@Override
-	public String getAnnotatorID() {
+	public String getKey() {
 		return ANNOTATOR_ID;
 	}
 
 	@Override
-	public String getDescription() {
-		return "AnnotationPathAnnotator";
+	public Optional<String> getDescription() {
+		return Optional.of("AnnotationPathAnnotator");
 	}
 }

@@ -1,10 +1,11 @@
 package org.sidiff.comparators.impl;
 
 import java.util.Collection;
+import java.util.Optional;
 
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.impl.EStringToStringMapEntryImpl;
+import org.sidiff.common.util.NestedParameterUtil;
 import org.sidiff.comparators.abstractcomperators.AbstractValueComparator;
 
 /**
@@ -23,14 +24,14 @@ import org.sidiff.comparators.abstractcomperators.AbstractValueComparator;
  * 
  */
 public class CEStringToStringMapEntry extends AbstractValueComparator {
-	public static final String COMPARATOR_ID = "CEStringToStringMapEntry";
+
 	private AbstractValueComparator comparator = null;
 
 	@Override
-	public void init(EClass dedicatedClass, EClass targetClass, String parameter) {
-		super.init(dedicatedClass, targetClass, parameter);
-		comparator = (AbstractValueComparator) loadComparator(paramItems[0], dedicatedClass, targetClass,
-				AbstractValueComparator.class);
+	protected void init(String parameter) {
+		String[] paramItems = NestedParameterUtil.getParameterSegments(parameter);
+		comparator = loadComparator(paramItems[0], dedicatedClass, targetClass,
+				AbstractValueComparator.class, getCorrespondences(), getSimilarities());
 	}
 
 	/**
@@ -46,23 +47,19 @@ public class CEStringToStringMapEntry extends AbstractValueComparator {
 
 		// TODO (TK, 14.12.2011): Warum liefert uebergeordneter LCAlignedList
 		// comparator Collections f. elementA und elementB...?
-		EStringToStringMapEntryImpl meA = (EStringToStringMapEntryImpl) ((Collection) elementA).iterator().next();
-		EStringToStringMapEntryImpl meB = (EStringToStringMapEntryImpl) ((Collection) elementB).iterator().next();
+		EStringToStringMapEntryImpl meA = (EStringToStringMapEntryImpl) ((Collection<?>) elementA).iterator().next();
+		EStringToStringMapEntryImpl meB = (EStringToStringMapEntryImpl) ((Collection<?>) elementB).iterator().next();
 
-		if (meA.getKey().equals(meB.getKey()))
-			return comparator.compare(contextElementA, contextElementB, meA.getValue(), meB.getValue());
-		else
-			return 0f;
-	}
-	@Override
-	public String getComparatorID() {
-		return COMPARATOR_ID;
+		if (meA.getKey().equals(meB.getKey())) {
+			return comparator.compare(contextElementA, contextElementB, meA.getValue(), meB.getValue());			
+		}
+		return 0f;
 	}
 
 	@Override
-	public String getDescription() {
-		return "This comparator compares two EStringToStringMapEntry objects as used within Ecore. "
+	public Optional<String> getDescription() {
+		return Optional.of("This comparator compares two EStringToStringMapEntry objects as used within Ecore. "
 				+ "The keys of the entries are compared with .equals(), the values are"
-				+ " compared by the comparator given as parameter.";
+				+ " compared by the comparator given as parameter.");
 	}
 }

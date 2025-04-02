@@ -2,7 +2,8 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         id="app"
+         id="org.sidiff.matching.testdriver"
+         name="Matching Test Driver"
          point="org.eclipse.core.runtime.applications">
       <application
             cardinality="singleton-global"

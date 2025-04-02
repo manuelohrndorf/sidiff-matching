@@ -1,11 +1,13 @@
 package org.sidiff.annotation.impl;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeMap;
@@ -18,8 +20,12 @@ import org.sidiff.annotator.IAnnotator;
 import org.sidiff.common.emf.EMFAdapter;
 import org.sidiff.common.emf.access.EMFModelAccess;
 import org.sidiff.common.emf.annotation.AnnotateableElement;
+import org.sidiff.common.extension.configuration.BasicExtensionConfiguration;
+import org.sidiff.common.extension.configuration.ConfigurationOption;
+import org.sidiff.common.extension.configuration.IExtensionConfiguration;
 import org.sidiff.common.io.ResourceUtil;
 import org.sidiff.configuration.ConfigurationManagement;
+import org.sidiff.configuration.IConfiguration;
 import org.w3c.dom.Document;
 
 /**
@@ -29,23 +35,29 @@ import org.w3c.dom.Document;
 public class DefaultAnnotation implements IAnnotation {
 
 	public static final String EXECUTED_ANNOTATIONS = "org.sidiff.annotationservice.Annotator.executedAnnotations";
-	public static final String SERVICE_ID = "Annotation";
-	
-	public static final String CFG_TYPE = "annotation";
-	
-	private Document annotationCfg = null;
 
 	// Holds Annotators by Type
 	private Map<String, Map<EClass, IAnnotator>> annotators = new TreeMap<String, Map<EClass, IAnnotator>>();
 	private Map<String, Set<String>> keyDependencies = new TreeMap<String, Set<String>>();
 	
+	private ConfigurationOption<Document> annotationConfigDocument;
+	private IExtensionConfiguration configuration;
+
+	public DefaultAnnotation() {
+		annotationConfigDocument = ConfigurationOption.builder(Document.class).key("configDocument").build();
+		configuration = new BasicExtensionConfiguration(Collections.singleton(annotationConfigDocument)); 
+	}
+	
 	@Override
-	public void init(Resource model) {
-			deconfigure();
-			if(this.annotationCfg == null)
-				this.annotationCfg = ConfigurationManagement.getInstance(EMFModelAccess.getDocumentType(model)).getRandomConfiguration(getSubfolderName());
-			if(this.annotationCfg != null)
-				this.configure();
+	public void init(Resource model) throws IOException {
+		reset();
+		if(!annotationConfigDocument.isSet()) {
+			annotationConfigDocument.setValue(ConfigurationManagement.getInstance(EMFModelAccess.getDocumentType(model))
+					.getRandomConfiguration(IConfiguration.CONFIG_TYPE_ANNOTATION));			
+		}
+		if(annotationConfigDocument.isSet()) {
+			configure(annotationConfigDocument.getValue());
+		}
 	}
 
 	@Override
@@ -112,13 +124,16 @@ public class DefaultAnnotation implements IAnnotation {
 		return Collections.unmodifiableSet(aobject.getOrCreateAnnotation(EXECUTED_ANNOTATIONS, SortedSet.class));
 	}
 
-	@Override
 	public void configure(Document configData) {
-		deconfigure();
-		ResourceUtil.registerClassLoader(this.getClass().getClassLoader());
-		XMLConfigurationHandler xmlConfigurationHandler = new XMLConfigurationHandler();
-		xmlConfigurationHandler.parseConfiguration(configData);
-		configureAnnotators(xmlConfigurationHandler.getAnnotators());
+		reset();
+		try {
+			ResourceUtil.registerClassLoader(this.getClass().getClassLoader());
+			XMLConfigurationHandler xmlConfigurationHandler = new XMLConfigurationHandler();
+			xmlConfigurationHandler.parseConfiguration(configData);
+			configureAnnotators(xmlConfigurationHandler.getAnnotators());			
+		} finally {
+			ResourceUtil.unregisterClassLoader(this.getClass().getClassLoader());			
+		}
 	}
 
 	public Dictionary<String, String> getProperties() {
@@ -126,15 +141,9 @@ public class DefaultAnnotation implements IAnnotation {
 		return null;
 	}
 
-	public void deconfigure() {
-		// Drop Configuration
-		this.annotators.clear();
-		this.keyDependencies.clear();
-	}
-
 	/**
 	 * 
-	 * configre the given Annotators
+	 * configure the given Annotators
 	 * 
 	 * @param annotators
 	 */
@@ -232,7 +241,7 @@ public class DefaultAnnotation implements IAnnotation {
 				EMFModelAccess.traverse(model, visitor);
 				providedKeys.addAll(executeable);
 			} else {
-				throw new AnnotationException("No more executable Keys '", openKeys, "'");
+				throw new AnnotationException("No more executable Keys '" + openKeys + "'");
 			}
 		}
 	}
@@ -260,7 +269,7 @@ public class DefaultAnnotation implements IAnnotation {
 			EMFModelAccess.traverse(model, remove);
 		} else {
 			partition.removeAll(computedKeys);
-			throw new AnnotationException("Revokation of '", keys, "' breaks dependencies:", partition);
+			throw new AnnotationException("Revokation of '" + keys + "' breaks dependencies:" + partition);
 		}
 	}
 
@@ -276,39 +285,24 @@ public class DefaultAnnotation implements IAnnotation {
 	}
 
 	@Override
-	public String getServiceID() {
-		return SERVICE_ID;
+	public String getKey() {
+		return "DefaultAnnotation";
 	}
 
 	@Override
 	public void reset() {
-		deconfigure();
+		// Drop Configuration
+		this.annotators.clear();
+		this.keyDependencies.clear();
 	}
 
 	@Override
-	public String getDescription() {
-		return "This is the AnnotationService. It can be configured by an XML Configuration.";
+	public Optional<String> getDescription() {
+		return Optional.of("This is the AnnotationService. It can be configured by an XML Configuration.");
 	}
 
 	@Override
-	public String getSubfolderName() {
-		return CFG_TYPE;
+	public IExtensionConfiguration getConfiguration() {
+		return configuration;
 	}
-
-	@Override
-	public Document getConfiguration() {
-		return annotationCfg;
-	}
-
-	@Override
-	public void setConfiguration(Document configuration) {
-		this.annotationCfg = configuration;
-	}
-
-
-	@Override
-	public void configure() {
-		this.configure(annotationCfg);
-	}
-
 }

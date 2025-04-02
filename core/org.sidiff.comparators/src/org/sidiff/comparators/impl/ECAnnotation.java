@@ -1,9 +1,11 @@
 package org.sidiff.comparators.impl;
 
-import org.eclipse.emf.ecore.EClass;
+import java.util.Optional;
+
 import org.eclipse.emf.ecore.EObject;
 import org.sidiff.common.emf.EMFAdapter;
 import org.sidiff.common.emf.annotation.AnnotateableElement;
+import org.sidiff.common.util.NestedParameterUtil;
 import org.sidiff.comparators.abstractcomperators.AbstractElementComparator;
 import org.sidiff.comparators.abstractcomperators.AbstractValueComparator;
 import org.sidiff.comparators.exceptions.NothingToCompareException;
@@ -37,7 +39,7 @@ import org.sidiff.comparators.exceptions.NothingToCompareException;
  * @author Pit Pietsch
  */
 public class ECAnnotation extends AbstractElementComparator {
-	public static final String COMPARATOR_ID = "ECAnnotation";
+
 	/**
 	 * The inner comparator
 	 */
@@ -49,12 +51,11 @@ public class ECAnnotation extends AbstractElementComparator {
 	private String annotationName = null;
 
 	@Override
-	public void init(EClass dedicatedClass, EClass targetClass, String parameter) {
-		super.init(dedicatedClass, targetClass, parameter);
-
+	protected void init(String parameter) {
+		String[] paramItems = NestedParameterUtil.getParameterSegments(parameter);
 		// first parameter: comparator
-		comparator = (AbstractValueComparator) loadComparator(paramItems[0], dedicatedClass, targetClass,
-				AbstractValueComparator.class);
+		comparator = loadComparator(paramItems[0], dedicatedClass, targetClass,
+				AbstractValueComparator.class, getCorrespondences(), getSimilarities());
 
 		// second annotation name
 		this.annotationName = paramItems[1];
@@ -77,13 +78,15 @@ public class ECAnnotation extends AbstractElementComparator {
 
 		// both annotations do not exists: -> NothingToCompareException
 		if (annotateableElementA.getAnnotation(annotationName, Object.class) == null
-				&& annotateableElementB.getAnnotation(annotationName, Object.class) == null)
-			throw new NothingToCompareException("Both annotations do not exist");
+				&& annotateableElementB.getAnnotation(annotationName, Object.class) == null) {
+			throw new NothingToCompareException("Both annotations do not exist");			
+		}
 
 		// only one annotation exist: --> return 0f
 		if (annotateableElementA.getAnnotation(annotationName, Object.class) == null
-				|| annotateableElementB.getAnnotation(annotationName, Object.class) == null)
+				|| annotateableElementB.getAnnotation(annotationName, Object.class) == null) {			
 			return 0f;
+		}
 
 		return comparator.compare(contextElementA, contextElementB,
 				annotateableElementA.getAnnotation(annotationName, Object.class),
@@ -91,14 +94,9 @@ public class ECAnnotation extends AbstractElementComparator {
 	}
 
 	@Override
-	public String getComparatorID() {
-		return COMPARATOR_ID;
-	}
-
-	@Override
-	public String getDescription() {
-		return "This comparator compares a specified annotation of two elements"
+	public Optional<String> getDescription() {
+		return Optional.of("This comparator compares a specified annotation of two elements"
 				+ " based on the specified inner comparator. It is tested by assertion whether the annotations "
-				+ "exists or not.";
+				+ "exists or not.");
 	}
 }

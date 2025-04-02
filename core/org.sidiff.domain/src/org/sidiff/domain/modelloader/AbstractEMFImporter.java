@@ -2,7 +2,8 @@ package org.sidiff.domain.modelloader;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.util.Collections;
+import java.util.Set;
 
 import org.eclipse.emf.ecore.resource.Resource;
 
@@ -17,17 +18,12 @@ import org.eclipse.emf.ecore.resource.Resource;
 public abstract class AbstractEMFImporter implements IModelLoader {
 
 	@Override
-	public void parse(Resource resource, InputStream data) {
-		try {
-			resource.load(data, null);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}	
+	public void parse(Resource resource, InputStream data) throws IOException {
+		resource.load(data, null);
 	}
-	
+
 	@Override
 	public Set<String> getMagicKeys() {
 		return Collections.singleton(".*");
 	}
-
 }

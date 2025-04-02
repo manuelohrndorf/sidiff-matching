@@ -5,14 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.emf.ecore.resource.Resource;
-import org.sidiff.common.io.IOUtil;
 import org.sidiff.domain.modelloader.XSLTImporter;
 
-
-
 public class RationalEMXLoader extends XSLTImporter {
-	public static final String MODEL_LOADER_ID = "RationalEMXLoader";
 	
 	private static final Map<String, String> URIMAP = new HashMap<String, String>();
 	static {
@@ -46,17 +41,9 @@ public class RationalEMXLoader extends XSLTImporter {
 	public Map<String, String> getSchemaLocationMappings() {
 		return URIMAP;
 	}
-	
-
 
 	@Override
-	public String getModelLoaderID() {
-		return MODEL_LOADER_ID;
+	public String getKey() {
+		return "RationalEMXLoader";
 	}
-
-	@Override
-	public void loadModel(Resource res, String path) {
-		parse(res, IOUtil.getInputStream(path));		
-	}
-
 }

@@ -3,20 +3,15 @@ package org.sidiff.domain.petrinet;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.emf.ecore.resource.Resource;
-import org.sidiff.common.io.IOUtil;
 import org.sidiff.domain.modelloader.AbstractEMFImporter;
 
-
 public class PetrinetLoader extends AbstractEMFImporter  {
-	
-	public static final String MODEL_LOADER_ID = "PetrinetLoader";
-	
+
 	@Override
-	public String getModelLoaderID() {
-		return MODEL_LOADER_ID;
+	public String getKey() {
+		return "PetrinetLoader";
 	}
-	
+
 	@Override
 	public String getSuffix() {
 		return "petrinet";
@@ -29,16 +24,7 @@ public class PetrinetLoader extends AbstractEMFImporter  {
 	}
 
 	@Override
-	public String getLoaderDescription() {
+	public String getName() {
 		return "Loader for Petrinet models";
-	}
-	
-	public static String getModelLoaderId() {
-		return MODEL_LOADER_ID;
-	}
-
-	@Override
-	public void loadModel(Resource res, String path) {
-		parse(res, IOUtil.getInputStream(path));		
 	}
 }

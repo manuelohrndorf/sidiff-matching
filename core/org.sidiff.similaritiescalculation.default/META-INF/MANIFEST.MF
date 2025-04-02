@@ -3,11 +3,12 @@ Bundle-ManifestVersion: 2
 Bundle-Name: SiDiff Similarities Calculation Service - Default
 Bundle-SymbolicName: org.sidiff.similaritiescalculation.default;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: org.sidiff.candidates;visibility:=reexport,
- org.sidiff.conditions;visibility:=reexport,
- org.sidiff.similaritiescalculation;visibility:=reexport
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.sidiff.conditions;visibility:=reexport,
+ org.sidiff.similaritiescalculation;visibility:=reexport,
+ org.sidiff.configuration
 Export-Package: org.sidiff.similaritiescalculation,
  org.sidiff.similaritiescalculation.configuration,
  org.sidiff.similaritiescalculation.exceptions
 Bundle-Vendor: Software Engineering Group, University of Siegen
+Automatic-Module-Name: org.sidiff.similaritiescalculation.default

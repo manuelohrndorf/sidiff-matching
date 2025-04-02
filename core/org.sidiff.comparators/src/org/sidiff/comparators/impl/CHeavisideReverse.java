@@ -1,7 +1,9 @@
 package org.sidiff.comparators.impl;
 
-import org.eclipse.emf.ecore.EClass;
+import java.util.Optional;
+
 import org.eclipse.emf.ecore.EObject;
+import org.sidiff.common.util.NestedParameterUtil;
 import org.sidiff.comparators.abstractcomperators.AbstractComparator;
 
 /**
@@ -31,7 +33,7 @@ import org.sidiff.comparators.abstractcomperators.AbstractComparator;
  * @author Pit Pietsch
  */
 public class CHeavisideReverse extends AbstractComparator {
-	public static final String COMPARATOR_ID = "CHeavisideReverse";
+
 	private AbstractComparator comparator = null;
 	private float threshold = -1f;
 
@@ -43,12 +45,12 @@ public class CHeavisideReverse extends AbstractComparator {
 	 * @param parameter
 	 *            the parameter for this comparator
 	 */
-	public void init(EClass dedicatedClass, EClass targetClass, String parameter) {
-		super.init(dedicatedClass, targetClass, parameter);
-
+	@Override
+	protected void init(String parameter) {
+		String[] paramItems = NestedParameterUtil.getParameterSegments(parameter);
 		// first parameter: comparator
-		comparator = (AbstractComparator) loadComparator(paramItems[0], dedicatedClass, targetClass,
-				AbstractComparator.class);
+		comparator = loadComparator(paramItems[0], dedicatedClass, targetClass,
+				AbstractComparator.class, getCorrespondences(), getSimilarities());
 
 		// second parameter: threshold
 		threshold = Float.parseFloat(paramItems[1]);
@@ -73,15 +75,10 @@ public class CHeavisideReverse extends AbstractComparator {
 	}
 
 	@Override
-	public String getComparatorID() {
-		return COMPARATOR_ID;
-	}
-
-	@Override
-	public String getDescription() {
-		return "This comparator compares two object based on the specified inner comparator."
+	public Optional<String> getDescription() {
+		return Optional.of("This comparator compares two object based on the specified inner comparator."
 				+ " In case the similarity-value returned by the inner comparator is below the given"
 				+ " threshold 0f is returned, otherwise the calculated similarity value is passed."
-				+ " This comparator is similar to the comparator CHeaviside.";
+				+ " This comparator is similar to the comparator CHeaviside.");
 	}
 }

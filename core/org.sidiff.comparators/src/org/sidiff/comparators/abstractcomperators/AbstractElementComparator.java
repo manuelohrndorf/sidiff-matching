@@ -1,8 +1,9 @@
 package org.sidiff.comparators.abstractcomperators;
 
-import java.util.Collection;
+import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
+import org.sidiff.common.collections.CollectionUtil;
 
 
 /**
@@ -12,15 +13,15 @@ import org.eclipse.emf.ecore.EObject;
  */
 public abstract class AbstractElementComparator extends AbstractSingleComparator {
 
-
-	@SuppressWarnings("unchecked")
+	@Override
 	protected float calculateSimilarity(EObject contextElementA, EObject contextElementB, Object elementA, Object elementB) {
 		
-		assert (elementA instanceof Collection && elementB instanceof Collection) : "Elements of type Collection expected";
-		assert (((Collection)elementA).size()==1 && ((Collection)elementA).toArray()[0] instanceof EObject) : "Collection with exact one EObject expected!";
-		assert (((Collection)elementB).size()==1 && ((Collection)elementB).toArray()[0] instanceof EObject) : "Collection with exact one EObject expected!";		
+		List<EObject> objectA = CollectionUtil.getValues(elementA, EObject.class);
+		List<EObject> objectB = CollectionUtil.getValues(elementB, EObject.class);
+		assert (objectA.size() == 1) : "Collection with exact one EObject expected!";
+		assert (objectB.size() == 1) : "Collection with exact one EObject expected!";
 		
-		return calculateElementSimilarity(contextElementA, contextElementB, ((Collection<EObject>)elementA).iterator().next(), ((Collection<EObject>) elementB).iterator().next());
+		return calculateElementSimilarity(contextElementA, contextElementB, objectA.get(0), objectB.get(0));
 	}
 
 	protected abstract float calculateElementSimilarity(EObject contextElementA, EObject contextElementB, EObject elementA, EObject elementB);

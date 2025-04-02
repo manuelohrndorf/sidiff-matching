@@ -3,7 +3,6 @@ package org.sidiff.comparators.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.sidiff.comparators.abstractcomperators.AbstractValueComparator;
 
@@ -15,19 +14,16 @@ import org.sidiff.comparators.abstractcomperators.AbstractValueComparator;
  * org.eclipse.emf.compare.match.internal.statistic.NameSimilarity
  * 
  */
-@Deprecated
 public class VCStringEMFCompare extends AbstractValueComparator {
-	public static final String COMPARATOR_ID = "VCStringEMFCompare";
+
 	private boolean ci = false;
 
 	@Override
-	public void init(EClass dedicatedClass, EClass targetClass, String parameter) {
-		super.init(dedicatedClass, targetClass, parameter);
+	public void init(String parameter) {
 		// case sensitivity ? default: case-sensitive
 		if (parameter.equals("ci")) {
 			this.ci = true;
 		}
-
 	}
 
 	/**
@@ -46,7 +42,7 @@ public class VCStringEMFCompare extends AbstractValueComparator {
 	 *         pairs of the source one.
 	 */
 	private static List<String> pairs(String source) {
-		final List<String> result = new ArrayList<String>();
+		final List<String> result = new ArrayList<>();
 		if (source != null) {
 			final int length = source.length();
 			for (int i = 0; i < length - 1; i++) {
@@ -112,26 +108,12 @@ public class VCStringEMFCompare extends AbstractValueComparator {
 
 	@Override
 	protected float calculateSimilarity(EObject contextElementA, EObject contextElementB, Object objectA, Object objectB) {
-
-		// typecheck
-		assert (objectA instanceof String && objectB instanceof String) : "Works only with Strings!";
-
-		if (ci) {
-			return emfNameComparison(((String) objectA).toLowerCase(), ((String) objectB).toLowerCase());
-		} else {
-			return emfNameComparison(((String) objectA), ((String) objectB));
+		String stringA = (String)objectA;
+		String stringB = (String)objectB;
+		if(ci) {
+			stringA = stringA.toLowerCase();
+			stringB = stringB.toLowerCase();
 		}
-
+		return emfNameComparison(stringA, stringB);
 	}
-
-	@Override
-	public String getComparatorID() {
-		return COMPARATOR_ID;
-	}
-
-	@Override
-	public String getDescription() {
-		return "VCStringEMFCompare";
-	}
-
 }

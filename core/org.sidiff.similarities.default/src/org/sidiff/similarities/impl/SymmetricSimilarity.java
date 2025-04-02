@@ -12,7 +12,6 @@ public class SymmetricSimilarity implements Comparable<SymmetricSimilarity>{
 	private float similarity= Float.NaN;
 	
 	public SymmetricSimilarity(EObject elementA,EObject elementB) {
-		
 		this.elementA = elementA;
 		this.elementB = elementB;
 	}
@@ -30,7 +29,6 @@ public class SymmetricSimilarity implements Comparable<SymmetricSimilarity>{
 	}
 	
 	public void setSimilarity(float similarity){
-
 		this.fireChangeAnnounce();
 		this.similarity= similarity;
 		this.fireChangePerformed();
@@ -41,36 +39,34 @@ public class SymmetricSimilarity implements Comparable<SymmetricSimilarity>{
 		int result = Float.compare(o.similarity,this.similarity);
 		return (result!=0)? result : o.hashCode()-this.hashCode();
 	}
-	
-	private List<SyncronizedSimilaritySet> syncronizedContainers = null;
-	
-	public void addSyncronizedContainer(SyncronizedSimilaritySet container) {
 
-		if(syncronizedContainers==null){
-			this.syncronizedContainers = new LinkedList<SyncronizedSimilaritySet>();
+	private List<SyncronizedSimilaritySet> syncronizedContainers = null;
+
+	public void addSyncronizedContainer(SyncronizedSimilaritySet container) {
+		if(syncronizedContainers == null) {
+			syncronizedContainers = new LinkedList<>();
 		}
 		this.syncronizedContainers.add(container);
 	}
-	
+
 	public boolean removeSyncronizedContainer(SyncronizedSimilaritySet container) {
-		if(syncronizedContainers!=null){
-			return this.syncronizedContainers.remove(container);
-		} else {
-			return false;
+		if(syncronizedContainers != null) {
+			return syncronizedContainers.remove(container);
 		}
+		return false;
 	}
-	
+
 	public void fireChangeAnnounce(){
-		if(syncronizedContainers!=null){
-			for(SyncronizedSimilaritySet container : this.syncronizedContainers){
+		if(syncronizedContainers != null) {
+			for(SyncronizedSimilaritySet container : syncronizedContainers) {
 				container.changeAnnounce(this);
 			}
 		}
 	}
-	
+
 	public void fireChangePerformed(){
-		if(syncronizedContainers!=null){
-			for(SyncronizedSimilaritySet container : this.syncronizedContainers){
+		if(syncronizedContainers != null) {
+			for(SyncronizedSimilaritySet container : syncronizedContainers) {
 				container.changePerformed(this);
 			}
 		}

@@ -5,15 +5,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.emf.ecore.resource.Resource;
-import org.sidiff.common.io.IOUtil;
 import org.sidiff.domain.modelloader.XSLTImporter;
 
-
 public class BPMN2Loader extends XSLTImporter {
-	
-	public static final String MODEL_LOADER_ID = "BPMN2Loader";
-	
+
 	@Override
 	public String getSuffix() {
 		return "bpmn";
@@ -21,8 +16,7 @@ public class BPMN2Loader extends XSLTImporter {
 
 	@Override
 	public Map<String, String> getSchemaLocationMappings() {
-		Map<String, String> map = new HashMap<String, String>();
-		return map;
+		return new HashMap<>();
 	}
 
 	@Override
@@ -41,17 +35,8 @@ public class BPMN2Loader extends XSLTImporter {
 		return "Removes the unnecessary Diagram Elements";
 	}
 
-
 	@Override
-	public String getModelLoaderID() {
-		return MODEL_LOADER_ID;
+	public String getKey() {
+		return "BPMN2Loader";
 	}
-
-	@Override
-	public void loadModel(Resource res, String path) {
-		parse(res, IOUtil.getInputStream(path));
-	}
-
-	
-	
 }

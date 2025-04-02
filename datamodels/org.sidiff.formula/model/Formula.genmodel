@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText="(c), Christopher Pietsch, Software Engineering Group, University of Siegen 2017 all rights reserved"
+    modelDirectory="/org.sidiff.formula/src" modelPluginID="org.sidiff.formula" modelName="Formula"
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="8.0" operationReflection="true" importOrganizing="true">
+  <foreignModel>Formula.ecore</foreignModel>
+  <genPackages prefix="Formula" basePackage="org.sidiff" disposableProviderFactory="true"
+      loadInitialization="true" ecorePackage="Formula.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Formula.ecore#//Operator">
+      <genEnumLiterals ecoreEnumLiteral="Formula.ecore#//Operator/NOT"/>
+      <genEnumLiterals ecoreEnumLiteral="Formula.ecore#//Operator/AND"/>
+      <genEnumLiterals ecoreEnumLiteral="Formula.ecore#//Operator/OR"/>
+      <genEnumLiterals ecoreEnumLiteral="Formula.ecore#//Operator/XOR"/>
+      <genEnumLiterals ecoreEnumLiteral="Formula.ecore#//Operator/IMPLIES"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Formula.ecore#//VariationType">
+      <genEnumLiterals ecoreEnumLiteral="Formula.ecore#//VariationType/UNDEFINED"/>
+      <genEnumLiterals ecoreEnumLiteral="Formula.ecore#//VariationType/MANDATORY"/>
+      <genEnumLiterals ecoreEnumLiteral="Formula.ecore#//VariationType/OPTIONAL"/>
+    </genEnums>
+    <genDataTypes ecoreDataType="Formula.ecore#//ISatSolverAdapter" create="return ExtensionSerialization.createExtension(ISatSolverAdapter.MANAGER, it);"
+        convert="return ExtensionSerialization.convertToString(it);"/>
+    <genDataTypes ecoreDataType="Formula.ecore#//SatResult"/>
+    <genDataTypes ecoreDataType="Formula.ecore#//SatSolverAdapterException"/>
+    <genClasses image="false" ecoreClass="Formula.ecore#//Formula">
+      <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+          ecoreFeature="ecore:EReference Formula.ecore#//Formula/variables"/>
+      <genFeatures property="None" createChild="false" ecoreFeature="ecore:EAttribute Formula.ecore#//Formula/satSolverAdapter"/>
+      <genOperations ecoreOperation="Formula.ecore#//Formula/eval">
+        <genParameters ecoreParameter="Formula.ecore#//Formula/eval/config"/>
+      </genOperations>
+      <genOperations ecoreOperation="Formula.ecore#//Formula/equivalent"/>
+      <genOperations ecoreOperation="Formula.ecore#//Formula/deMorgan"/>
+      <genOperations ecoreOperation="Formula.ecore#//Formula/distributive">
+        <genParameters ecoreParameter="Formula.ecore#//Formula/distributive/op"/>
+      </genOperations>
+      <genOperations ecoreOperation="Formula.ecore#//Formula/associative"/>
+      <genOperations ecoreOperation="Formula.ecore#//Formula/simplify"/>
+      <genOperations ecoreOperation="Formula.ecore#//Formula/cnf"/>
+      <genOperations ecoreOperation="Formula.ecore#//Formula/dnf"/>
+      <genOperations ecoreOperation="Formula.ecore#//Formula/getPriority"/>
+      <genOperations ecoreOperation="Formula.ecore#//Formula/getValidConfigurations">
+        <genParameters ecoreParameter="Formula.ecore#//Formula/getValidConfigurations/timeout"/>
+      </genOperations>
+      <genOperations ecoreOperation="Formula.ecore#//Formula/getAssociativeFormulas">
+        <genParameters ecoreParameter="Formula.ecore#//Formula/getAssociativeFormulas/type"/>
+      </genOperations>
+      <genOperations ecoreOperation="Formula.ecore#//Formula/isSatisfiable"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Formula.ecore#//BinaryFormula">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Formula.ecore#//BinaryFormula/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Formula.ecore#//BinaryFormula/right"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="Formula.ecore#//UnaryFormula">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Formula.ecore#//UnaryFormula/formula"/>
+    </genClasses>
+    <genClasses ecoreClass="Formula.ecore#//Variable">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Formula.ecore#//Variable/name"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute Formula.ecore#//Variable/priority"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Formula.ecore#//Variable/type"/>
+    </genClasses>
+    <genClasses ecoreClass="Formula.ecore#//Not">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Formula.ecore#//Not/priority"/>
+    </genClasses>
+    <genClasses ecoreClass="Formula.ecore#//And">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Formula.ecore#//And/priority"/>
+    </genClasses>
+    <genClasses ecoreClass="Formula.ecore#//Or">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Formula.ecore#//Or/priority"/>
+    </genClasses>
+    <genClasses ecoreClass="Formula.ecore#//Xor">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Formula.ecore#//Xor/priority"/>
+    </genClasses>
+    <genClasses ecoreClass="Formula.ecore#//Implies">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Formula.ecore#//Implies/priority"/>
+    </genClasses>
+    <genClasses provider="None" ecoreClass="Formula.ecore#//Configuration">
+      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference Formula.ecore#//Configuration/variableAssignments"/>
+      <genOperations ecoreOperation="Formula.ecore#//Configuration/init">
+        <genParameters ecoreParameter="Formula.ecore#//Configuration/init/formula"/>
+      </genOperations>
+      <genOperations ecoreOperation="Formula.ecore#//Configuration/export"/>
+    </genClasses>
+    <genClasses provider="None" ecoreClass="Formula.ecore#//VariableAssignment">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Formula.ecore#//VariableAssignment/key"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Formula.ecore#//VariableAssignment/value"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

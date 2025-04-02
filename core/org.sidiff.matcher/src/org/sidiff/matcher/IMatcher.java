@@ -2,31 +2,35 @@ package org.sidiff.matcher;
 
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.sidiff.candidates.ICandidates;
 import org.sidiff.common.emf.access.Scope;
+import org.sidiff.common.extension.ITypedExtension;
+import org.sidiff.common.extension.configuration.IConfigurableExtension;
+import org.sidiff.common.extension.configuration.IExtensionConfiguration;
 import org.sidiff.correspondences.ICorrespondences;
 import org.sidiff.matcher.mode.MatcherMode;
-import org.sidiff.service.IService;
 
 /**
  * 
  * @author dreuling, cpietsch
  *
  */
-public interface IMatcher extends IService{
-	
-	public static final String SERVICE_ID = "IMatcher";
+public interface IMatcher extends ITypedExtension, IConfigurableExtension {
 
-	public static final String EXTENSION_POINT_ID = "org.sidiff.matcher.extensionpoint";
-	
+	Description<IMatcher> DESCRIPTION = Description.of(IMatcher.class, "org.sidiff.matcher.extensionpoint", "client", "class");
+
+	MatcherManager MANAGER = new MatcherManager(DESCRIPTION);
+
 	/**
 	 * Returns the short name (used as a key) of the matcher.
 	 * 
 	 * @return the matcher short name (used as key).
 	 */
+	@Override
 	public String getKey();
 	
 	/**
@@ -34,11 +38,13 @@ public interface IMatcher extends IService{
 	 * 
 	 * @return the matcher name.
 	 */
+	@Override
 	public String getName();
 	
 	/**
 	 * @return the document types the matcher is implemented for.
 	 */
+	@Override
 	public Set<String> getDocumentTypes();
 
 	/**
@@ -53,14 +59,7 @@ public interface IMatcher extends IService{
 	 * 
 	 * @return
 	 */
-	public Collection<Resource> getModels();	
-	
-	/**
-	 * Returns whether this matcher can handle (i.e. match) models with the given document types.
-	 * 
-	 * @return
-	 */
-	public boolean canHandleDocTypes(Set<String> documentTypes);
+	public List<Resource> getModels();	
 	
 	/**
 	 * Returns whether this matcher can handle (i.e. match) the given models.
@@ -78,7 +77,7 @@ public interface IMatcher extends IService{
 	 * @param scope
 	 *            RESOURCE or RESOURCE_SET
 	 */
-	public void startMatching(Collection<Resource> models,Scope scope);
+	public void startMatching(Collection<Resource> models, Scope scope);
 	
 	/**
 	 * Reset Results 
@@ -129,4 +128,12 @@ public interface IMatcher extends IService{
 	 */
 	public ICandidates getCandidatesService();
 	
+	/**
+	 * {@inheritDoc}
+	 * <p>The default implementation of IMatcher returns an empty configuration.</p>
+	 */
+	@Override
+	default IExtensionConfiguration getConfiguration() {
+		return IExtensionConfiguration.NULL;
+	}
 }

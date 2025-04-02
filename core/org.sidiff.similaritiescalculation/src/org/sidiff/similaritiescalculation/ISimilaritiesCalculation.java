@@ -1,21 +1,29 @@
 package org.sidiff.similaritiescalculation;
 
+import java.io.IOException;
 import java.util.Collection;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.sidiff.configuration.IConfigurationCapable;
-import org.sidiff.service.IService;
+import org.sidiff.candidates.ICandidates;
+import org.sidiff.common.extension.ExtensionManager;
+import org.sidiff.common.extension.configuration.IConfigurableExtension;
+import org.sidiff.common.extension.storage.NoExtensionManagerStorage;
+import org.sidiff.correspondences.ICorrespondences;
+import org.sidiff.similarities.ISimilarities;
 
-public interface ISimilaritiesCalculation extends IService,IConfigurationCapable {
+public interface ISimilaritiesCalculation extends IConfigurableExtension {
 
-	public static final String extensionPointID = "org.sidiff.similaritiescalculation.extensionpoint";
+	Description<ISimilaritiesCalculation> DESCRIPTION = Description.of(
+			ISimilaritiesCalculation.class, "org.sidiff.similaritiescalculation.extensionpoint", "client", "class");
 
-	public void calculateSimilarities(Collection<EObject> objects);
+	ExtensionManager<ISimilaritiesCalculation> MANAGER = new ExtensionManager<>(new NoExtensionManagerStorage<>(DESCRIPTION));
 
-	public void calculateSimilarities(EObject elem1, EObject elem2);
-
-	void init(Collection<Resource> models);
-	
+	void init(Collection<Resource> models, ICorrespondences correspondences, ICandidates candidates) throws IOException;
 	void reset();
+
+	void calculateSimilarities(Collection<EObject> objects);
+	void calculateSimilarities(EObject elem1, EObject elem2);
+
+	ISimilarities getSimilarities();
 }

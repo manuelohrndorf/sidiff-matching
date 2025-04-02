@@ -3,9 +3,10 @@ package org.sidiff.comparators.impl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.sidiff.common.util.NestedParameterUtil;
 import org.sidiff.comparators.abstractcomperators.AbstractElementComparator;
 import org.sidiff.comparators.abstractcomperators.AbstractListComparator;
 import org.sidiff.comparators.abstractcomperators.AbstractSingleComparator;
@@ -37,7 +38,7 @@ import org.sidiff.comparators.abstractcomperators.AbstractSingleComparator;
  * @author Pit Pietsch
  */
 public class LCLongestCommonSubsequence extends AbstractListComparator {
-	public static final String COMPARATOR_ID = "LCLongestCommonSubsequence";
+
 	/**
 	 * The inner comparator.
 	 */
@@ -57,12 +58,11 @@ public class LCLongestCommonSubsequence extends AbstractListComparator {
 	 *            the parameter for this comparator
 	 */
 	@Override
-	public void init(EClass dedicatedClass, EClass targetClass, String parameter) {
-		super.init(dedicatedClass, targetClass, parameter);
-
+	protected void init(String parameter) {
+		String[] paramItems = NestedParameterUtil.getParameterSegments(parameter);
 		// first parameter: comparator
-		comparator = (AbstractSingleComparator) loadComparator(paramItems[0], dedicatedClass, targetClass,
-				AbstractElementComparator.class);
+		comparator = loadComparator(paramItems[0], dedicatedClass, targetClass,
+				AbstractElementComparator.class, getCorrespondences(), getSimilarities());
 
 		// second parameter: cfThreshold
 		this.threshold = Float.parseFloat(paramItems[1]) * (-1.0f);
@@ -73,7 +73,6 @@ public class LCLongestCommonSubsequence extends AbstractListComparator {
 	 * @see org.sidiff.core.comparators.abstractcomparators.AbstractListComparator#compare(java.util.List,
 	 *      java.util.List)
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	protected float calculateListSimilarity(EObject contextElementA, EObject contextElementB, List<EObject> listA,
 			List<EObject> listB) {
@@ -81,9 +80,10 @@ public class LCLongestCommonSubsequence extends AbstractListComparator {
 		int n = listA.size();
 		int m = listB.size();
 		int max = m + n;
+		@SuppressWarnings("unchecked")
 		ArrayList<EObject>[] commonSubSeq = new ArrayList[2 * max + 1];
 		for (int i = 0; i < commonSubSeq.length; i++) {
-			commonSubSeq[i] = new ArrayList<EObject>();
+			commonSubSeq[i] = new ArrayList<>();
 		}
 		// enthält den jeweiligen am weitesten reichenden Endpunkt für die
 		// Diagonale
@@ -112,7 +112,7 @@ public class LCLongestCommonSubsequence extends AbstractListComparator {
 				y = x - k;
 				// Die Diagonale wir weitmöglichst durchlaufen (wird auch Snake
 				// genannt)
-				ArrayList<EObject> snake = new ArrayList<EObject>();
+				ArrayList<EObject> snake = new ArrayList<>();
 				while (x < n && y < m && comparator.compare(contextElementA, contextElementB,
 						Collections.singleton(listA.get(x)), Collections.singleton(listB.get(y))) >= threshold) {
 					snake.add(listA.get(x));
@@ -149,15 +149,10 @@ public class LCLongestCommonSubsequence extends AbstractListComparator {
 	}
 
 	@Override
-	public String getComparatorID() {
-		return COMPARATOR_ID;
-	}
-
-	@Override
-	public String getDescription() {
-		return "This comparator compares two aligned list based on an LongestCommonSubsequence-algorithm. "
+	public Optional<String> getDescription() {
+		return Optional.of("This comparator compares two aligned list based on an LongestCommonSubsequence-algorithm. "
 				+ "The condition whether a sequence is discontinued or not is made based on the inner"
 				+ " comparator and a threshold. If the similarity-value calculated by the inner comparator "
-				+ " is below the threshold, the sequence is deemed as interrupted.";
+				+ " is below the threshold, the sequence is deemed as interrupted.");
 	}
 }

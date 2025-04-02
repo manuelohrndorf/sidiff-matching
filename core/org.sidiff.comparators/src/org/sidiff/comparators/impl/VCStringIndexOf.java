@@ -1,6 +1,7 @@
 package org.sidiff.comparators.impl;
 
-import org.eclipse.emf.ecore.EClass;
+import java.util.Optional;
+
 import org.eclipse.emf.ecore.EObject;
 import org.sidiff.comparators.abstractcomperators.AbstractValueComparator;
 
@@ -26,18 +27,16 @@ import org.sidiff.comparators.abstractcomperators.AbstractValueComparator;
  * @author Pit Pietsch
  */
 
-@Deprecated
 public class VCStringIndexOf extends AbstractValueComparator {
-	public static final String COMPARATOR_ID = "VCStringIndexOf";
+
 	/**
 	 * indicates whether a case-sensitive (false) or case-insensitive (true)
 	 * comparison is to be used.
 	 */
-	private boolean ci = false;;
+	private boolean ci = false;
 
 	@Override
-	public void init(EClass dedicatedClass, EClass targetClass, String parameter) {
-		super.init(dedicatedClass, targetClass, parameter);
+	public void init(String parameter) {
 		// case sensitivity ? default: case-sensitive
 		if (parameter.equals("ci")) {
 			this.ci = true;
@@ -51,15 +50,12 @@ public class VCStringIndexOf extends AbstractValueComparator {
 		// typecheck
 		assert(objectA instanceof String && objectB instanceof String) : "Works only with Strings!";
 
-		String stringA = null;
-		String stringB = null;
+		String stringA = (String) objectA;
+		String stringB = (String) objectB;
 
 		if (ci) {
-			stringA = ((String) objectA).toLowerCase();
-			stringB = ((String) objectB).toLowerCase();
-		} else {
-			stringA = (String) objectA;
-			stringB = (String) objectB;
+			stringA = stringA.toLowerCase();
+			stringB = stringB.toLowerCase();
 		}
 
 		// Prevent division by zero !!
@@ -76,13 +72,8 @@ public class VCStringIndexOf extends AbstractValueComparator {
 	}
 
 	@Override
-	public String getComparatorID() {
-		return COMPARATOR_ID;
-	}
-
-	@Override
-	public String getDescription() {
-		return " This comparator compares two string values based on a their index-of similarity."
-				+ " It is assured by assertion that the two values are of the type string.";
+	public Optional<String> getDescription() {
+		return Optional.of("This comparator compares two string values based on a their index-of similarity."
+				+ " It is assured by assertion that the two values are of the type string.");
 	}
 }

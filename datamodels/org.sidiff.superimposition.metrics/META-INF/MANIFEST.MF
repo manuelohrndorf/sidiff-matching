@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: SiDiff Data Models - Superimposition Model - Metrics
+Bundle-SymbolicName: org.sidiff.superimposition.metrics;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: org.sidiff.domain.superimposition.metrics
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-Vendor: Software Engineering Group, University of Siegen
+Require-Bundle: org.sidiff.common.emf.metrics,
+ org.sidiff.superimposition

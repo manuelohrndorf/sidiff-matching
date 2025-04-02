@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         id="SuperimpositionModelStringResolver"
+         name="Superimposition Model String Resolver"
+         point="org.sidiff.common.emf.stringresolver.string_resolver_extension">
+      <string_resolver
+            string_resolver="org.sidiff.superimposition.stringresolver.SuperimpositionModelStringResolver">
+         <documentType>http://www.sidiff.org/superimposition/model/1.0</documentType>
+      </string_resolver>
+   </extension>
+
+</plugin>

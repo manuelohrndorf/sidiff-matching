@@ -12,24 +12,26 @@ import org.sidiff.comparators.abstractcomperators.AbstractComparator;
 import org.sidiff.comparators.exceptions.ComparatorException;
 import org.sidiff.comparefunctions.exceptions.CompareException;
 import org.sidiff.comparefunctions.exceptions.NothingToCompareException;
+import org.sidiff.correspondences.ICorrespondences;
+import org.sidiff.similarities.ISimilarities;
 
 public abstract class AbstractComparatorCompareFunction extends AbstractCompareFunction {
 
 	/**
 	 * The compare function's comparator
 	 */
-	private IComparator cfComparator = null;
+	private IComparator cfComparator;
 
 	/**
 	 * contains the cached objects for nodes in A, calculated by "getToBeCompared(EObject)"
 	 */
-	private Map<EObject, Collection<EObject>> staticCacheComparedInA = null;
+	private Map<EObject, Collection<EObject>> staticCacheComparedInA;
 	/**
 	 * contains the cached objects for nodes in B, calculated by "getToBeCompared(EObject)"
 	 */
-	private Map<EObject, Collection<EObject>> staticCacheComparedInB = null;
+	private Map<EObject, Collection<EObject>> staticCacheComparedInB;
 
-	private Map<EObject, Map<EObject, Float>> staticCacheSimilarity = null;
+	private Map<EObject, Map<EObject, Float>> staticCacheSimilarity;
 	
 	
 	/**
@@ -46,9 +48,11 @@ public abstract class AbstractComparatorCompareFunction extends AbstractCompareF
 	 *            The compare function's parameter
 	 */
 	@Override
-	public void init(EClass dedicatedClass, EvaluationPolicy policy, float weight, String parameter) {
-		super.init(dedicatedClass, policy, weight, parameter);
-		this.cfComparator = AbstractComparator.loadComparator(paramItems[0], dedicatedClass, getComparedType(dedicatedClass), AbstractComparator.class);
+	public void init(EClass dedicatedClass, EvaluationPolicy policy, float weight, String parameter,
+			ICorrespondences correspondences, ISimilarities similarities) {
+		super.init(dedicatedClass, policy, weight, parameter, correspondences, similarities);
+		this.cfComparator = AbstractComparator.loadComparator(paramItems[0], dedicatedClass,
+				getComparedType(dedicatedClass), AbstractComparator.class, correspondences, similarities);
 	}
 	
 	
@@ -121,7 +125,8 @@ public abstract class AbstractComparatorCompareFunction extends AbstractCompareF
 
 		if (toBeComparedA.isEmpty() && toBeComparedB.isEmpty()) {
 			// Let the caller decide what is to do.
-			throw new NothingToCompareException("Both nodes lack of nodes that should be compared!");
+			// throw new NothingToCompareException("Both nodes lack of nodes that should be compared!");
+			return 1.0f;
 
 		} else if (toBeComparedA.isEmpty() || toBeComparedB.isEmpty()) {
 			// Anyway, a comperator just can determ "no similarity"
@@ -138,7 +143,7 @@ public abstract class AbstractComparatorCompareFunction extends AbstractCompareF
 					Map<EObject, Float> similaritiesOfA = staticCacheSimilarity.get(nodeInA);
 					if (similaritiesOfA == null) {
 						// create child-map if it does not exist
-						similaritiesOfA = new TreeMap<EObject, Float>(DefaultComparators.getHashComparator(EObject.class));
+						similaritiesOfA = new TreeMap<>(DefaultComparators.getHashComparator(EObject.class));
 						staticCacheSimilarity.put(nodeInA, similaritiesOfA);
 					}
 					// cache similarity in map

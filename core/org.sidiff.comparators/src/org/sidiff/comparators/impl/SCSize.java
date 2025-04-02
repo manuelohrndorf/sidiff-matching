@@ -1,8 +1,8 @@
 package org.sidiff.comparators.impl;
 
 import java.util.Collection;
+import java.util.Optional;
 
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.sidiff.comparators.abstractcomperators.AbstractSetComparator;
 
@@ -27,14 +27,8 @@ import org.sidiff.comparators.abstractcomperators.AbstractSetComparator;
  *
  */
 public class SCSize extends AbstractSetComparator {
-	public static final String COMPARATOR_ID = "SCSize";
 
 	@Override
-	public void init(EClass dedicatedClass, EClass targetClass, String parameter) {
-		super.init(dedicatedClass, targetClass, null);
-
-	}
-
 	protected float calculateSetSimilarity(EObject contextElementA, EObject contextElementB,
 			Collection<EObject> collectionA, Collection<EObject> collectionB) {
 
@@ -42,12 +36,7 @@ public class SCSize extends AbstractSetComparator {
 	}
 
 	@Override
-	public String getComparatorID() {
-		return COMPARATOR_ID;
-	}
-
-	@Override
-	public String getDescription() {
-		return "This comparator compares two collections based on their .size()-method";
+	public Optional<String> getDescription() {
+		return Optional.of("This comparator compares two collections based on their .size()-method");
 	}
 }

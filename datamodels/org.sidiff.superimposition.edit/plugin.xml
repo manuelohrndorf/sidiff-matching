@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ (c), Christopher Pietsch, Software Engineering Group, University of Siegen 2017 all rights reserved
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
+      <!-- @generated SuperimpositionModel -->
+      <factory
+            uri="http://www.sidiff.org/superimposition/model/1.0"
+            class="org.sidiff.superimposition.provider.SuperimpositionModelItemProviderAdapterFactory"
+            supportedTypes=
+              "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
+               org.eclipse.emf.edit.provider.IStructuredItemContentProvider
+               org.eclipse.emf.edit.provider.ITreeItemContentProvider
+               org.eclipse.emf.edit.provider.IItemLabelProvider
+               org.eclipse.emf.edit.provider.IItemPropertySource
+               org.eclipse.emf.edit.provider.IItemColorProvider
+               org.eclipse.emf.edit.provider.IItemStyledLabelProvider"/>
+   </extension>
+
+</plugin>

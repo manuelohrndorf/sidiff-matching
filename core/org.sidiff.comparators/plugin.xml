@@ -52,7 +52,8 @@
             class="org.sidiff.comparators.impl.VCStringLCS">
       </client>
       <client
-            class="org.sidiff.comparators.impl.CQName"></client>
+            class="org.sidiff.comparators.impl.CQName">
+      </client>
       <client
             class="org.sidiff.comparators.impl.ECAnnotation">
       </client>
@@ -85,6 +86,9 @@
       </client>
       <client
             class="org.sidiff.comparators.impl.LCLongestCommonSubsequence">
+      </client>
+      <client
+            class="org.sidiff.comparators.impl.CEqualType">
       </client>
    </extension>
 

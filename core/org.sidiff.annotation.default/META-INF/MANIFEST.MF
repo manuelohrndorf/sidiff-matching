@@ -4,8 +4,12 @@ Bundle-Name: SiDiff Annotation Service - Default
 Bundle-SymbolicName: org.sidiff.annotation.default;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Require-Bundle: org.sidiff.annotation;visibility:=reexport,
- org.sidiff.common.emf;visibility:=reexport
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+ org.sidiff.common.emf;visibility:=reexport,
+ org.sidiff.configuration
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.sidiff.annotation.impl,
- org.sidiff.annotator.common
+ org.sidiff.annotation.impl.exceptions,
+ org.sidiff.annotator.common,
+ org.sidiff.annotator.metric
 Bundle-Vendor: Software Engineering Group, University of Siegen
+Automatic-Module-Name: org.sidiff.annotation.default

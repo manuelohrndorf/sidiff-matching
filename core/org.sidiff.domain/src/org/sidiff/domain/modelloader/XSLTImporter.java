@@ -2,12 +2,12 @@ package org.sidiff.domain.modelloader;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.emf.ecore.resource.Resource;
-import org.sidiff.common.exceptions.SiDiffRuntimeException;
-import org.sidiff.common.io.IOUtil;
 import org.sidiff.common.xml.XMLTransformer;
 
 /**
@@ -21,8 +21,7 @@ public abstract class XSLTImporter implements IModelLoader {
 	public final static String USE_TEMPFILE_FOR_TRANSFORMATION = "USE_TEMPFILE";
 
 	@Override
-	public String getLoaderDescription() {
-
+	public String getName() {
 		return "Generic XSLT importer for '" + getXSLTDescription() + "'";
 	}
 
@@ -34,31 +33,27 @@ public abstract class XSLTImporter implements IModelLoader {
 	public abstract String getXSLTDescription();
 
 	/**
-	 * Gets the filename of the XSLT-Script
-	 * 
-	 * @return The filename as {@link String}
+	 * Gets the absolute path of the XSLT-Script
+	 * @return The absolute path as {@link String} 
 	 */
 	public abstract String getXSLTName();
 
 	@Override
-	public void parse(Resource resource, InputStream datastream) {
-
-		Map<?, ?> options = getLoadOptions();
-
-		InputStream xsltdata = IOUtil.getInputStream(getXSLTName());
+	public void parse(Resource resource, InputStream datastream) throws IOException {
 		InputStream emfStream = null;
-
-		if (options.containsKey(USE_TEMPFILE_FOR_TRANSFORMATION)
-				&& options.get(USE_TEMPFILE_FOR_TRANSFORMATION) == Boolean.TRUE) {
-			emfStream = XMLTransformer.transformUsingTempfile(datastream, xsltdata);
-		} else {
-			emfStream = XMLTransformer.transform(datastream, xsltdata);
-		}
-
-		try {
-			resource.load(emfStream, getLoadOptions());
-		} catch (IOException e) {
-			throw new SiDiffRuntimeException("Error while importing Model", e);
+		try (InputStream xsltdata = Files.newInputStream(Paths.get(getXSLTName()))) {
+			Map<?,?> options = getLoadOptions();
+			if(options.containsKey(USE_TEMPFILE_FOR_TRANSFORMATION)
+					&& options.get(USE_TEMPFILE_FOR_TRANSFORMATION)==Boolean.TRUE){
+				emfStream = XMLTransformer.transformUsingTempfile(datastream, xsltdata);
+			} else {
+				emfStream = XMLTransformer.transform(datastream, xsltdata);
+			}
+			resource.load(emfStream, options);
+		} finally {
+			if(emfStream != null) {
+				emfStream.close();
+			}
 		}
 	}
 
@@ -74,9 +69,8 @@ public abstract class XSLTImporter implements IModelLoader {
 	 * 
 	 * @return a map with options or an empty map
 	 */
-	@SuppressWarnings("unchecked")
-	public Map getLoadOptions() {
-		return new HashMap();
+	public Map<?,?> getLoadOptions() {
+		return new HashMap<>();
 	}
 
 }

@@ -1,3 +1,0 @@
-/core
-/3rdParty
-/domains

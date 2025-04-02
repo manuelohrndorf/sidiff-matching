@@ -21,17 +21,16 @@ public abstract class SignatureBasedMatcher<T> extends BaseMatcher {
 	
 	@Override
 	public void match(){
-		for(Resource model :  getModels()){			
-			if(scope.equals(Scope.RESOURCE_SET)){
-				for(Resource r : model.getResourceSet().getResources()){
+		for(Resource model : getModels()) {
+			if(scope == Scope.RESOURCE_SET) {
+				for(Resource r : model.getResourceSet().getResources()) {
 					ValueMap<T,EObject> vm = calculateSignatures(r);
 					this.signatureValues.put(r, vm);
 				}
-			}else{
+			} else {
 				ValueMap<T,EObject> vm = calculateSignatures(model);
 				this.signatureValues.put(model, vm);
 			}
-			
 		}
 		matchSignatures();
 	}
@@ -47,7 +46,4 @@ public abstract class SignatureBasedMatcher<T> extends BaseMatcher {
 	public TreeMap<Resource,ValueMap<T, EObject>> getSignatures(){
 		return signatureValues;
 	}
-	
-
-	
 }

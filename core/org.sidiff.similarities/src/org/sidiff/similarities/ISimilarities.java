@@ -4,14 +4,18 @@ import java.util.SortedSet;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.sidiff.service.IService;
+import org.sidiff.common.extension.ExtensionManager;
+import org.sidiff.common.extension.IExtension;
+import org.sidiff.common.extension.storage.NoExtensionManagerStorage;
 
-public interface ISimilarities extends IService{
+public interface ISimilarities extends IExtension {
 
-	public static final String EXTENSION_POINT_ID = "org.sidiff.similarities.extensionpoint";
-	public static final String SERVICE_ID = "ISimilarities";
+	Description<ISimilarities> DESCRIPTION = Description.of(ISimilarities.class, "org.sidiff.similarities.extensionpoint", "client", "class");
 
-	public void init(Resource modelA, Resource modelB);
+	ExtensionManager<ISimilarities> MANAGER = new ExtensionManager<>(new NoExtensionManagerStorage<>(DESCRIPTION));
+
+
+	void init(Resource modelA, Resource modelB);
 
 	/**
 	 * Sets the (symmetric) similarity of the objects. This means specially:
@@ -25,7 +29,7 @@ public interface ISimilarities extends IService{
 	 * @param similarity
 	 *            the similarity between objects a and b.
 	 */
-	public void setSimilarity(EObject objectA, EObject objectB, float similarity);
+	void setSimilarity(EObject objectA, EObject objectB, float similarity);
 
 	/**
 	 * Drops all similarities of the given object. This means object will not
@@ -34,7 +38,7 @@ public interface ISimilarities extends IService{
 	 * 
 	 * @param object
 	 */
-	public void dispose(EObject object);
+	void dispose(EObject object);
 
 	/**
 	 * Determinates the Similarities of the given Objects. The result is a
@@ -46,7 +50,7 @@ public interface ISimilarities extends IService{
 	 *            Object for that similarities has to be determinated.
 	 * @return sorted set of similarities.
 	 */
-	public SortedSet<ISimilarity> getSimilarities(EObject object);
+	SortedSet<ISimilarity> getSimilarities(EObject object);
 
 	/**
 	 * Determinates the Similarity of the given pair of Objects.
@@ -55,15 +59,12 @@ public interface ISimilarities extends IService{
 	 * @param objectB
 	 * @return the similarity degree between the given objects.
 	 */
-	public float getSimilarityDegree(EObject objectA, EObject objectB);
+	float getSimilarityDegree(EObject objectA, EObject objectB);
 
 	/**
 	 * Releases all stored information if this service. Can be used to free
 	 * memory.
 	 *
 	 */
-	public void clear();
-
-	public String getSimilaritiesServiceID();
-	public void reset();
+	void reset();
 }

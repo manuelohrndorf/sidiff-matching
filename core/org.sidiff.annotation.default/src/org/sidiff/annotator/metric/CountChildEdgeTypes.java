@@ -1,6 +1,7 @@
 package org.sidiff.annotator.metric;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.eclipse.emf.ecore.*;
 import org.sidiff.annotator.common.Annotator;
@@ -16,6 +17,7 @@ public class CountChildEdgeTypes extends Annotator {
 
 	private static final String ANNOTATOR_ID = "CountChildEdgeTypes";
 
+	@Override
 	public void init(EPackage documentType, String annotationKey, String parameter, EClass acceptedType,
 			Collection<String> requiredAnnotations) {
 
@@ -25,16 +27,16 @@ public class CountChildEdgeTypes extends Annotator {
 	@Override
 	protected Object computeAnnotationValue(EObject object) {
 		EReference ref = (EReference) object.eClass().getEStructuralFeature(this.getParameter());
-		return new Float(EMFModelAccess.getChildren(object, ref).size());
+		return (float)EMFModelAccess.getChildren(object, ref).size();
 	}
 
 	@Override
-	public String getAnnotatorID() {
+	public String getKey() {
 		return ANNOTATOR_ID;
 	}
 
 	@Override
-	public String getDescription() {
-		return "Zaehlt die Kind-Elemente, die ueber eine bestimmte Referenz erreicht werden.";
+	public Optional<String> getDescription() {
+		return Optional.of("Zaehlt die Kind-Elemente, die ueber eine bestimmte Referenz erreicht werden.");
 	}
 }

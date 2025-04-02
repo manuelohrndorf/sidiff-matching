@@ -2,7 +2,7 @@ package org.sidiff.similarities;
 
 import org.eclipse.emf.ecore.EObject;
 
-public interface ISimilarity {
+public interface ISimilarity extends Comparable<ISimilarity> {
 
 	/**
 	 * Returns the object for which this similarity was computed.

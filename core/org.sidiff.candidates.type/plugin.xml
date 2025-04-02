@@ -9,11 +9,5 @@
             class="org.sidiff.candidates.type.InterModelTypeCandidates">
       </client>
    </extension>
-   <extension
-         point="org.sidiff.service.extensionpoint">
-      <client
-            class="org.sidiff.candidates.type.InterModelTypeCandidates">
-      </client>
-   </extension>
 
 </plugin>

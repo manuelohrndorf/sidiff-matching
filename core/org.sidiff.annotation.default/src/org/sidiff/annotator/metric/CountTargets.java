@@ -1,6 +1,7 @@
 package org.sidiff.annotator.metric;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.eclipse.emf.ecore.*;
 import org.sidiff.annotator.common.Annotator;
@@ -18,6 +19,7 @@ public class CountTargets extends Annotator {
 
 	private static final String ANNOTATOR_ID = "CountTargets";
 
+	@Override
 	public void init(EPackage documentType, String annotationKey, String parameter, EClass acceptedType,
 			Collection<String> requiredAnnotations) {
 
@@ -26,18 +28,18 @@ public class CountTargets extends Annotator {
 
 	@Override
 	protected Object computeAnnotationValue(EObject object) {
-		return new Float(EMFModelAccess.evaluatePath(object,
-				EMFMetaAccess.translatePath(object.eClass(), this.getParameter())).size());
+		return (float)EMFModelAccess.evaluatePath(object,
+				EMFMetaAccess.translatePath(object.eClass(), this.getParameter())).size();
 	}
 
 	@Override
-	public String getAnnotatorID() {
+	public String getKey() {
 		return ANNOTATOR_ID;
 	}
 
 	@Override
-	public String getDescription() {
-		return "Zeahlt die Elemente, die ueber einen gegebenen Pfad (Parameter 1) erreicht werden.";
+	public Optional<String> getDescription() {
+		return Optional.of("Zeahlt die Elemente, die ueber einen gegebenen Pfad (Parameter 1) erreicht werden.");
 	}
 
 }

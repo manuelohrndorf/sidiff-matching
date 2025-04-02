@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Z3
+Bundle-SymbolicName: org.sidiff.formula.adapter.z3;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.eclipse.core.runtime,
+ org.sidiff.formula;visibility:=reexport
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: .,
+ libs/com.microsoft.z3.jar
+Automatic-Module-Name: org.sidiff.formula.adapter.z3
+Export-Package: org.sidiff.formula.adapter.z3

@@ -2,28 +2,29 @@ package org.sidiff.comparefunctions;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.sidiff.common.extension.ExtensionManager;
+import org.sidiff.common.extension.IExtension;
+import org.sidiff.common.extension.storage.NoExtensionManagerStorage;
+import org.sidiff.correspondences.ICorrespondences;
+import org.sidiff.similarities.ISimilarities;
 
-public interface ICompareFunction {
+public interface ICompareFunction extends IExtension {
 
-	public static final String EXTENSION_POINT_ID = "org.sidiff.comparefunctions.extensionpoint";
+	Description<ICompareFunction> DESCRIPTION = Description.of(ICompareFunction.class,
+			"org.sidiff.comparefunctions.extensionpoint", "client", "class");
+	ExtensionManager<ICompareFunction> MANAGER = new ExtensionManager<>(new NoExtensionManagerStorage<>(DESCRIPTION));
 
-	public abstract EvaluationPolicy getPolicy();
+	EvaluationPolicy getPolicy();
+	float getWeight();
+	EClass getEClass();
 
-	public abstract float getWeight();
+	void init(EClass dedicatedClass, EvaluationPolicy policy, float weight, String parameter,
+			ICorrespondences correspondences, ISimilarities similarities);
+	float compare(EObject nodeInA, EObject nodeInB);
 
-	public abstract EClass getEClass();
-
-	public abstract float compare(EObject nodeInA, EObject nodeInB);
-
-	public abstract void init(EClass dedicatedClass, EvaluationPolicy policy, float weight, String parameter);
-
-	public enum EvaluationPolicy {
+	enum EvaluationPolicy {
 		mandatory, // Verbindlich -> SiDiff-Abbruch bei Fehler(Exception)
 		fulfilled, // Erfuellt -> gemaess gewicht!
 		unfulfilled; // Nicht Erfuellt -> 0.0f
 	}
-
-	public abstract String getCompareFunctionID();
-
-	public abstract String getDescription();
 }

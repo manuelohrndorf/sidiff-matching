@@ -5,12 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.emf.ecore.resource.Resource;
-import org.sidiff.common.io.IOUtil;
 import org.sidiff.domain.modelloader.XSLTImporter;
 
 public class FujabaXMILoader extends XSLTImporter {
-	public static final String MODEL_LOADER_ID = "FujabaXMILoader";
 
 	private static final Map<String, String> URIMAP = new HashMap<String, String>();
 
@@ -46,15 +43,8 @@ public class FujabaXMILoader extends XSLTImporter {
 		return URIMAP;
 	}
 
-
 	@Override
-	public String getModelLoaderID() {
-		return MODEL_LOADER_ID;
+	public String getKey() {
+		return "FujabaXMILoader";
 	}
-
-	@Override
-	public void loadModel(Resource res, String path) {
-		parse(res, IOUtil.getInputStream(path));
-	}
-
 }

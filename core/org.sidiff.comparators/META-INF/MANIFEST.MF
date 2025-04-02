@@ -3,15 +3,13 @@ Bundle-ManifestVersion: 2
 Bundle-Name: SiDiff Comperators Service
 Bundle-SymbolicName: org.sidiff.comparators;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: org.eclipse.core.runtime,
- org.sidiff.common.emf;visibility:=reexport,
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.sidiff.common.emf;visibility:=reexport,
  org.sidiff.correspondences;visibility:=reexport,
- org.sidiff.event;visibility:=reexport,
  org.sidiff.similarities;visibility:=reexport
 Export-Package: org.sidiff.comparators,
  org.sidiff.comparators.abstractcomperators,
- org.sidiff.comparators.events,
  org.sidiff.comparators.exceptions,
  org.sidiff.comparators.impl
 Bundle-Vendor: Software Engineering Group, University of Siegen
+Automatic-Module-Name: org.sidiff.comparators

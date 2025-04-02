@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.sidiff.common.emf.metrics.metrics_extension">
+      <metric
+            class="org.sidiff.superimposition.metrics.defaults.PercentageOfExternalElements"
+            description="The percentage of external elements in the superimposed model"
+            key="sim.PercentageOfExternalElements"
+            name="Percentage of external elements">
+         <documentType>
+            http://www.sidiff.org/superimposition/model/1.0
+         </documentType>
+      </metric>
+      <metric
+            class="org.sidiff.superimposition.metrics.defaults.ElementTypeCounting"
+            description="The types of all elements in the superimposed model and their usage count."
+            key="sim.ElementTypeCount"
+            name="Number of Elements per Meta-Type">
+         <documentType>
+            http://www.sidiff.org/superimposition/model/1.0
+         </documentType>
+      </metric>
+      <metric
+            class="org.sidiff.superimposition.metrics.defaults.ConflictCounting"
+            comparisonType="LOWER_IS_BETTER"
+            description="The number of detected conflicts in the superimposed model per Conflict-ID."
+            key="sim.ConflictCount"
+            name="Number of Conflicts per Conflict-ID">
+         <documentType>
+            http://www.sidiff.org/superimposition/model/1.0
+         </documentType>
+      </metric>
+   </extension>
+
+</plugin>

@@ -1,6 +1,7 @@
 package org.sidiff.annotator.common;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -8,7 +9,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.sidiff.common.emf.EMFAdapter;
 import org.sidiff.common.emf.annotation.AnnotateableElement;
 import org.sidiff.common.exceptions.SiDiffRuntimeException;
-import org.sidiff.common.util.ReflectionUtil;
+import org.sidiff.common.reflection.ReflectionUtil;
 
 /**
  * Dieser Annotator kann Werte aus anderen Annotationen kopieren oder
@@ -54,12 +55,12 @@ public class SetAttributeAnnotator extends Annotator {
 	}
 
 	@Override
-	public String getAnnotatorID() {
+	public String getKey() {
 		return ANNOTATOR_ID;
 	}
 
 	@Override
-	public String getDescription() {
-		return "This Annotator can copy,move other annotations or add constants to the modelelements";
+	public Optional<String> getDescription() {
+		return Optional.of("This Annotator can copy,move other annotations or add constants to the modelelements");
 	}
 }

@@ -1,7 +1,9 @@
 package org.sidiff.comparators.impl;
 
-import org.eclipse.emf.ecore.EClass;
+import java.util.Optional;
+
 import org.eclipse.emf.ecore.EObject;
+import org.sidiff.common.util.NestedParameterUtil;
 import org.sidiff.comparators.abstractcomperators.AbstractComparator;
 
 /**
@@ -30,7 +32,7 @@ import org.sidiff.comparators.abstractcomperators.AbstractComparator;
  * @author Pit Pietsch
  */
 public class CHeaviside extends AbstractComparator {
-	public static final String COMPARATOR_ID = "CHeaviside";
+
 	private AbstractComparator comparator = null;
 	private float threshold = -1f;
 
@@ -42,16 +44,16 @@ public class CHeaviside extends AbstractComparator {
 	 * @param parameter
 	 *            the parameter for this comparator
 	 */
-	public void init(EClass dedicatedClass, EClass targetClass, String parameter) {
-		super.init(dedicatedClass, targetClass, parameter);
+	@Override
+	protected void init(String parameter) {
+		String[] paramItems = NestedParameterUtil.getParameterSegments(parameter);
 
 		// first parameter: inner comparator
-		comparator = (AbstractComparator) loadComparator(paramItems[0], dedicatedClass, targetClass,
-				AbstractComparator.class);
+		comparator = loadComparator(paramItems[0], dedicatedClass, targetClass,
+				AbstractComparator.class, getCorrespondences(), getSimilarities());
 
 		// second parameter: threshold
 		threshold = Float.parseFloat(paramItems[1]);
-
 	}
 
 	/**
@@ -68,15 +70,10 @@ public class CHeaviside extends AbstractComparator {
 	}
 
 	@Override
-	public String getComparatorID() {
-		return COMPARATOR_ID;
-	}
-
-	@Override
-	public String getDescription() {
-		return "This comparator mimics the characteristics of a heaviside-function. It"
+	public Optional<String> getDescription() {
+		return Optional.of("This comparator mimics the characteristics of a heaviside-function. It"
 				+ " compares two object based on the specified inner comparator and in case the"
 				+ " similarity-value returned by the inner comparator is below the given"
-				+ " threshold 0f is returned, otherwise 1f";
+				+ " threshold 0f is returned, otherwise 1f");
 	}
 }

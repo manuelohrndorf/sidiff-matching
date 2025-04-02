@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="entities" nsURI="http://www.sidiff.org/entities/model/1.0" nsPrefix="entities">
+  <eClassifiers xsi:type="ecore:EClass" name="Entity" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="annotations" ordered="false"
+        upperBound="-1" eType="#//Annotation" resolveProxies="false" eOpposite="#//Annotation/entities"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="signature" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Element" eSuperTypes="#//Entity #//IdentifiableEntity">
+    <eOperations name="getAttributes" upperBound="-1" eType="#//Attribute">
+      <eParameters name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EAttribute"/>
+    </eOperations>
+    <eOperations name="getReferences" upperBound="-1" eType="#//Reference">
+      <eParameters name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EReference"/>
+    </eOperations>
+    <eOperations name="updateExternal" lowerBound="1"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="outgoings" ordered="false"
+        upperBound="-1" eType="#//Reference" eOpposite="#//Reference/source"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="incomings" ordered="false"
+        upperBound="-1" eType="#//Reference" eOpposite="#//Reference/target"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" ordered="false"
+        upperBound="-1" eType="#//Attribute" eOpposite="#//Attribute/container"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="object" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="external" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Reference" eSuperTypes="#//Entity">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="source" ordered="false"
+        lowerBound="1" eType="#//Element" eOpposite="#//Element/outgoings"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="target" ordered="false"
+        lowerBound="1" eType="#//Element" eOpposite="#//Element/incomings"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EReference"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="opposite" eType="#//Reference"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="containment" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" changeable="false"
+        volatile="true" transient="true" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="container" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" changeable="false"
+        volatile="true" transient="true" derived="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Attribute" eSuperTypes="#//Entity">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EAttribute"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="container" lowerBound="1"
+        eType="#//Element" eOpposite="#//Element/attributes"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Annotation">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="body" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="formula" eType="ecore:EClass http://www.sidiff.org/formula/model/1.0#//Formula"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" lowerBound="1" eType="#//AnnotationType"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="entities" ordered="false"
+        upperBound="-1" eType="#//Entity" transient="true" eOpposite="#//Entity/annotations"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="AnnotationType">
+    <eLiterals name="Comment" literal="COMMENT"/>
+    <eLiterals name="Condition" value="1" literal="CONDITION"/>
+    <eLiterals name="Model" value="2" literal="MODEL"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IdentifiableEntity" abstract="true"
+      interface="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="uuid" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        iD="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="IExporterFilter" instanceClassName="org.sidiff.entities.exporter.filter.IExporterFilter"
+      serializable="false"/>
+</ecore:EPackage>

@@ -1,6 +1,7 @@
 package org.sidiff.comparators.impl;
 
-import org.eclipse.emf.ecore.EClass;
+import java.util.Optional;
+
 import org.eclipse.emf.ecore.EObject;
 import org.sidiff.comparators.abstractcomperators.AbstractValueComparator;
 
@@ -23,14 +24,7 @@ import org.sidiff.comparators.abstractcomperators.AbstractValueComparator;
  * 
  * @author Pit Pietsch
  */
-@Deprecated
 public class CEqualType extends AbstractValueComparator {
-	public static final String COMPARATOR_ID = "CEqualType";
-
-	@Override
-	public void init(EClass dedicatedClass, EClass targetClass, String parameter) {
-		super.init(dedicatedClass, targetClass, null);
-	}
 
 	/**
 	 * Compares two elements based on their .equals()-method. In case the
@@ -48,15 +42,10 @@ public class CEqualType extends AbstractValueComparator {
 	}
 
 	@Override
-	public String getComparatorID() {
-		return COMPARATOR_ID;
-	}
-
-	@Override
-	public String getDescription() {
-		return "This comparator compares two object based on their class. The returned  similarity is "
+	public Optional<String> getDescription() {
+		return Optional.of("This comparator compares two object based on their class. The returned  similarity is "
 				+ "1f in case the given objects are of equal-type or 0f in case they differ."
-				+ " No additional parameters are necessary to use this comparator.";
+				+ " No additional parameters are necessary to use this comparator.");
 
 	}
 }

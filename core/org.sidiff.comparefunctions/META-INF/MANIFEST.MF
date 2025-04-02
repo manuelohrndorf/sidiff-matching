@@ -3,10 +3,11 @@ Bundle-ManifestVersion: 2
 Bundle-Name: SiDiff Compare Functions Service
 Bundle-SymbolicName: org.sidiff.comparefunctions;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: org.eclipse.core.runtime,
- org.sidiff.comparators;visibility:=reexport
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.sidiff.comparators;visibility:=reexport
 Export-Package: org.sidiff.comparefunctions,
  org.sidiff.comparefunctions.exceptions,
- org.sidiff.comparefunctions.impl
+ org.sidiff.comparefunctions.impl,
+ org.sidiff.comparefunctions.util
 Bundle-Vendor: Software Engineering Group, University of Siegen
+Automatic-Module-Name: org.sidiff.comparefunctions

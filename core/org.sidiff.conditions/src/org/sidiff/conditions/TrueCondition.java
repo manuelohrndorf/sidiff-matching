@@ -1,10 +1,8 @@
 package org.sidiff.conditions;
 
-import org.eclipse.emf.ecore.EClass;
+import java.util.Optional;
+
 import org.eclipse.emf.ecore.EObject;
-import org.sidiff.comparefunctions.ICompareFunction.EvaluationPolicy;
-
-
 
 /**
  * This condition always returns true.
@@ -12,8 +10,6 @@ import org.sidiff.comparefunctions.ICompareFunction.EvaluationPolicy;
  * @author Pit Pietsch
  */
 public class TrueCondition extends AbstractCondition {
-	public static final String CONDITION_ID = "TrueCondition";
-	
 
 	@Override
 	public boolean check(EObject node1, EObject node2) {
@@ -21,17 +17,7 @@ public class TrueCondition extends AbstractCondition {
 	}
 
 	@Override
-	public void init(EClass dedicatedClass, EvaluationPolicy policy) {
-		super.init(dedicatedClass, policy);
-		
-	}
-	@Override
-	public String getConditionID() {
-		return CONDITION_ID;
-	}
-
-	@Override
-	public String getDescription() {
-		return "This condition always returns true.";
+	public Optional<String> getDescription() {
+		return Optional.of("This condition always returns true.");
 	}
 }

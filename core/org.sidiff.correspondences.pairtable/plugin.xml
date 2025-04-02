@@ -4,9 +4,12 @@
    <extension
          id="org.sidiff.correspondences.extensionpoint"
          point="org.sidiff.correspondences.extensionpoint">
-      <client
-            class="org.sidiff.correspondences.pairtable.PairTableCorrespondences">
-      </client>
+      <correspondences
+            class="org.sidiff.correspondences.pairtable.PairTableCorrespondences"
+            description="This is the standard implementation of the CorrespondenceService."
+            key="PairTableCorrespondences"
+            name="Pair Table Correspondences">
+      </correspondences>
    </extension>
 
 </plugin>

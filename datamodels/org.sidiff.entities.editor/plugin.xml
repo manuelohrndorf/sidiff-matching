@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated EntitiesModel -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="org.sidiff.entities.presentation.EntitiesModelWizardID"
+            name="%_UI_EntitiesModelWizard_label"
+            class="org.sidiff.entities.presentation.EntitiesModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/EntitiesModelFile.gif">
+         <description>%_UI_EntitiesModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated EntitiesModel -->
+      <editor
+            id="org.sidiff.entities.presentation.EntitiesEditorID"
+            name="%_UI_EntitiesEditor_label"
+            icon="icons/full/obj16/EntitiesModelFile.gif"
+            extensions="entities"
+            class="org.sidiff.entities.presentation.EntitiesEditor"
+            contributorClass="org.sidiff.entities.presentation.EntitiesActionBarContributor">
+      </editor>
+   </extension>
+</plugin>

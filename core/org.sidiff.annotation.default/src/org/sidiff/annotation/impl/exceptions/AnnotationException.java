@@ -2,10 +2,11 @@ package org.sidiff.annotation.impl.exceptions;
 
 import org.sidiff.common.exceptions.SiDiffRuntimeException;
 
-@SuppressWarnings("serial")
 public class AnnotationException extends SiDiffRuntimeException {
 
-	public AnnotationException(Object... message) {
+	private static final long serialVersionUID = -5964121945163815813L;
+
+	public AnnotationException(String message) {
 		super(message);
 	}
 

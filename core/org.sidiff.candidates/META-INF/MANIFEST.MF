@@ -3,9 +3,9 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Sidiff Candicates Service
 Bundle-SymbolicName: org.sidiff.candidates;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.emf.ecore,
- org.sidiff.service;visibility:=reexport
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.sidiff.common.extension;visibility:=reexport,
+ org.sidiff.common.emf;visibility:=reexport
 Export-Package: org.sidiff.candidates
 Bundle-Vendor: Software Engineering Group, University of Siegen
+Automatic-Module-Name: org.sidiff.candidates

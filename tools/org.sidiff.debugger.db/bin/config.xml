@@ -1,0 +1,22 @@
+<config>
+	<database server="192.168.189.128"
+                  port="3306"
+                  name="sidiff_log_db"
+                  user="root"
+                  password="password"
+                  autoreset="true" />
+	
+	<export directory="C:/export/"
+                mode="all" />
+</config>
+
+
+<!--
+
+export-mode "all" exports all similarities and correspondences
+export-mode "single" exports the similarities and correspondences of a specific object
+=> attributes object and resource have to be filled
+
+removing the export-tag will result in no export
+
+-->

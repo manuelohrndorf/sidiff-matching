@@ -1,6 +1,7 @@
 package org.sidiff.annotator.metric;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.eclipse.emf.ecore.*;
 import org.sidiff.annotator.common.Annotator;
@@ -17,6 +18,7 @@ public class CountAttributeValueTextLength extends Annotator {
 
 	private static final String ANNOTATOR_ID = "CountAttributeValueTextLength";
 
+	@Override
 	public void init(EPackage documentType, String annotationKey, String parameter, EClass acceptedType,
 			Collection<String> requiredAnnotations) {
 
@@ -29,18 +31,18 @@ public class CountAttributeValueTextLength extends Annotator {
 		if (attribute == null) {
 			assert(LogUtil.log(LogEvent.DEBUG, "No such attribute '", getParameter(), "' on type '",
 					object.eClass().getName(), "'.", object));
-			return new Float(0);
+			return 0.0f;
 		}
-		return new Float(String.valueOf(object.eGet(attribute)).length());
+		return (float)String.valueOf(object.eGet(attribute)).length();
 	}
 
 	@Override
-	public String getAnnotatorID() {
+	public String getKey() {
 		return ANNOTATOR_ID;
 	}
 
 	@Override
-	public String getDescription() {
-		return "Zaehlt die Anzahl Zeichen des Werts eines gegebenen Attributs.";
+	public Optional<String> getDescription() {
+		return Optional.of("Zaehlt die Anzahl Zeichen des Werts eines gegebenen Attributs.");
 	}
 }

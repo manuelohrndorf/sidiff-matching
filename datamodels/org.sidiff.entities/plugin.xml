@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+   <extension-point id="annotations_exporter" name="Annotations Exporter Extension" schema="schema/annotations_exporter_extension.exsd"/>
+
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated EntitiesModel -->
+      <package
+            uri="http://www.sidiff.org/entities/model/1.0"
+            class="org.sidiff.entities.EntitiesPackage"
+            genModel="model/EntitiesModel.genmodel"/>
+   </extension>
+   <extension
+         point="org.sidiff.entities.annotations_exporter">
+      <exporter
+            class="org.sidiff.entities.exporter.annotations.DiscardAnnotationsExporter"
+            key="DiscardAnnotations"
+            name="Discard Annotations">
+         <documentType>
+            generic
+         </documentType>
+      </exporter>
+   </extension>
+
+</plugin>

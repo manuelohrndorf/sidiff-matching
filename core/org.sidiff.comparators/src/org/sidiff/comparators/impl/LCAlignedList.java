@@ -2,9 +2,10 @@ package org.sidiff.comparators.impl;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.sidiff.common.util.NestedParameterUtil;
 import org.sidiff.comparators.abstractcomperators.AbstractListComparator;
 import org.sidiff.comparators.abstractcomperators.AbstractSingleComparator;
 
@@ -34,7 +35,7 @@ import org.sidiff.comparators.abstractcomperators.AbstractSingleComparator;
  * @author Pit Pietsch
  */
 public class LCAlignedList extends AbstractListComparator {
-	public static final String COMPARATOR_ID = "LCAlignedList";
+
 	private static final String WEAK = "weak";
 
 	private AbstractSingleComparator comparator = null;
@@ -42,12 +43,11 @@ public class LCAlignedList extends AbstractListComparator {
 	private boolean equalLengthRequired = true;
 
 	@Override
-	public void init(EClass dedicatedClass, EClass targetClass, String parameter) {
-		super.init(dedicatedClass, targetClass, parameter);
-
+	protected void init(String parameter) {
+		String[] paramItems = NestedParameterUtil.getParameterSegments(parameter);
 		// first parameter: comparator
-		comparator = (AbstractSingleComparator) loadComparator(paramItems[0], dedicatedClass, targetClass,
-				AbstractSingleComparator.class);
+		comparator = loadComparator(paramItems[0], dedicatedClass, targetClass,
+				AbstractSingleComparator.class, getCorrespondences(), getSimilarities());
 
 		if (paramItems.length > 1) {
 			if (WEAK.equalsIgnoreCase(paramItems[1])) {
@@ -83,19 +83,14 @@ public class LCAlignedList extends AbstractListComparator {
 			}
 		}
 
-		return (simValue / maxSize);
+		return simValue / maxSize;
 	}
 
 	@Override
-	public String getComparatorID() {
-		return COMPARATOR_ID;
-	}
-
-	@Override
-	public String getDescription() {
-		return "This comparator compares two aligned list of the same size (this constrained is tested by assertion)"
+	public Optional<String> getDescription() {
+		return Optional.of("This comparator compares two aligned list of the same size (this constrained is tested by assertion)"
 				+ " element by element. How the single elements are to be "
 				+ "compared is specified by the inner comparator. The element-wise calculated similarity "
-				+ "values are added and normalized by the size of the lists";
+				+ "values are added and normalized by the size of the lists");
 	}
 }

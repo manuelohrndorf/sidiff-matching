@@ -1,7 +1,10 @@
 package org.sidiff.comparators.impl;
 
+import java.util.Optional;
+
 import org.eclipse.emf.ecore.EObject;
 import org.sidiff.common.emf.access.EMFModelAccess;
+import org.sidiff.common.util.NestedParameterUtil;
 import org.sidiff.comparators.abstractcomperators.AbstractElementComparator;
 
 /**
@@ -26,7 +29,13 @@ import org.sidiff.comparators.abstractcomperators.AbstractElementComparator;
  * @author Sven Wenzel
  */
 public class ECEqualIndex extends AbstractElementComparator {
-	public static final String COMPARATOR_ID = "ECEqualIndex";
+
+	private String[] paramItems;
+
+	@Override
+	protected void init(String parameter) {
+		this.paramItems = parameter == null ? null : NestedParameterUtil.getParameterSegments(parameter);
+	}
 
 	/**
 	 * Compares two elements based on their index in their container. In case
@@ -45,13 +54,9 @@ public class ECEqualIndex extends AbstractElementComparator {
 		}
 		return 0.0f;
 	}
-	@Override
-	public String getComparatorID() {
-		return COMPARATOR_ID;
-	}
-	@Override
-	public String getDescription() {
-		return "This comparator compares two object based on their class";
-	}
 
+	@Override
+	public Optional<String> getDescription() {
+		return Optional.of("This comparator compares two object based on their class");
+	}
 }

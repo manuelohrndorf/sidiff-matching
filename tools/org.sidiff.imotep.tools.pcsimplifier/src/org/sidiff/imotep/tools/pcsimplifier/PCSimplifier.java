@@ -1,132 +1,100 @@
 package org.sidiff.imotep.tools.pcsimplifier;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collection;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
-import org.eclipse.emf.ecore.EObject;
-
-import com.microsoft.z3.ApplyResult;
-import com.microsoft.z3.BoolExpr;
-import com.microsoft.z3.Context;
-import com.microsoft.z3.Goal;
-import com.microsoft.z3.Tactic;
-import com.microsoft.z3.Z3Exception;
-
-import de.imotep.SimpleFeatureExpressionParser;
-import de.imotep.simpleFeatureExpression.BracedExpression;
-import de.imotep.simpleFeatureExpression.SimpleFeatureExpression;
+import org.eclipse.core.runtime.Assert;
+import org.sidiff.formula.Formula;
+import org.sidiff.formula.adapter.ISatSolverAdapter;
+import org.sidiff.formula.adapter.z3.Z3SatSolverAdapter;
+import org.sidiff.formula.exception.InvalidFormulaException;
+import org.sidiff.formula.parser.FormulaParser;
 
 /**
- * Tool for simplifying presence conditions
- * @author dreuling / jbuerdek
- *
+ * Tool for simplifying presence conditions.
+ * @author dreuling
+ * @author jbuerdek
+ * @author rmueller
  */
 public class PCSimplifier {
 
-	private static Map<String, BoolExpr> variables;
+	private static final ISatSolverAdapter satSolverAdapter =
+		ISatSolverAdapter.MANAGER.getExtension(Z3SatSolverAdapter.class)
+			.orElseThrow(() -> new IllegalStateException("Z3 Sat Solver Adapter not available"));
+
+	private static final Pattern PATTERN_SPACE = Pattern.compile("\\s+");
+	private static final Pattern PATTERN_C_AND = Pattern.compile(Pattern.quote("&&"));
+	private static final Pattern PATTERN_C_OR = Pattern.compile(Pattern.quote("||"));
+	private static final Pattern PATTERN_C_NOT_VARIABLE = Pattern.compile("!(\\w+)");
+	private static final Pattern PATTERN_C_NOT_PARENTHESIS = Pattern.compile("!\\(");
+	private static final Pattern PATTERN_F_AND = Pattern.compile("\\band\\b");
+	private static final Pattern PATTERN_F_OR = Pattern.compile("\\bor\\b");
+	private static final Pattern PATTERN_F_NOT_VARIABLE = Pattern.compile("\\bnot\\(\\s*(\\w+)\\s*\\)");
+	private static final Pattern PATTERN_F_NOT_PARENTHESIS = Pattern.compile("\\bnot\\(");
 
 	/**
-	 * Simplifies a given boolean presence condition.
-	 * The expression may only use negation, parentheses, conjunction (&&) and disjunction (||). 
-	 * Furthermore only infix expressions are supported.
+	 * Simplifies a given boolean presence condition. The expression may only use
+	 * negation, parentheses, conjunction (&&) and disjunction (||).
 	 * @param featureExpression expression to simplify
-	 * @param nt notation type to return (infix or prefix)
 	 * @return simplified expression
-	 * @throws IOException
-	 * @throws Z3Exception
 	 */
-	public static String simplify(String featureExpression, NotationType nt) throws IOException, Z3Exception {
-		String result = null;
-
-		variables = new HashMap<String, BoolExpr>();
-
-		featureExpression = "(" + featureExpression + ")";
-
-		SimpleFeatureExpressionParser parser = new SimpleFeatureExpressionParser();
-		EObject expr = parser.parse(featureExpression);
-
-		if (expr instanceof SimpleFeatureExpression) {
-			SimpleFeatureExpression simpleFeatureExpression = (SimpleFeatureExpression) expr;
-			Context ctx = new Context();
-
-			BoolExpr boolExpr = parseSimpleFeatureExpression(simpleFeatureExpression, ctx);
-
-			Tactic css = ctx.mkTactic("ctx-solver-simplify");
-			Goal goal = ctx.mkGoal(true, true, false);
-			goal.add(boolExpr);
-			ApplyResult res = css.apply(goal);
-
-			Goal subgoal = res.getSubgoals()[0];
-			if (subgoal.getFormulas().length != 0) {
-				if (subgoal.getFormulas().length == 1) {
-					result = subgoal.getFormulas()[0].toString();
-				} else {
-					result = "(and";
-					for (BoolExpr formula : subgoal.getFormulas()) {
-						result += " " + formula;
-					}
-					result += ")";
-				}
-			}
-		}
-		
-		//Replace prefix notation with infix
-		if(nt == NotationType.INFIX)
-			result =  LogParser.parse(result);
-		else{
-			result = result.replaceAll("\\band\\b", "&&");
-			result = result.replaceAll("\\bor\\b", "||");
-			result = result.replaceAll("\\bnot\\b\\s+", "!");
-		}
-		result = result.replaceAll("\n", "");
-
-
-		return result;
-	}
-	
-	private static BoolExpr parseSimpleFeatureExpression(SimpleFeatureExpression simpleFeatureExpression, Context ctx)
-			throws Z3Exception {
-		BoolExpr expr = null;
-
-		if (simpleFeatureExpression.getBraExpr() != null) {
-			BracedExpression bracedExpression = simpleFeatureExpression.getBraExpr();
-			if (bracedExpression.getOp() != null && bracedExpression.getExpr1() != null
-					&& bracedExpression.getExpr2() != null) {
-				expr = parseSimpleFeatureExpression(bracedExpression.getExpr1(), ctx);
-
-				for (int i = 0; i < bracedExpression.getExpr2().size(); i++) {
-					BoolExpr expr2 = parseSimpleFeatureExpression(bracedExpression.getExpr2().get(i), ctx);
-					String op = bracedExpression.getOp().get(i);
-					if (op.equals("&&")) {
-						expr = ctx.mkAnd(expr, expr2);
-					} else if (op.equals("||")) {
-						expr = ctx.mkOr(expr, expr2);
-					} else {
-						return null;
-					}
-				}
-			}
-
-			if (simpleFeatureExpression.getNeg() != null) {
-				expr = ctx.mkNot(expr);
-			}
-		} else if (simpleFeatureExpression.getVar() != null) {
-			expr = getVariableExpression(simpleFeatureExpression.getVar(), ctx);
-			if (simpleFeatureExpression.getNeg() != null) {
-				expr = ctx.mkNot(expr);
-			}
-		}
-
-		return expr;
-	}
-
-	private static BoolExpr getVariableExpression(String var, Context ctx) throws Z3Exception {
-		if (variables.get(var) == null) {
-			return ctx.mkBoolConst(var);
-		} else {
-			return variables.get(var);
+	public static String simplify(String expression) {
+		try {
+			return convertToExpression(satSolverAdapter.simplify(convertToFormula(expression)));
+		} catch (InvalidFormulaException e) {
+			throw new RuntimeException("Invalid formula. Expression: " + expression, e);
 		}
 	}
 
+	private static Formula convertToFormula(String expression) throws InvalidFormulaException {
+		String converted = PATTERN_SPACE.matcher(expression).replaceAll(" ").trim();
+		converted = PATTERN_C_AND.matcher(converted).replaceAll("and");
+		converted = PATTERN_C_OR.matcher(converted).replaceAll("or");
+		converted = PATTERN_C_NOT_VARIABLE.matcher(converted).replaceAll("not($1)");
+		converted = PATTERN_C_NOT_PARENTHESIS.matcher(converted).replaceAll("not(");
+		return FormulaParser.INSTANCE.parse(converted);
+	}
+
+	private static String convertToExpression(Formula formula) {
+		String converted = FormulaParser.INSTANCE.unparse(formula);
+		converted = PATTERN_F_AND.matcher(converted).replaceAll("&&");
+		converted = PATTERN_F_OR.matcher(converted).replaceAll("||");
+		converted = PATTERN_F_NOT_VARIABLE.matcher(converted).replaceAll("!$1");
+		return PATTERN_F_NOT_PARENTHESIS.matcher(converted).replaceAll("!(");
+	}
+
+	/**
+	 * Combines given presence conditions using disjunction (||) and simplifies.
+	 * @param conditions the conditions
+	 * @return simplified combined conditions
+	 */
+	public static String or(Collection<? extends String> conditions) {
+		if (conditions.isEmpty()) {
+			return "false";
+		}
+		return simplify(conditions.stream().collect(Collectors.joining(") || (", "(", ")")));
+	}
+
+	/**
+	 * Combines given presence conditions using conjunction (&&) and simplifies.
+	 * @param conditions the conditions
+	 * @return simplified combined conditions
+	 */
+	public static String and(Collection<? extends String> conditions) {
+		if (conditions.isEmpty()) {
+			return "true";
+		}
+		return simplify(conditions.stream().collect(Collectors.joining(") && (", "(", ")")));
+	}
+
+	/**
+	 * Negates the given presence condition and simplifies.
+	 * @param condition the condition
+	 * @return simplified negated condition
+	 */
+	public static String negate(String condition) {
+		Assert.isLegal(condition != null && !condition.isEmpty(), "Condition cannot be null or empty");
+		return simplify("!(" + condition + ")");
+	}
 }

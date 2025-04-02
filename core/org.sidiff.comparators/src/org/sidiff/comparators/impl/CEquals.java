@@ -1,5 +1,7 @@
 package org.sidiff.comparators.impl;
 
+import java.util.Optional;
+
 import org.eclipse.emf.ecore.EObject;
 import org.sidiff.comparators.abstractcomperators.AbstractValueComparator;
 
@@ -27,7 +29,6 @@ import org.sidiff.comparators.abstractcomperators.AbstractValueComparator;
  * @author Pit Pietsch
  */
 public class CEquals extends AbstractValueComparator {
-	public static final String COMPARATOR_ID = "CEquals";
 
 	/**
 	 * Compares two elements based on their .equals()-method. In case the
@@ -46,14 +47,8 @@ public class CEquals extends AbstractValueComparator {
 	}
 
 	@Override
-	public String getComparatorID() {
-		return COMPARATOR_ID;
+	public Optional<String> getDescription() {
+		return Optional.of("Compares two elements based on their .equals()-method. In case the "
+				+ "elements are equal a similarity-value of 1f is returned, 0f otherwise");
 	}
-
-	@Override
-	public String getDescription() {
-		return "Compares two elements based on their .equals()-method. In case the "
-				+ "elements are equal a similarity-value of 1f is returned, 0f otherwise";
-	}
-
 }

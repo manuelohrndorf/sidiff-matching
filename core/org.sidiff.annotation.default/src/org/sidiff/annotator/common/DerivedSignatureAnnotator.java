@@ -54,6 +54,7 @@ public class DerivedSignatureAnnotator extends Annotator {
 	private final List<RemoteAttribute> valueDescriptors = new LinkedList<RemoteAttribute>();
 	private final List<EAttribute> localAttributes = new LinkedList<EAttribute>();
 
+	@Override
 	public void init(EPackage documentType, String annotationKey, String parameter, EClass acceptedType,
 			Collection<String> requiredAnnotations) {
 		super.init(documentType, annotationKey, parameter, acceptedType, requiredAnnotations, ExecutionOrder.PRE);
@@ -143,13 +144,7 @@ public class DerivedSignatureAnnotator extends Annotator {
 	}
 
 	@Override
-	public String getAnnotatorID() {
+	public String getKey() {
 		return ANNOTATOR_ID;
-	}
-
-	@Override
-	public String getDescription() {
-		
-		return "DerivedSignatureAnnotator";
 	}
 }

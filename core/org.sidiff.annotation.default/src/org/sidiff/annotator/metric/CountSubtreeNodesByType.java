@@ -1,6 +1,7 @@
 package org.sidiff.annotator.metric;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.*;
@@ -18,6 +19,7 @@ public class CountSubtreeNodesByType extends Annotator {
 
 	private static final String ANNOTATOR_ID = "CountSubtreeNodesByType";
 
+	@Override
 	public void init(EPackage documentType, String annotationKey, String parameter, EClass acceptedType,
 			Collection<String> requiredAnnotations) {
 
@@ -42,18 +44,18 @@ public class CountSubtreeNodesByType extends Annotator {
 			}
 		}
 
-		return new Float(result);
+		return result;
 	}
 
 	@Override
-	public String getAnnotatorID() {
+	public String getKey() {
 		return ANNOTATOR_ID;
 	}
 
 	@Override
-	public String getDescription() {
-		return " Zaehlt Kind-Elemente und Kindes-Kind-Elemente (im gesamten Teilbaum) eines"
-				+ " bestimmten Typs (Parameter 1).";
+	public Optional<String> getDescription() {
+		return Optional.of("Zaehlt Kind-Elemente und Kindes-Kind-Elemente (im gesamten Teilbaum) eines"
+				+ " bestimmten Typs (Parameter 1).");
 	}
 
 }

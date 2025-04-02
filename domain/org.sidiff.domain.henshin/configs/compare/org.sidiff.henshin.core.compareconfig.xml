@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--DOCTYPE SiDiff SYSTEM "http://pi.informatik.uni-siegen.de/SiDiff/org.sidiff.core.compare.calculator.default.dtd"-->
+<Comparison>
+	<Settings normalizeWeights="true"
+			  documentType="http://www.eclipse.org/emf/2011/Henshin" />
+	<Configurations>
+		<Class name="Node" threshold="0.5">
+			<CompareFunction class="Self" weight="0.5" parameter="ECAttributeStatic[VCStringLCS[cs];name]"/>
+		</Class>
+		<!-- TODO -->
+	</Configurations>	
+</Comparison>

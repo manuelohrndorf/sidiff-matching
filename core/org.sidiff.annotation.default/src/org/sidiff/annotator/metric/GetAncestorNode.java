@@ -1,6 +1,7 @@
 package org.sidiff.annotator.metric;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.eclipse.emf.ecore.*;
 import org.sidiff.annotator.common.Annotator;
@@ -18,6 +19,7 @@ public class GetAncestorNode extends Annotator {
 
 	private static final String ANNOTATOR_ID = "GetAncestorNode";
 
+	@Override
 	public void init(EPackage documentType, String annotationKey, String parameter, EClass acceptedType,
 			Collection<String> requiredAnnotations) {
 
@@ -36,15 +38,15 @@ public class GetAncestorNode extends Annotator {
 	}
 
 	@Override
-	public String getAnnotatorID() {
+	public String getKey() {
 		return ANNOTATOR_ID;
 	}
 
 	@Override
-	public String getDescription() {
-		return "Dieser Annotator durchlaeuft die Container eines Elements solange bis ein "
+	public Optional<String> getDescription() {
+		return Optional.of("Dieser Annotator durchlaeuft die Container eines Elements solange bis ein "
 				+ "Element eines bestimmten Typs (Parameter 1) gefunden wird und setzt dieses "
-				+ "Element als Annotation.";
+				+ "Element als Annotation.");
 	}
 
 }

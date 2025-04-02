@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText="(c), Christopher Pietsch and Robert Mueller, Software Engineering Group, University of Siegen 2017 all rights reserved"
+    modelDirectory="/org.sidiff.superimposition/src" editDirectory="/org.sidiff.superimposition.edit/src"
+    editorDirectory="/org.sidiff.superimposition.ui/src" modelPluginID="org.sidiff.superimposition"
+    modelName="SuperimpositionModel" modelPluginClass="org.sidiff.superimposition.SuperimpositionModelPlugin"
+    editPluginClass="org.sidiff.superimposition.provider.SuperimpositionModelEditPlugin"
+    editorPluginClass="org.sidiff.superimposition.presentation.SuperimpositionModelEditorPlugin"
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" testSuiteClass="org.sidiff.superimposition.tests.SuperimpositionModelAllTests"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0" providerRootExtendsClass=""
+    editPluginID="org.sidiff.superimposition.edit" editorPluginID="org.sidiff.superimposition.ui"
+    optimizedHasChildren="true" colorProviders="true" usedGenPackages="../../org.sidiff.entities/model/EntitiesModel.genmodel#//entities ../../org.sidiff.formula/model/Formula.genmodel#//formula"
+    operationReflection="true" importOrganizing="true" styleProviders="true">
+  <foreignModel>SuperimpositionModel.ecore</foreignModel>
+  <genPackages prefix="SuperimpositionModel" basePackage="org.sidiff" disposableProviderFactory="true"
+      contentTypeIdentifier="" fileExtensions="sim" ecorePackage="SuperimpositionModel.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="SuperimpositionModel.ecore#//ConflictSeverity">
+      <genEnumLiterals ecoreEnumLiteral="SuperimpositionModel.ecore#//ConflictSeverity/ERROR"/>
+      <genEnumLiterals ecoreEnumLiteral="SuperimpositionModel.ecore#//ConflictSeverity/WARNING"/>
+      <genEnumLiterals ecoreEnumLiteral="SuperimpositionModel.ecore#//ConflictSeverity/NOTICE"/>
+      <genEnumLiterals ecoreEnumLiteral="SuperimpositionModel.ecore#//ConflictSeverity/OK"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="SuperimpositionModel.ecore#//ConflictType">
+      <genEnumLiterals ecoreEnumLiteral="SuperimpositionModel.ecore#//ConflictType/UNSPECIFIED"/>
+      <genEnumLiterals ecoreEnumLiteral="SuperimpositionModel.ecore#//ConflictType/SYNTACTIC"/>
+      <genEnumLiterals ecoreEnumLiteral="SuperimpositionModel.ecore#//ConflictType/SEMANTIC"/>
+    </genEnums>
+    <genDataTypes ecoreDataType="SuperimpositionModel.ecore#//ISignatureCalculator"
+        create="return ExtensionSerialization.createExtension(ISignatureCalculator.MANAGER, it);"
+        convert="return ExtensionSerialization.convertToString(it);"/>
+    <genClasses ecoreClass="SuperimpositionModel.ecore#//SuperimposedModel">
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute SuperimpositionModel.ecore#//SuperimposedModel/docType"
+          get="return getType().stream().map(EPackage::getNsURI).collect(Collectors.toCollection(() -> ECollections.newBasicEListWithCapacity(getType().size())));"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SuperimpositionModel.ecore#//SuperimposedModel/elements"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SuperimpositionModel.ecore#//SuperimposedModel/type"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SuperimpositionModel.ecore#//SuperimposedModel/annotations"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SuperimpositionModel.ecore#//SuperimposedModel/signatureCalculators"/>
+      <genOperations ecoreOperation="SuperimpositionModel.ecore#//SuperimposedModel/getElements">
+        <genParameters ecoreParameter="SuperimpositionModel.ecore#//SuperimposedModel/getElements/signature"/>
+      </genOperations>
+      <genOperations ecoreOperation="SuperimpositionModel.ecore#//SuperimposedModel/getEntities">
+        <genParameters ecoreParameter="SuperimpositionModel.ecore#//SuperimposedModel/getEntities/filter"/>
+      </genOperations>
+      <genOperations ecoreOperation="SuperimpositionModel.ecore#//SuperimposedModel/createConflictSet">
+        <genParameters ecoreParameter="SuperimpositionModel.ecore#//SuperimposedModel/createConflictSet/filter"/>
+      </genOperations>
+      <genOperations ecoreOperation="SuperimpositionModel.ecore#//SuperimposedModel/getAnnotation">
+        <genParameters ecoreParameter="SuperimpositionModel.ecore#//SuperimposedModel/getAnnotation/body"/>
+      </genOperations>
+      <genOperations ecoreOperation="SuperimpositionModel.ecore#//SuperimposedModel/getAnnotation.1">
+        <genParameters ecoreParameter="SuperimpositionModel.ecore#//SuperimposedModel/getAnnotation.1/annotation"/>
+      </genOperations>
+      <genOperations ecoreOperation="SuperimpositionModel.ecore#//SuperimposedModel/getOrAddAnnotation">
+        <genParameters ecoreParameter="SuperimpositionModel.ecore#//SuperimposedModel/getOrAddAnnotation/annotation"/>
+      </genOperations>
+      <genOperations ecoreOperation="SuperimpositionModel.ecore#//SuperimposedModel/calculateSignature">
+        <genParameters ecoreParameter="SuperimpositionModel.ecore#//SuperimposedModel/calculateSignature/object"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="SuperimpositionModel.ecore#//SuperimposedElement">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SuperimpositionModel.ecore#//SuperimposedElement/objects"/>
+      <genFeatures property="Readonly" children="true" createChild="true" ecoreFeature="ecore:EReference SuperimpositionModel.ecore#//SuperimposedElement/ownedAttributes"/>
+      <genFeatures property="Readonly" children="true" createChild="true" ecoreFeature="ecore:EReference SuperimpositionModel.ecore#//SuperimposedElement/ownedReferences"/>
+      <genFeatures createChild="false" propertyMultiLine="true" ecoreFeature="ecore:EReference SuperimpositionModel.ecore#//SuperimposedElement/objectAnnotations"/>
+      <genOperations ecoreOperation="SuperimpositionModel.ecore#//SuperimposedElement/getContainer"/>
+      <genOperations ecoreOperation="SuperimpositionModel.ecore#//SuperimposedElement/getContained"/>
+    </genClasses>
+    <genClasses ecoreClass="SuperimpositionModel.ecore#//ConflictingEntities">
+      <genFeatures notify="false" children="true" createChild="false" propertySortChoices="true"
+          ecoreFeature="ecore:EReference SuperimpositionModel.ecore#//ConflictingEntities/context"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SuperimpositionModel.ecore#//ConflictingEntities/conflictSet"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SuperimpositionModel.ecore#//ConflictingEntities/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SuperimpositionModel.ecore#//ConflictingEntities/entities"/>
+      <genFeatures notify="false" children="true" createChild="false" propertySortChoices="true"
+          ecoreFeature="ecore:EReference SuperimpositionModel.ecore#//ConflictingEntities/references"/>
+      <genFeatures notify="false" children="true" createChild="false" propertySortChoices="true"
+          ecoreFeature="ecore:EReference SuperimpositionModel.ecore#//ConflictingEntities/elements"/>
+      <genFeatures notify="false" children="true" createChild="false" propertySortChoices="true"
+          ecoreFeature="ecore:EReference SuperimpositionModel.ecore#//ConflictingEntities/attributes"/>
+      <genOperations ecoreOperation="SuperimpositionModel.ecore#//ConflictingEntities/getAttributes">
+        <genParameters ecoreParameter="SuperimpositionModel.ecore#//ConflictingEntities/getAttributes/type"/>
+      </genOperations>
+      <genOperations ecoreOperation="SuperimpositionModel.ecore#//ConflictingEntities/getReferences">
+        <genParameters ecoreParameter="SuperimpositionModel.ecore#//ConflictingEntities/getReferences/type"/>
+      </genOperations>
+      <genOperations ecoreOperation="SuperimpositionModel.ecore#//ConflictingEntities/getElements">
+        <genParameters ecoreParameter="SuperimpositionModel.ecore#//ConflictingEntities/getElements/type"/>
+      </genOperations>
+      <genOperations ecoreOperation="SuperimpositionModel.ecore#//ConflictingEntities/isInvalidated"/>
+      <genOperations ecoreOperation="SuperimpositionModel.ecore#//ConflictingEntities/getNumberOfConflictingFeatures"/>
+    </genClasses>
+    <genClasses ecoreClass="SuperimpositionModel.ecore#//Conflict">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SuperimpositionModel.ecore#//Conflict/id"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SuperimpositionModel.ecore#//Conflict/message"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SuperimpositionModel.ecore#//Conflict/severity"/>
+      <genFeatures property="None" notify="false" children="true" createChild="false"
+          ecoreFeature="ecore:EReference SuperimpositionModel.ecore#//Conflict/conflicting"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SuperimpositionModel.ecore#//Conflict/conflictSet"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SuperimpositionModel.ecore#//Conflict/type"/>
+    </genClasses>
+    <genClasses ecoreClass="SuperimpositionModel.ecore#//ConflictSet">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SuperimpositionModel.ecore#//ConflictSet/context"/>
+      <genFeatures property="None" createChild="true" ecoreFeature="ecore:EReference SuperimpositionModel.ecore#//ConflictSet/conflicting"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SuperimpositionModel.ecore#//ConflictSet/conflicts"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SuperimpositionModel.ecore#//ConflictSet/inputs"/>
+      <genOperations ecoreOperation="SuperimpositionModel.ecore#//ConflictSet/computeSeverity"/>
+    </genClasses>
+    <genClasses ecoreClass="SuperimpositionModel.ecore#//EObjectToAnnotationsMapEntry">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SuperimpositionModel.ecore#//EObjectToAnnotationsMapEntry/key"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SuperimpositionModel.ecore#//EObjectToAnnotationsMapEntry/value"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

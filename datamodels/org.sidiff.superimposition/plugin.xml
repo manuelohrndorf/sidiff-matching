@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+   <extension-point id="signature_calculator_extension" name="Signature Calculator Extension" schema="schema/signature_calculator_extension.exsd"/>
+   <extension-point id="conflict_detector" name="Conflict Detector Extension" schema="schema/conflict_detector_extension.exsd"/>
+   <extension-point id="conflict_resolver" name="Conflict Resolver Extension" schema="schema/conflict_resolver_extension.exsd"/>
+   <extension-point id="annotationProviders" name="Annotation Providers" schema="schema/annotationProviders.exsd"/>
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated SuperimpositionModel -->
+      <package
+            uri="http://www.sidiff.org/superimposition/model/1.0"
+            class="org.sidiff.superimposition.SuperimpositionModelPackage"
+            genModel="model/SuperimpositionModel.genmodel"/>
+   </extension>
+   <extension
+         point="org.sidiff.superimposition.conflict_detector">
+      <conflictDetector
+            class="org.sidiff.superimposition.conflict.detector.impl.MetaModelBasedConflictDetector"
+            key="MetaModelBased"
+            name="Meta Model Based Conflict Detector">
+         <documentType>
+            generic
+         </documentType>
+      </conflictDetector>
+      <conflictDetector
+            class="org.sidiff.superimposition.conflict.detector.impl.AnnotationConflictDetector"
+            key="Annotation"
+            name="Annotation Conflict Detector">
+         <documentType>
+            generic
+         </documentType>
+      </conflictDetector>
+   </extension>
+   <extension
+         point="org.sidiff.superimposition.conflict_resolver">
+      <conflictResolver
+            class="org.sidiff.superimposition.conflict.resolver.impl.BasicConflictResolver"
+            key="Basic"
+            mode="BATCH"
+            name="Basic Conflict Resolver">
+         <supportedConflict>
+            Ecore.E*.Unique.Violated
+         </supportedConflict>
+      </conflictResolver>
+      <conflictResolver
+            class="org.sidiff.superimposition.conflict.resolver.impl.MergingConflictResolver"
+            key="Merging"
+            mode="BATCH"
+            name="Merging Conflict Resolver">
+         <supportedConflict>
+            Superimposed.Element.UUID.Duplicated
+         </supportedConflict>
+         <supportedConflict>
+            Ecore.ENamedElement.Name.Duplicated
+         </supportedConflict>
+      </conflictResolver>
+      <conflictResolver
+            class="org.sidiff.superimposition.conflict.resolver.impl.DuplicatingConflictResolver"
+            key="Duplicating"
+            mode="BATCH"
+            name="Duplicating Conflict Resolver">
+         <supportedConflict>
+            Ecore.E*.UpperBound.Violated
+         </supportedConflict>
+         <supportedConflict>
+            ConsolidationDesign.Immutability.Violated
+         </supportedConflict>
+         <supportedConflict>
+            Ecore.ENamedElement.Name.Duplicated
+         </supportedConflict>
+      </conflictResolver>
+      <conflictResolver
+            class="org.sidiff.superimposition.conflict.resolver.impl.UuidGeneratingConflictResolver"
+            key="UuidGenerating"
+            mode="BATCH"
+            name="UUID Generating Conflict Resolver">
+         <supportedConflict>
+            Superimposed.Element.UUID.Duplicated
+         </supportedConflict>
+      </conflictResolver>
+      <conflictResolver
+            class="org.sidiff.superimposition.conflict.resolver.impl.AnnotationConflictResolver"
+            key="Annotation"
+            mode="BATCH"
+            name="Annotation Conflict Resolver">
+         <supportedConflict>
+            Superimposed.*.Annotations.*
+         </supportedConflict>
+      </conflictResolver>
+   </extension>
+   <extension
+         point="org.sidiff.superimposition.signature_calculator_extension">
+      <signature_calculator
+            class="org.sidiff.superimposition.signature.impl.DefaultSignatureCalculator">
+      </signature_calculator>
+      <signature_calculator
+            class="org.sidiff.superimposition.signature.impl.XMIIDSignatureCalculator">
+      </signature_calculator>
+   </extension>
+   <extension
+         point="org.sidiff.superimposition.annotationProviders">
+      <annotationProvider
+            class="org.sidiff.superimposition.annotation.provider.impl.ModelUriBasedAnnotationProvider"
+            key="ModelUriBasedAnnotations"
+            name="Model URI Based Annotations">
+         <documentType>
+            generic
+         </documentType>
+      </annotationProvider>
+      <annotationProvider
+            class="org.sidiff.superimposition.annotation.provider.impl.PropertiesFileAnnotationProvider"
+            description="Load annoations from a .properties file."
+            key="PropertiesFileAnnotations"
+            name="Properties File Annotations">
+         <documentType>
+            generic
+         </documentType>
+      </annotationProvider>
+   </extension>
+</plugin>

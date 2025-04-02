@@ -1,9 +1,11 @@
 package org.sidiff.comparators.impl;
 
+import java.util.Optional;
+
 import org.eclipse.emf.ecore.EAttribute;
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.sidiff.common.util.NestedParameterUtil;
 import org.sidiff.comparators.abstractcomperators.AbstractElementComparator;
 import org.sidiff.comparators.abstractcomperators.AbstractValueComparator;
 import org.sidiff.comparators.exceptions.AttributeNotExistsException;
@@ -35,7 +37,7 @@ import org.sidiff.comparators.exceptions.AttributeNotExistsException;
  * @author Pit Pietsch
  */
 public class ECAttributeStatic extends AbstractElementComparator {
-	public static final String COMPARATOR_ID = "ECAttributeStatic";
+
 	/**
 	 * The inner comparator.
 	 */
@@ -60,19 +62,19 @@ public class ECAttributeStatic extends AbstractElementComparator {
 	 * @see AttributeNotExistsException
 	 */
 	@Override
-	public void init(EClass dedicatedClass, EClass targetClass, String parameter) {
-		super.init(dedicatedClass, targetClass, parameter);
-
+	protected void init(String parameter) {
+		String[] paramItems = NestedParameterUtil.getParameterSegments(parameter);
 		assert(paramItems.length == 2) : "invalid parameter syntax '" + parameter + "'";
 
 		// first parameter: comparator
-		comparator = (AbstractValueComparator) loadComparator(paramItems[0], dedicatedClass, targetClass,
-				AbstractValueComparator.class);
+		comparator = loadComparator(paramItems[0], dedicatedClass, targetClass,
+				AbstractValueComparator.class, getCorrespondences(), getSimilarities());
 
 		// second parameter: attribute name
 		EStructuralFeature feature = targetClass.getEStructuralFeature(paramItems[1]);
-		if (feature == null) // feature does not exist
+		if (feature == null) { // feature does not exist
 			throw new AttributeNotExistsException("Attribute does not exist: " + paramItems[1]);
+		}
 
 		try {
 			attribute = (EAttribute) feature;
@@ -100,13 +102,8 @@ public class ECAttributeStatic extends AbstractElementComparator {
 	}
 
 	@Override
-	public String getComparatorID() {
-		return COMPARATOR_ID;
-	}
-
-	@Override
-	public String getDescription() {
-		return " This comparator compares the attributes of two elements based on the specified inner comparator. If the attribute does not exist in at least one"
-				+ " of the elements a AttributeDoesNotExist-Exception is thrown.";
+	public Optional<String> getDescription() {
+		return Optional.of("This comparator compares the attributes of two elements based on the specified inner comparator. "
+				+ "If the attribute does not exist in at least one of the elements a AttributeDoesNotExist-Exception is thrown.");
 	}
 }

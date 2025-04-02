@@ -1,9 +1,12 @@
 package org.sidiff.domain.modelloader;
 
+import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.emf.ecore.resource.Resource;
+import org.sidiff.common.extension.IExtension;
 
 /**
  * This is the generic interface for loading models into the model storage.<br>
@@ -12,24 +15,20 @@ import org.eclipse.emf.ecore.resource.Resource;
  * @author Maik Schmidt
  *
  */
-public interface IModelLoader {
-	public static final String EXTENSION_POINT_ID = "org.sidiff.domain.modelloader.extensionpoint";
-	public static final String LOADER_ID = "IModelLoader";
+public interface IModelLoader extends IExtension {
 
+	Description<IModelLoader> DESCRIPTION = Description.of(IModelLoader.class,
+			"org.sidiff.domain.modelloader.extensionpoint", "client", "class");
 
-	public String getModelLoaderID();
-	
-	
+	ModelLoaderManager MANAGER = new ModelLoaderManager(DESCRIPTION);
+
 	/**
 	 * This method translates a model into the internal format of SiDiff  
 	 * @param resource a new empty resource
 	 * @param data the model as {@link InputStream}
 	 */
-	public void parse(Resource resource,InputStream data);
-	
-	public void loadModel(Resource res, String path);
-	
-	
+	public void parse(Resource resource, InputStream data) throws IOException;
+
 	/**
 	 * This method returns the magic keys of the loader. These keys are regular expressions, which must match to the beginning of the file
 	 *  
@@ -49,11 +48,4 @@ public interface IModelLoader {
 	 * @return File suffix as {@link String}
 	 */
 	public String getSuffix();
-	
-	/**
-	 * Gets the description of the loader.
-	 * @return The description as {@link String}
-	 */
-	public String getLoaderDescription();
-	
 }

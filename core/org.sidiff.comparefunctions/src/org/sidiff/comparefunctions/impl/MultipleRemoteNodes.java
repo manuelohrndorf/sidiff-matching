@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EClass;
@@ -12,6 +13,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.sidiff.common.emf.access.EMFMetaAccess;
 import org.sidiff.common.emf.access.EMFModelAccess;
 import org.sidiff.common.emf.access.path.EMFPath;
+import org.sidiff.correspondences.ICorrespondences;
+import org.sidiff.similarities.ISimilarities;
 
 /**
  * This is a compare function for comparing two nodes based on the comparison of
@@ -33,7 +36,7 @@ import org.sidiff.common.emf.access.path.EMFPath;
  * 
  */
 public class MultipleRemoteNodes extends AbstractComparatorCompareFunction {
-	public static final String COMPAREFUNCTION_ID = "MultipleRemoteNodes";
+
 	/*
 	 * The path to the remote elements, not initialized here due to init-call!
 	 */
@@ -55,9 +58,10 @@ public class MultipleRemoteNodes extends AbstractComparatorCompareFunction {
 	 *            collections "children of A" and "children of B".
 	 */
 	@Override
-	public void init(EClass dedicatedClass, EvaluationPolicy policy, float weight, String parameter) {
-		super.init(dedicatedClass, policy, weight, parameter);
-		this.pathsList = new LinkedList<EMFPath>();
+	public void init(EClass dedicatedClass, EvaluationPolicy policy, float weight, String parameter,
+			ICorrespondences correspondences, ISimilarities similarities) {
+		super.init(dedicatedClass, policy, weight, parameter, correspondences, similarities);
+		this.pathsList = new LinkedList<>();
 		// get all paths from parameter
 		for (int i = 1; i < paramItems.length; i++) {
 			pathsList.add(EMFMetaAccess.translatePath(getEClass(), paramItems[i]));
@@ -66,18 +70,17 @@ public class MultipleRemoteNodes extends AbstractComparatorCompareFunction {
 
 	@Override
 	protected Collection<EObject> getToBeCompared(EObject context) {
-		Collection<EObject> toBeCompared = new ArrayList<EObject>();
-
-		for (EMFPath path : pathsList)
-			toBeCompared.addAll(EMFModelAccess.evaluatePath(context, path));
-
+		Collection<EObject> toBeCompared = new ArrayList<>();
+		for (EMFPath path : pathsList) {
+			toBeCompared.addAll(EMFModelAccess.evaluatePath(context, path));			
+		}
 		return toBeCompared;
 	}
 
 	@Override
 	protected EClass getComparedType(EClass context) {
 		// infer types of target classes
-		Set<EClass> targetClasses = new HashSet<EClass>();
+		Set<EClass> targetClasses = new HashSet<>();
 
 		for (EMFPath path : pathsList) {
 			EClass targetClazz = EMFMetaAccess.inferResultType(path);
@@ -90,14 +93,10 @@ public class MultipleRemoteNodes extends AbstractComparatorCompareFunction {
 	}
 
 	@Override
-	public String getCompareFunctionID() {
-		return COMPAREFUNCTION_ID;
-	}
-
-	@Override
-	public String getDescription() {
-		return "his is a compare function for comparing two nodes based on the comparison of remote nodes."
+	public Optional<String> getDescription() {
+		return Optional.of("This is a compare function for comparing two nodes based on the comparison of remote nodes."
 				+ " The remote nodes are defined by several path expressions based on the document type specific meta-model."
-				+ " It is similar to RemoteNodesCF, the difference is that several paths can be given as parameter. Attention: The user must assure, that the target element type of all paths is the same!";
+				+ " It is similar to RemoteNodesCF, the difference is that several paths can be given as parameter. "
+				+ "Attention: The user must assure, that the target element type of all paths is the same!");
 	}
 }

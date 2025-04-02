@@ -1,6 +1,7 @@
 package org.sidiff.annotator.metric;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.eclipse.emf.ecore.*;
 import org.sidiff.annotator.common.Annotator;
@@ -18,6 +19,7 @@ public class CountReferences extends Annotator {
 
 	private static final String ANNOTATOR_ID = "CountReferences";
 
+	@Override
 	public void init(EPackage documentType, String annotationKey, String parameter, EClass acceptedType,
 			Collection<String> requiredAnnotations) {
 
@@ -26,18 +28,18 @@ public class CountReferences extends Annotator {
 
 	@Override
 	protected Object computeAnnotationValue(EObject object) {
-		return new Float(EMFModelAccess.getNodeNeighbors(object,
+		return (float)EMFModelAccess.getNodeNeighbors(object,
 				EMFMetaAccess.getReferencesByNames(object.eClass(), this.getParameter()).toArray(new EReference[] {}))
-				.size());
+				.size();
 	}
 
 	@Override
-	public String getAnnotatorID() {
+	public String getKey() {
 		return ANNOTATOR_ID;
 	}
 
 	@Override
-	public String getDescription() {
-		return "Zaehlt die Elemente, die ueber eine bestimmte Referenz (Parameter 1) erreichtwerden.";
+	public Optional<String> getDescription() {
+		return Optional.of("Zaehlt die Elemente, die ueber eine bestimmte Referenz (Parameter 1) erreichtwerden.");
 	}
 }

@@ -1,10 +1,13 @@
 package org.sidiff.comparefunctions.impl;
 
+import java.util.Arrays;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.sidiff.common.util.NestedParameterUtil;
-import org.sidiff.common.util.StringUtil;
 import org.sidiff.comparefunctions.ICompareFunction;
+import org.sidiff.correspondences.ICorrespondences;
+import org.sidiff.similarities.ISimilarities;
 
 /**
  * Represents the abstract superclass for each compare function.<br />
@@ -14,23 +17,23 @@ public abstract class AbstractCompareFunction implements ICompareFunction {
 	/**
 	 * The compare function's policy
 	 */
-	private EvaluationPolicy ePolicy = null;
+	private EvaluationPolicy ePolicy;
 
 	/**
 	 * The compare function's weight
 	 */
-	private float weight = 0.0f;
+	private float weight;
 
 	/**
 	 * The dedicated meta-class (out of the document type specific meta-model)
 	 * on whose instances this compare function operates on.
 	 */
-	private EClass dedicatedClass = null;
+	private EClass dedicatedClass;
 
 	/**
 	 * Holds the parameter string fragments and can be used by subclasses.
 	 */
-	protected String[] paramItems = null;
+	protected String[] paramItems;
 
 	/**
 	 * The init() that has to be used by subclasses.<br>
@@ -49,7 +52,8 @@ public abstract class AbstractCompareFunction implements ICompareFunction {
 	 */
 
 	@Override
-	public void init(EClass dedicatedClass, EvaluationPolicy policy, float weight, String parameter) {
+	public void init(EClass dedicatedClass, EvaluationPolicy policy, float weight, String parameter,
+			ICorrespondences correspondences, ISimilarities similarities) {
 
 		if (weight >= 0.0f && weight <= 1.0f && policy != null && dedicatedClass != null) {
 
@@ -67,6 +71,7 @@ public abstract class AbstractCompareFunction implements ICompareFunction {
 		}
 	}
 
+	@Override
 	public EvaluationPolicy getPolicy() {
 		return ePolicy;
 	}
@@ -76,6 +81,7 @@ public abstract class AbstractCompareFunction implements ICompareFunction {
 	 * 
 	 * @see org.sidiff.core.comparefunctions.CI#getWeight()
 	 */
+	@Override
 	public float getWeight() {
 		return this.weight;
 	}
@@ -85,6 +91,7 @@ public abstract class AbstractCompareFunction implements ICompareFunction {
 	 * 
 	 * @see org.sidiff.core.comparefunctions.CI#getEClass()
 	 */
+	@Override
 	public EClass getEClass() {
 		return this.dedicatedClass;
 	}
@@ -96,16 +103,21 @@ public abstract class AbstractCompareFunction implements ICompareFunction {
 	 * org.sidiff.core.comparefunctions.CI#compare(org.eclipse.emf.ecore.EObject
 	 * , org.eclipse.emf.ecore.EObject)
 	 */
+	@Override
 	public abstract float compare(EObject nodeInA, EObject nodeInB);
 
-	@SuppressWarnings("all")
+	@Override
 	public String toString() {
 
 		if (paramItems != null) {
 			return getClass().getCanonicalName() + "(" + dedicatedClass.getName() + "/"
-					+ StringUtil.resolve(paramItems) + "/" + ePolicy + ")";
-		} else {
-			return getClass().getCanonicalName() + "(" + dedicatedClass.getName() + "/" + ePolicy + ")";
+					+ Arrays.toString(paramItems) + "/" + ePolicy + ")";
 		}
+		return getClass().getCanonicalName() + "(" + dedicatedClass.getName() + "/" + ePolicy + ")";
+	}
+
+	@Override
+	public String getKey() {
+		return getClass().getSimpleName();
 	}
 }

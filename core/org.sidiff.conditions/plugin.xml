@@ -10,9 +10,6 @@
             class="org.sidiff.conditions.ChildrenMatchedCondition">
       </client>
       <client
-            class="org.sidiff.conditions.CompareFunctionCondition">
-      </client>
-      <client
             class="org.sidiff.conditions.EqualAnnotationValueCondition">
       </client>
       <client

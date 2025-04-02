@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.sidiff.common.emf.doctype.document_type_resolver">
+      <document_type_resolver
+            class="org.sidiff.superimposition.emf.doctype.SuperimposedModelDocumentTypeResolver">
+      </document_type_resolver>
+   </extension>
+
+</plugin>

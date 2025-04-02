@@ -2,12 +2,6 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="org.sidiff.service.extensionpoint">
-      <client
-            class="org.sidiff.similaritiescalculation.DefaultSimilaritiesCalculation">
-      </client>
-   </extension>
-   <extension
          point="org.sidiff.similaritiescalculation.extensionpoint">
       <client
             class="org.sidiff.similaritiescalculation.DefaultSimilaritiesCalculation">

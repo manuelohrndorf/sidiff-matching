@@ -7,11 +7,12 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.sidiff.common.emf.access.EMFMetaAccess;
 import org.sidiff.common.exceptions.SiDiffRuntimeException;
-import org.sidiff.comparefunctions.CompareFunctionUtil;
 import org.sidiff.comparefunctions.ICompareFunction;
 import org.sidiff.comparefunctions.ICompareFunction.EvaluationPolicy;
 import org.sidiff.conditions.ICondition;
-import org.sidiff.conditions.util.ConditionsUtil;
+import org.sidiff.correspondences.ICorrespondences;
+import org.sidiff.similarities.ISimilarities;
+import org.sidiff.similaritiescalculation.DefaultSimilaritiesCalculation;
 import org.sidiff.similaritiescalculation.IfThenElse;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -52,23 +53,30 @@ public class XMLConfigurationHandler {
 
 	private static final String ELEM_ELSE = "Else";
 
-	public CompareConfiguration parseConfiguration(Document xmlconfig) {
+	private ICorrespondences correspondences;
+	private ISimilarities similarities;
 
-		CompareConfiguration result = processSettings(xmlconfig.getElementsByTagName(ELEM_SETTINGS).item(0));
+	public XMLConfigurationHandler(ICorrespondences correspondences, ISimilarities similarities) {
+		this.correspondences = correspondences;
+		this.similarities = similarities;
+	}
+
+	public CompareConfiguration parseConfiguration(DefaultSimilaritiesCalculation similaritiesCalculation, Document xmlconfig) {
+		CompareConfiguration result = processSettings(similaritiesCalculation, xmlconfig.getElementsByTagName(ELEM_SETTINGS).item(0));
 
 		NodeList classNodes = xmlconfig.getElementsByTagName(ELEM_CLASS);
 		for (int i = 0; i < classNodes.getLength(); i++) {
+			Node item = classNodes.item(i);
 			if (result.addTypeConfiguration(
-					createTypeConfiguration(result.getConfiguredEPackage(), classNodes.item(i), result)) != null) {
-				throw new InvalidArgumentException(classNodes.item(i).getAttributes(), ATT_CLASS_NAME,
+					createTypeConfiguration(result.getConfiguredEPackage(), item, result)) != null) {
+				throw new InvalidArgumentException(item.getAttributes(), ATT_CLASS_NAME,
 						"Duplicate Class Definition!");
 			}
 		}
 		return result;
 	}
 
-	private CompareConfiguration processSettings(Node settings) {
-
+	private CompareConfiguration processSettings(DefaultSimilaritiesCalculation similaritiesCalculation, Node settings) {
 		NamedNodeMap attributes = settings.getAttributes();
 
 		EPackage ePackage = EPackage.Registry.INSTANCE.getEPackage(getValue(attributes, ATT_SETTINGS_DOCTYPE));
@@ -76,7 +84,7 @@ public class XMLConfigurationHandler {
 			throw new MissingPackageException(settings);
 		}
 
-		CompareConfiguration result = new CompareConfiguration(ePackage);
+		CompareConfiguration result = new CompareConfiguration(similaritiesCalculation, ePackage);
 		result.setNormalizeWeights(Boolean.parseBoolean(getValue(attributes, ATT_SETTINGS_NORMWEIGHTS)));
 
 		return result;
@@ -125,7 +133,6 @@ public class XMLConfigurationHandler {
 		TypeConfiguration typeconfig = new TypeConfiguration(type, threshold);
 
 		for (ICompareFunction cf : getCompareFunctions(type, classNode.getChildNodes(), compareConfiguration)) {
-
 			typeconfig.addCompareFunction(cf);
 		}
 
@@ -141,7 +148,7 @@ public class XMLConfigurationHandler {
 			Node currentNode = compareFunctionsNodes.item(i);
 			if (currentNode.getNodeType() == Node.ELEMENT_NODE) {
 				if (currentNode.getNodeName().equals(ELEM_COMPAREFUNCTION)) {
-					result.add(createcCompareFunction(dedicatedClass, currentNode));
+					result.add(createCompareFunction(dedicatedClass, currentNode));
 				} else if (currentNode.getNodeName().equals(ELEM_IF)) {
 					result.add(createIf(dedicatedClass, currentNode, compareConfiguration));
 				} else {
@@ -152,9 +159,7 @@ public class XMLConfigurationHandler {
 		return result;
 	}
 
-	public ICompareFunction createcCompareFunction(EClass dedicatedClass, Node compareFunctionNode) {
-
-		ICompareFunction item = null;
+	public ICompareFunction createCompareFunction(EClass dedicatedClass, Node compareFunctionNode) {
 
 		NamedNodeMap attributes = compareFunctionNode.getAttributes();
 
@@ -177,22 +182,21 @@ public class XMLConfigurationHandler {
 		}
 
 		String parameter = getValue(attributes, ATT_COMPAREFUNCTION_PARAMETER);
-		item = CompareFunctionUtil.getCompareFunction(className);
-
-		if (parameter != null && !"".equals(parameter.trim())) {
-			item.init(dedicatedClass, policy, weight, parameter);
-
-		} else {
-			item.init(dedicatedClass, policy, weight, null);
+		if(parameter != null) {
+			parameter = parameter.trim();
+			if(parameter.isEmpty()) {
+				parameter = null;
+			}
 		}
 
-		return item;
+		ICompareFunction compareFunction = ICompareFunction.MANAGER.getExtension(className)
+				.orElseThrow(() -> new InvalidArgumentException(attributes, ATT_COMPAREFUNCTION_CLASS));
+		compareFunction.init(dedicatedClass, policy, weight, parameter, correspondences, similarities);
+		return compareFunction;
 	}
 
 	public ICompareFunction createIf(EClass dedicatedClass, Node compareFunctionNode,
 			CompareConfiguration compareConfiguration) {
-
-		IfThenElse ifStatement = null;
 
 		NamedNodeMap attributes = compareFunctionNode.getAttributes();
 
@@ -223,32 +227,33 @@ public class XMLConfigurationHandler {
 			throw new InvalidArgumentException(attributes, ATT_COMPAREFUNCTION_POLICY, "Unknown!");
 		}
 
-		ICondition condition = ConditionsUtil.getCondition(className);
+		ICondition condition = ICondition.MANAGER.getExtension(className)
+				.orElseThrow(() -> new InvalidArgumentException(attributes, ATT_IF_CONDITION, "Condition not found"));
 
-		if (parameter != null && !"".equals(parameter.trim())) {
-			condition.init(dedicatedClass, condpolicy, parameter);
-
-		} else {
-			condition.init(dedicatedClass, condpolicy);
+		if (parameter != null) {
+			parameter = parameter.trim();
+			if(parameter.isEmpty()) {
+				parameter = null;
+			}
 		}
+		condition.init(dedicatedClass, condpolicy, parameter, correspondences, similarities);
 
-		ifStatement = new IfThenElse(dedicatedClass, condition, ifPolicy, weight, compareConfiguration);
+		IfThenElse ifStatement = new IfThenElse(dedicatedClass, condition, ifPolicy, weight, compareConfiguration);
 
 		NodeList ifChilds = compareFunctionNode.getChildNodes();
 		for (int i = 0; i < ifChilds.getLength(); i++) {
-			if (ifChilds.item(i).getNodeType() == Node.ELEMENT_NODE) {
-				if (ELEM_THEN.equals(ifChilds.item(i).getNodeName())) {
-					for (ICompareFunction cf : getCompareFunctions(dedicatedClass, ifChilds.item(i).getChildNodes(),
-							compareConfiguration)) {
+			Node item = ifChilds.item(i);
+			if (item.getNodeType() == Node.ELEMENT_NODE) {
+				if (ELEM_THEN.equals(item.getNodeName())) {
+					for (ICompareFunction cf : getCompareFunctions(dedicatedClass, item.getChildNodes(), compareConfiguration)) {
 						ifStatement.addThenItem(cf);
 					}
-				} else if (ELEM_ELSE.equals(ifChilds.item(i).getNodeName())) {
-					for (ICompareFunction cf : getCompareFunctions(dedicatedClass, ifChilds.item(i).getChildNodes(),
-							compareConfiguration)) {
+				} else if (ELEM_ELSE.equals(item.getNodeName())) {
+					for (ICompareFunction cf : getCompareFunctions(dedicatedClass, item.getChildNodes(), compareConfiguration)) {
 						ifStatement.addElseItem(cf);
 					}
 				} else {
-					throw new InvalidArgumentException(ifChilds.item(i), "Only Then/Else!");
+					throw new InvalidArgumentException(item, "Only Then/Else!");
 				}
 			}
 		}
@@ -273,20 +278,19 @@ public class XMLConfigurationHandler {
 		private static final long serialVersionUID = 1L;
 
 		public InvalidArgumentException(NamedNodeMap attributes, String attributeName) {
-			super(XMLConfigurationHandler.this, "\nInvalid value " + getValue(attributes, attributeName) + "!");
+			super("Invalid value " + getValue(attributes, attributeName) + "!");
 		}
 
 		public InvalidArgumentException(NamedNodeMap attributes, String attributeName, Exception e) {
-			super(XMLConfigurationHandler.this, "\nInvalid value " + getValue(attributes, attributeName) + "!", e);
+			super("Invalid value " + getValue(attributes, attributeName) + "!", e);
 		}
 
 		public InvalidArgumentException(NamedNodeMap attributes, String attributeName, String msg) {
-			super(XMLConfigurationHandler.this,
-					"\n" + msg + "\nInvalid value " + getValue(attributes, attributeName) + "!");
+			super(msg + "\nInvalid value " + getValue(attributes, attributeName) + "!");
 		}
 
 		public InvalidArgumentException(Node node, String message) {
-			super(XMLConfigurationHandler.this, message + "\nInvalid Node:" + node.getNodeName());
+			super(message + "\nInvalid Node:" + node.getNodeName());
 		}
 	}
 }

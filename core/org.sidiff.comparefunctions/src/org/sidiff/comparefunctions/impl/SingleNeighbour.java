@@ -2,8 +2,11 @@ package org.sidiff.comparefunctions.impl;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Optional;
 
 import org.eclipse.emf.ecore.*;
+import org.sidiff.correspondences.ICorrespondences;
+import org.sidiff.similarities.ISimilarities;
 
 /**
  * This is a compare function for comparing two nodes' neighbours. It only works
@@ -20,7 +23,6 @@ import org.eclipse.emf.ecore.*;
  * @author Pit Pietsch
  */
 public class SingleNeighbour extends AbstractComparatorCompareFunction {
-	public static final String COMPAREFUNCTION_ID = "SingleNeighbour";
 
 	/**
 	 * The references to be compared
@@ -49,14 +51,14 @@ public class SingleNeighbour extends AbstractComparatorCompareFunction {
 	protected Collection<EObject> getToBeCompared(EObject context) {
 		if (context.eGet(reference) == null) {
 			return Collections.emptyList();
-		} else {
-			return Collections.singleton((EObject) context.eGet(reference));
 		}
+		return Collections.singleton((EObject) context.eGet(reference));
 	}
 
 	@Override
-	public void init(EClass dedicatedClass, EvaluationPolicy policy, float weight, String parameter) {
-		super.init(dedicatedClass, policy, weight, parameter);
+	public void init(EClass dedicatedClass, EvaluationPolicy policy, float weight, String parameter,
+			ICorrespondences correspondences, ISimilarities similarities) {
+		super.init(dedicatedClass, policy, weight, parameter, correspondences, similarities);
 		// structural features exit
 		assert((getEClass().getEStructuralFeature(paramItems[1]) != null)) : "StructuralFeature \"" + paramItems[1]
 				+ "\" of \"" + getEClass().getName() + "\" does not exist in metamodel";
@@ -72,14 +74,8 @@ public class SingleNeighbour extends AbstractComparatorCompareFunction {
 	}
 
 	@Override
-	public String getCompareFunctionID() {
-		return COMPAREFUNCTION_ID;
+	public Optional<String> getDescription() {
+		return Optional.of("This is a compare function for comparing two nodes' neighbours. "
+				+ "It only works when the cardinality of the reference is exactly 1.");
 	}
-
-	@Override
-	public String getDescription() {
-		return "This is a compare function for comparing two nodes' neighbours. "
-				+ "It only works when the cardinality of the reference is exactly 1.";
-	}
-
 }

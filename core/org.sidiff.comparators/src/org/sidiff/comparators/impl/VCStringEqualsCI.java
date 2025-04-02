@@ -1,5 +1,7 @@
 package org.sidiff.comparators.impl;
 
+import java.util.Optional;
+
 import org.eclipse.emf.ecore.EObject;
 import org.sidiff.comparators.abstractcomperators.AbstractValueComparator;
 
@@ -21,9 +23,7 @@ import org.sidiff.comparators.abstractcomperators.AbstractValueComparator;
  * @see CEquals
  * @author Pit Pietsch
  */
-@Deprecated
 public class VCStringEqualsCI extends AbstractValueComparator {
-	public static final String COMPARATOR_ID = "VCStringEqualsCI";
 
 	@Override
 	protected float calculateSimilarity(EObject contextElementA, EObject contextElementB, Object objectA,
@@ -31,26 +31,13 @@ public class VCStringEqualsCI extends AbstractValueComparator {
 
 		// typecheck
 		assert(objectA instanceof String && objectB instanceof String) : "Works only with Strings!";
-
 		return ((String) objectA).toLowerCase().equals(((String) objectB).toLowerCase()) ? 1f : 0f;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.sidiff.core.comparefunctions.abstractcomparators.AbstractComparator
-	 * #init(org.sidiff.common.services.ServiceContext)
-	 */
 	@Override
-	public String getComparatorID() {
-		return COMPARATOR_ID;
-	}
-
-	@Override
-	public String getDescription() {
-		return "This comparator performs an case-insensitive .equals()-comparison between two Strings. "
+	public Optional<String> getDescription() {
+		return Optional.of("This comparator performs an case-insensitive .equals()-comparison between two Strings. "
 				+ "In case they are equals 1f is returned, 0f otherwise. The CEquals comparator should be "
-				+ "used for case-sensitive equal-comparison instead.";
+				+ "used for case-sensitive equal-comparison instead.");
 	}
 }

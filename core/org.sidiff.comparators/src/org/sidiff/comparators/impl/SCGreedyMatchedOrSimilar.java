@@ -1,12 +1,9 @@
 package org.sidiff.comparators.impl;
 
-import org.eclipse.emf.ecore.EClass;
+import java.util.Optional;
+
 import org.eclipse.emf.ecore.EObject;
 import org.sidiff.comparators.abstractcomperators.AbstractGreedySetComparator;
-import org.sidiff.correspondences.CorrespondencesUtil;
-import org.sidiff.correspondences.ICorrespondences;
-import org.sidiff.similarities.ISimilarities;
-import org.sidiff.similarities.SimilaritiesServiceUtil;
 
 /**
  * This comparator calculates a similarity value between two sets of elements
@@ -27,33 +24,18 @@ import org.sidiff.similarities.SimilaritiesServiceUtil;
  * 
  */
 public class SCGreedyMatchedOrSimilar extends AbstractGreedySetComparator {
-	public static final String COMPARATOR_ID = "SCGreedyMatchedOrSimilar";
-	private ISimilarities similaritiesService = null;
-	private ICorrespondences correspondencesService = null;
-
-	@Override
-	public void init(EClass dedicatedClass, EClass targetClass, String parameter) {
-		super.init(dedicatedClass, targetClass, null);
-		similaritiesService = SimilaritiesServiceUtil.getSimilaritiesServiceInstance();
-		correspondencesService = CorrespondencesUtil.getDefaultCorrespondencesService();
-	}
 
 	@Override
 	protected float getRating(EObject a, EObject b) {
-		if (correspondencesService.isCorresponding(a, b))
-			return 1.0f;
-		else
-			return similaritiesService.getSimilarityDegree(a, b);
+		if (getCorrespondences().isCorresponding(a, b)) {
+			return 1.0f;			
+		}
+		return getSimilarities().getSimilarityDegree(a, b);
 	}
 
 	@Override
-	public String getComparatorID() {
-		return COMPARATOR_ID;
-	}
-
-	@Override
-	public String getDescription() {
-		return " This comparator calculates a similarity value between two sets of "
-				+ "elements based on matchings and similarities. The greedy algorithm used is parted in 3 steps:";
+	public Optional<String> getDescription() {
+		return Optional.of("This comparator calculates a similarity value between two sets of "
+				+ "elements based on matchings and similarities. The greedy algorithm used is parted in 3 steps:");
 	}
 }

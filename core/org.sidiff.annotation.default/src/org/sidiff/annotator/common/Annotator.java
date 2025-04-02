@@ -84,8 +84,8 @@ public abstract class Annotator implements IAnnotator {
 	 * 
 	 * @return The key which is used to store the annotations.
 	 */
+	@Override
 	public String getAnnotationKey() {
-
 		return annotationKey;
 	}
 
@@ -94,8 +94,8 @@ public abstract class Annotator implements IAnnotator {
 	 * 
 	 * @return The EClass on which the annotator is executeable.
 	 */
+	@Override
 	public EClass getType() {
-
 		return this.acceptedType;
 	}
 
@@ -106,8 +106,8 @@ public abstract class Annotator implements IAnnotator {
 	 * @return Parameter which can be used by the annotator while traversing the
 	 *         tree
 	 */
+	@Override
 	public String getParameter() {
-
 		return this.parameter;
 	}
 
@@ -118,8 +118,8 @@ public abstract class Annotator implements IAnnotator {
 	 * @return The annotations which a prerequisites for this annotation to be
 	 *         executed.
 	 */
+	@Override
 	public Collection<String> getRequiredAnnotations() {
-
 		return Collections.unmodifiableList(requiredAnnotations);
 	}
 
@@ -129,18 +129,17 @@ public abstract class Annotator implements IAnnotator {
 	 * 
 	 * @return The order of this annotator.
 	 */
+	@Override
 	public ExecutionOrder getOrder() {
-
 		return this.order;
 	}
 
 	public EPackage getDocumentType() {
-
 		return this.documentType;
 	}
 
+	@Override
 	public void annotate(EObject object) {
-
 		if (acceptedType.isSuperTypeOf(object.eClass()) || acceptedType == EcorePackage.eINSTANCE.getEObject()) {
 			AnnotateableElement annotateable = EMFAdapter.INSTANCE.adapt(object, AnnotateableElement.class);
 			Object value = computeAnnotationValue(object);
@@ -178,9 +177,4 @@ public abstract class Annotator implements IAnnotator {
 		}
 		return requirements;
 	}
-
-	public String getAnnotatorID() {
-		return ANNOTATOR_ID;
-	}
-
 }

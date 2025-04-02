@@ -1,10 +1,13 @@
 package org.sidiff.annotator.metric;
 
 import java.util.Collection;
+import java.util.Optional;
 
-import org.eclipse.emf.ecore.*;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 import org.sidiff.annotator.common.Annotator;
-import org.sidiff.common.collections.FilterUtil;
 import org.sidiff.common.emf.access.EMFMetaAccess;
 import org.sidiff.common.emf.access.EMFModelAccess;
 import org.sidiff.common.emf.collections.EMFSelectors;
@@ -20,6 +23,7 @@ public class CountReferencesByType extends Annotator {
 
 	private static final String ANNOTATOR_ID = "CountReferencesByType";
 
+	@Override
 	public void init(EPackage documentType, String annotationKey, String parameter, EClass acceptedType,
 			Collection<String> requiredAnnotations) {
 
@@ -28,24 +32,24 @@ public class CountReferencesByType extends Annotator {
 
 	@Override
 	protected Object computeAnnotationValue(EObject object) {
-		EClass cls = (EClass) EMFMetaAccess.getMetaObjectByName(getDocumentType().getNsURI(),
-				this.getParameter().split(",")[1]);
+		String[] splitParameter = this.getParameter().split(",");
+		EClass cls = (EClass) EMFMetaAccess.getMetaObjectByName(getDocumentType().getNsURI(), splitParameter[1]);
 		if (cls == null)
 			return 0f;
 
-		return new Float(FilterUtil.filter(EMFModelAccess.getNodeNeighbors(object, EMFMetaAccess
-				.getReferencesByNames(object.eClass(), this.getParameter().split(",")[0]).toArray(new EReference[] {})),
-				true, EMFSelectors.byInstance(cls)).size());
+		EReference[] references = EMFMetaAccess.getReferencesByNames(object.eClass(), splitParameter[0]).toArray(new EReference[0]);
+		return (float)EMFModelAccess.getNodeNeighbors(object, references)
+				.stream().filter(EMFSelectors.byInstance(cls)).count();
 	}
 
 	@Override
-	public String getAnnotatorID() {
+	public String getKey() {
 		return ANNOTATOR_ID;
 	}
 
 	@Override
-	public String getDescription() {
-		return "Zaehlt die Elemente, die ueber eine bestimmte Referenz (Parameter 1) erreicht "
-				+ "werden und einen bestimmten Typ (Parameter 2) haben.";
+	public Optional<String> getDescription() {
+		return Optional.of("Zaehlt die Elemente, die ueber eine bestimmte Referenz (Parameter 1) erreicht "
+				+ "werden und einen bestimmten Typ (Parameter 2) haben.");
 	}
 }

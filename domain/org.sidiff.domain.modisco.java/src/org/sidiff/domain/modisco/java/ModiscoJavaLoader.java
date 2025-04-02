@@ -3,9 +3,9 @@ package org.sidiff.domain.modisco.java;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.sidiff.common.emf.modelstorage.AbstractEMFImporter;
+import org.sidiff.domain.modelloader.AbstractEMFImporter;
 
-public class ModiscoJavaLoader extends AbstractEMFImporter{
+public class ModiscoJavaLoader extends AbstractEMFImporter {
 
 	@Override
 	public Map<String, String> getSchemaLocationMappings() {
@@ -19,7 +19,12 @@ public class ModiscoJavaLoader extends AbstractEMFImporter{
 	}
 
 	@Override
-	public String getLoaderDescription() {
+	public String getName() {
 		return "Loader for Modisco Java models";
+	}
+
+	@Override
+	public String getKey() {
+		return "ModiscoJavaLoader";
 	}
 }

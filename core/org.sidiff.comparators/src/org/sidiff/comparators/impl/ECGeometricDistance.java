@@ -1,9 +1,11 @@
 package org.sidiff.comparators.impl;
 
+import java.util.Optional;
+
 import org.eclipse.emf.ecore.EAttribute;
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.sidiff.common.util.NestedParameterUtil;
 import org.sidiff.comparators.abstractcomperators.AbstractElementComparator;
 import org.sidiff.comparators.exceptions.AttributeNotExistsException;
 
@@ -31,7 +33,7 @@ import org.sidiff.comparators.exceptions.AttributeNotExistsException;
  * @author kehrer
  */
 public class ECGeometricDistance extends AbstractElementComparator {
-	public static final String COMPARATOR_ID = "ECGeometricDistance";
+
 	/**
 	 * The EAttribute holding the x value
 	 */
@@ -61,9 +63,8 @@ public class ECGeometricDistance extends AbstractElementComparator {
 	 * @see AttributeNotExistsException
 	 */
 	@Override
-	public void init(EClass dedicatedClass, EClass targetClass, String parameter) {
-		super.init(dedicatedClass, targetClass, parameter);
-
+	protected void init(String parameter) {
+		String[] paramItems = NestedParameterUtil.getParameterSegments(parameter);
 		assert(paramItems.length == 3) : "invalid parameter syntax '" + parameter + "'";
 
 		// first parameter: attribute name for x value
@@ -128,13 +129,8 @@ public class ECGeometricDistance extends AbstractElementComparator {
 	}
 
 	@Override
-	public String getComparatorID() {
-		return COMPARATOR_ID;
+	public Optional<String> getDescription() {
+		return Optional.of("This comparator calculates the geometric distance of two attribute values x and y "
+				+ "and finally compares this distance on a gauss-calculation with the given scale factor.");
 	}
-
-	@Override
-	public String getDescription() {
-		return "This comparator calculates the geometric distance of two attribute values x and y and finally compares this distance on a gauss-calculation with the given scale factor.";
-	}
-
 }

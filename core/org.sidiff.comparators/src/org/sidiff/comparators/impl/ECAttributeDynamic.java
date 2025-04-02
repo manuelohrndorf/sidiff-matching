@@ -1,8 +1,10 @@
 package org.sidiff.comparators.impl;
 
-import org.eclipse.emf.ecore.EClass;
+import java.util.Optional;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.sidiff.common.util.NestedParameterUtil;
 import org.sidiff.comparators.abstractcomperators.AbstractElementComparator;
 import org.sidiff.comparators.abstractcomperators.AbstractValueComparator;
 import org.sidiff.comparators.exceptions.AttributeNotExistsException;
@@ -43,20 +45,17 @@ import org.sidiff.comparators.exceptions.AttributeNotExistsException;
  * 
  * @author Pit Pietsch
  */
-@Deprecated
 public class ECAttributeDynamic extends AbstractElementComparator {
-	public static final String COMPARATOR_ID = "ECAttributeDynamic";
-	private AbstractValueComparator comparator = null;
 
+	private AbstractValueComparator comparator = null;
 	private String attributeName = null;
 
 	@Override
-	public void init(EClass dedicatedClass, EClass targetClass, String parameter) {
-		super.init(dedicatedClass, targetClass, parameter);
-
+	protected void init(String parameter) {
+		String[] paramItems = NestedParameterUtil.getParameterSegments(parameter);
 		// first parameter: comparator
-		comparator = (AbstractValueComparator) loadComparator(paramItems[0], dedicatedClass, targetClass,
-				AbstractValueComparator.class);
+		comparator = loadComparator(paramItems[0], dedicatedClass, targetClass,
+				AbstractValueComparator.class, getCorrespondences(), getSimilarities());
 
 		// second parameter: attribute name
 		attributeName = paramItems[1];
@@ -79,21 +78,17 @@ public class ECAttributeDynamic extends AbstractElementComparator {
 		// get the feature with the given name
 		EStructuralFeature feature = elementA.eClass().getEStructuralFeature(attributeName);
 
-		if (feature == null)
-			throw new AttributeNotExistsException("Attribute does not exist: " + attributeName);
+		if (feature == null) {
+			throw new AttributeNotExistsException("Attribute does not exist: " + attributeName);			
+		}
 
 		// delegate compare attribute values
 		return comparator.compare(contextElementA, contextElementB, elementA.eGet(feature), elementB.eGet(feature));
 	}
 
 	@Override
-	public String getComparatorID() {
-		return COMPARATOR_ID;
-	}
-
-	@Override
-	public String getDescription() {
-		return "This comparator compares the values of the specified attributes of two "
-				+ "elements based on the given inner comparator.";
+	public Optional<String> getDescription() {
+		return Optional.of("This comparator compares the values of the specified attributes of two "
+				+ "elements based on the given inner comparator.");
 	}
 }

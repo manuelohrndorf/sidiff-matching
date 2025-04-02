@@ -8,7 +8,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.osgi.framework.Bundle;
-import org.sidiff.common.io.IOUtil;
 import org.sidiff.common.io.ResourceUtil;
 import org.sidiff.common.xml.XMLParser;
 import org.sidiff.common.xml.XMLResolver;
@@ -23,19 +22,13 @@ public class ConfigurationLoader {
 		XMLResolver.getInstance();
 	}
 
-	public static Document loadConfig(String configFilePath) {
-		Document doc = XMLParser.parseStream(IOUtil.getInputStream(configFilePath));
-		return doc;
-	}
-
 	public static Document loadConfig(InputStream is) {
-		Document doc = XMLParser.parseStream(is);
-		return doc;
+		return XMLParser.parseStream(is);
 	}
 
 	public static Set<URL> getAvailableConfigs(String docType, String confType) {
 		Set<URL> configs = new HashSet<URL>();
-		String prefix = "/" + IConfiguration.CFGFOLDER + "/";
+		String prefix = "/" + IConfiguration.FOLDER_CONFIGS + "/";
 		String suffix = ".xml";
 
 		for (Bundle domainBundle : DomainUtil.getAvailableDomainBundles(docType)) {
@@ -49,16 +42,14 @@ public class ConfigurationLoader {
 		return configs;
 	}
 
-	public static Set<Document> loadAvailableConfigs(String docType, String confType) {
+	public static Set<Document> loadAvailableConfigs(String docType, String confType) throws IOException {
 		Set<Document> availableConfigs = new HashSet<Document>();
 		for (URL url : getAvailableConfigs(docType, confType)) {
-			try {
-				InputStream in = url.openStream();
+			try (InputStream in = url.openStream()) {
 				Document doc = loadConfig(in);
-				if (doc != null)
-					availableConfigs.add(doc);
-			} catch (IOException e) {
-				e.printStackTrace();
+				if (doc != null) {
+					availableConfigs.add(doc);					
+				}
 			}
 		}
 		return availableConfigs;

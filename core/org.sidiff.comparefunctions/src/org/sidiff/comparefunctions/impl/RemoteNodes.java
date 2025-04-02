@@ -1,12 +1,15 @@
 package org.sidiff.comparefunctions.impl;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.sidiff.common.emf.access.EMFMetaAccess;
 import org.sidiff.common.emf.access.EMFModelAccess;
 import org.sidiff.common.emf.access.path.EMFPath;
+import org.sidiff.correspondences.ICorrespondences;
+import org.sidiff.similarities.ISimilarities;
 
 /**
  * This is a compare function for comparing two nodes based on the comparison of
@@ -26,7 +29,6 @@ import org.sidiff.common.emf.access.path.EMFPath;
  * @author Pit Pietsch
  */
 public class RemoteNodes extends AbstractComparatorCompareFunction {
-	public static final String COMPAREFUNCTION_ID = "RemoteNodes";
 	
 	/**
 	 * The path to the remote elements
@@ -45,10 +47,10 @@ public class RemoteNodes extends AbstractComparatorCompareFunction {
 	 * @param parameter
 	 *            The compare function's parameter.
 	 */
-
 	@Override
-	public void init(EClass dedicatedClass, EvaluationPolicy policy, float weight, String parameter) {
-		super.init(dedicatedClass, policy, weight, parameter);
+	public void init(EClass dedicatedClass, EvaluationPolicy policy, float weight, String parameter,
+			ICorrespondences correspondences, ISimilarities similarities) {
+		super.init(dedicatedClass, policy, weight, parameter, correspondences, similarities);
 		path = EMFMetaAccess.translatePath(getEClass(), paramItems[1]);
 	}
 
@@ -63,13 +65,9 @@ public class RemoteNodes extends AbstractComparatorCompareFunction {
 	protected Collection<EObject> getToBeCompared(EObject context) {
 		return EMFModelAccess.evaluatePath(context, path);
 	}
-	@Override
-	public String getCompareFunctionID() {
-		return COMPAREFUNCTION_ID;
-	}
 
 	@Override
-	public String getDescription() {
-		return "This is a compare function for comparing two nodes based on the comparison of remote nodes.";
+	public Optional<String> getDescription() {
+		return Optional.of("This is a compare function for comparing two nodes based on the comparison of remote nodes.");
 	}
 }

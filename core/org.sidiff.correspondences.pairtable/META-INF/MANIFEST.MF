@@ -2,8 +2,10 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: SiDiff Correspondences Service - Pair Table
 Bundle-SymbolicName: org.sidiff.correspondences.pairtable;singleton:=true
-Bundle-Version: 1.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-Version: 1.1.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.sidiff.common.emf;visibility:=reexport,
  org.sidiff.correspondences;visibility:=reexport
 Bundle-Vendor: Software Engineering Group, University of Siegen
+Automatic-Module-Name: org.sidiff.correspondences.pairtable
+Export-Package: org.sidiff.correspondences.pairtable
