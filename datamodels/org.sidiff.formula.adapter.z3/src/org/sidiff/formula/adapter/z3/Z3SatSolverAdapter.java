@@ -28,13 +28,13 @@ public class Z3SatSolverAdapter implements ISatSolverAdapter {
 			BoolExpr boolExpr = new FormulaConverter().convert(formula, ctx);
 
 			Solver solver = ctx.mkSolver();
-			solver.add(boolExpr);
+			solver.add(new BoolExpr[] { boolExpr });
 			Status status = solver.check();
 
 			Map<String, String> assignments = new HashMap<>();
 			if (status == Status.SATISFIABLE) {
-				for (Expr expr : FormulaConverter.getVariables(boolExpr)) {
-					Expr assignment = solver.getModel().getConstInterp(expr);
+				for (Expr<?> expr : FormulaConverter.getVariables(boolExpr)) {
+					Expr<?> assignment = solver.getModel().getConstInterp(expr);
 					assignments.put(expr.toString(), assignment != null ? assignment.toString() : "X");
 				}
 			}
@@ -77,7 +77,7 @@ public class Z3SatSolverAdapter implements ISatSolverAdapter {
 			FormulaConverter converter = new FormulaConverter();
 			BoolExpr boolExpr = converter.convert(formula, ctx);
 
-			Tactic css = ctx.mkTactic("ctx-solver-simplify");
+			Tactic css = ctx.mkTactic("simplify");
 			Goal goal = ctx.mkGoal(true, true, false);
 			goal.add(boolExpr);
 			BoolExpr simplifiedExpr = css.apply(goal).getSubgoals()[0].AsBoolExpr();
@@ -111,14 +111,14 @@ public class Z3SatSolverAdapter implements ISatSolverAdapter {
 				BoolExpr boolExpr = new FormulaConverter().convert(formula, ctx);
 
 				Solver solver = ctx.mkSolver();
-				solver.add(boolExpr);
+				solver.add(new BoolExpr[] { boolExpr });
 
 				Status status;
 				while ((status = solver.check()) == Status.SATISFIABLE) {
 					Map<String, String> assignments = new HashMap<>();
-					Set<Expr> expressions = new HashSet<>();
-					for (Expr expr : FormulaConverter.getVariables(boolExpr)) {
-						Expr assignment = solver.getModel().getConstInterp(expr);
+					Set<Expr<?>> expressions = new HashSet<>();
+					for (Expr<?> expr : FormulaConverter.getVariables(boolExpr)) {
+						Expr<?> assignment = solver.getModel().getConstInterp(expr);
 						if (assignment != null) {
 							assignments.put(expr.toString(), assignment.toString());
 							Boolean b = Boolean.valueOf(assignment.toString());
@@ -128,7 +128,9 @@ public class Z3SatSolverAdapter implements ISatSolverAdapter {
 						}
 					}
 					if (!expressions.isEmpty()) {
-						solver.add(ctx.mkOr(expressions.toArray(new BoolExpr[] {})));
+						solver.add(new BoolExpr[] {
+							ctx.mkOr(expressions.toArray(new BoolExpr[] {}))
+						});
 					}
 					result.add(new SatResult(convertStatusToEStatus(status), formula, assignments));
 				}

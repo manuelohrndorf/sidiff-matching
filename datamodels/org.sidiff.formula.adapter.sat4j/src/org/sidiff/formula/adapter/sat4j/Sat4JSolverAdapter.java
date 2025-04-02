@@ -1,17 +1,22 @@
 package org.sidiff.formula.adapter.sat4j;
 
 import java.time.Duration;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
-import org.eclipse.emf.ecore.EObject;
-import org.sat4j.core.VecInt;
 import org.sat4j.minisat.SolverFactory;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.ISolver;
-import org.sidiff.formula.*;
+import org.sat4j.specs.TimeoutException;
+import org.sidiff.formula.Formula;
 import org.sidiff.formula.adapter.ISatSolverAdapter;
 import org.sidiff.formula.adapter.SatResult;
+import org.sidiff.formula.adapter.SatResult.EStatus;
 import org.sidiff.formula.adapter.exceptions.SatSolverAdapterException;
+import org.sidiff.formula.adapter.sat4j.util.FormulaConverter;
+import org.sidiff.formula.adapter.sat4j.util.FormulaConverter.Sat4J_Mapping;
+
 
 public class Sat4JSolverAdapter implements ISatSolverAdapter {
 
@@ -19,47 +24,51 @@ public class Sat4JSolverAdapter implements ISatSolverAdapter {
 	public SatResult isSatisfiable(Formula formula)  {
 		ISolver solver = SolverFactory.newDefault();
 
-		Formula cnf_Formula = formula.cnf();
-		List<Variable> variables = formula.getVariables();
-		Map<String, Integer> variable2int = new HashMap<>();
-		int varInt = 1;
-		for(Variable variable : variables) {
-			if(!variable2int.containsKey(variable.getName())) {
-				variable2int.put(variable.getName(), varInt);
-				varInt++;
-			}
-		}
+		Sat4J_Mapping mapping = new FormulaConverter().convert(formula);
 
 		// prepare the solver to accept MAXVAR variables. MANDATORY for MAXSAT solving
-		solver.newVar(variable2int.size());
-		Formula[] clauses =  cnf_Formula.getAssociativeFormulas(cnf_Formula.eClass()).toArray(new Formula[] {});
-
-		solver.setExpectedNumberOfClauses(clauses.length);
+		solver.newVar(mapping.getVariables().size());
+		solver.setExpectedNumberOfClauses(mapping.getClauses().size());
 		// Feed the solver using Dimacs format, using arrays of int
 		// (best option to avoid dependencies on SAT4J IVecInt)
-		for (Formula clause : clauses) {
-			VecInt vecInt = new VecInt();
-			for(Variable variable : clause.getVariables()) {
-				int sign = 1;
-				EObject container = variable.eContainer();
-				while(container != null) {
-					if(container instanceof Not) {
-						sign *= -1;
-					}
-					container = container.eContainer();
-				}
-				vecInt.push(sign*variable2int.get(variable.getName()));
-			}
+		Map<String, String> assignments = new HashMap<>();
+		try {
 			try {
-				solver.addClause(vecInt);
-			} catch (ContradictionException e) {
-				throw new RuntimeException(e);
+			solver.addAllClauses(mapping.getClauses());
+			}catch(ContradictionException e) {
+				System.out.println(e.getMessage());
 			}
-		}
+		
+			
+			boolean b = solver.isSatisfiable();
+			
 
-        throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".isSatisfiable(Formula formula)" + " is not supported!");
+			if (b) {
+				int[] solution = solver.model();
+			
+				for(int i = 0; i < solution.length; i++) {
+					int assignment = solution[i];
+					String variable = mapping.getNumbers().get(assignment < 0? assignment*-1: assignment);
+					assignments.put(variable, "true");
+					System.out.println(assignments);
+				}
+			}
+			return new SatResult(convertStatusToEStatus(b), formula, assignments);
+			
+		} catch (TimeoutException e) {
+				return new SatResult(EStatus.TIMEOUT, formula, assignments);			
+		}
+		
+
+//        throw new UnsupportedOperationException(this.getClass().getSimpleName() + ".isSatisfiable(Formula formula)" + " is not supported!");
 	}
 
+	private static EStatus convertStatusToEStatus(boolean bool) {
+		if(bool)
+			return EStatus.SATISFIABLE;
+		else
+			return EStatus.UNSATISFIABLE;
+	}
 	@Override
 	public String getKey() {
 		return this.getClass().getName();

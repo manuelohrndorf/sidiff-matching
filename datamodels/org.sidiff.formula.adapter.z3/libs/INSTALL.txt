@@ -1,0 +1,4 @@
+The Z3 solver binary must be installed separately.
+
+See: https://github.com/Z3Prover/z3/releases
+Version used by this adapter: 4.8.12

@@ -1,6 +1,7 @@
 package org.sidiff.superimposition.signature;
 
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.Assert;
@@ -31,6 +32,9 @@ public interface ISignatureCalculator extends IExtension {
 	}
 
 	/**
+	 * The model accessor interface abstracts the access to an EObject's properties
+	 * to allow other implementations to replace or extend the default Ecore mechanism.
+	 * @see #DEFAULT
 	 * @author rmueller
 	 */
 	interface IModelAccessor {
@@ -43,13 +47,18 @@ public interface ISignatureCalculator extends IExtension {
 		}
 		EClass getType(EObject eObject);
 
-		static IModelAccessor DEFAULT = new DefaultSignatureCalculatorModelAccessor();
+		/**
+		 * Singleton default model accessor which supports the Ecore meta model
+		 * and SuperimposedElements in a SuperimposedModel.
+		 */
+		IModelAccessor DEFAULT = new DefaultSignatureCalculatorModelAccessor();
 	}
 
 	/**
 	 * @author rmueller
 	 */
 	interface IDelegator {
+
 		String delegateCalculateSignature(EObject eObject, IModelAccessor modelAccessor);
 
 		static IDelegator noDelegation() {
@@ -61,7 +70,7 @@ public interface ISignatureCalculator extends IExtension {
 				return noDelegation();
 			}
 			return (eObject, modelAccessor) -> {
-				for(ISignatureCalculator calculator : calculators) {
+				for (ISignatureCalculator calculator : calculators) {
 					String signature = calculator.calculateSignature(eObject, modelAccessor, delegateToOther(calculator, calculators));
 					if(signature != null && !signature.isEmpty()) {
 						return signature;
@@ -72,7 +81,10 @@ public interface ISignatureCalculator extends IExtension {
 		}
 
 		static IDelegator delegateToOther(ISignatureCalculator calculator, List<ISignatureCalculator> calculators) {
-			return delegateToFirstOf(calculators.stream().filter(c -> c != calculator).collect(Collectors.toList()));
+			return delegateToFirstOf(
+					calculators.stream()
+						.filter(Predicate.isEqual(calculator).negate())
+						.collect(Collectors.toList()));
 		}
 	}
 }

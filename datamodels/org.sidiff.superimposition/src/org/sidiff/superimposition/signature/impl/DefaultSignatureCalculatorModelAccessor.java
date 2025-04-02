@@ -1,5 +1,6 @@
 package org.sidiff.superimposition.signature.impl;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +27,9 @@ public class DefaultSignatureCalculatorModelAccessor implements IModelAccessor {
 
 	@Override
 	public EObject getContainer(EObject eObject) {
+		if (eObject == null) {
+			return null;
+		}
 		if (eObject instanceof SuperimposedElement) {
 			return ((SuperimposedElement)eObject).getContainer();
 		}
@@ -34,6 +38,9 @@ public class DefaultSignatureCalculatorModelAccessor implements IModelAccessor {
 
 	@Override
 	public List<EObject> getReferenceTargets(EObject eObject, EReference reference) {
+		if (eObject == null) {
+			return Collections.emptyList();
+		}
 		if (eObject instanceof Element) {
 			return ((Element)eObject).getReferences(reference).stream().map(Reference::getTarget).collect(Collectors.toList());
 		}
@@ -42,6 +49,9 @@ public class DefaultSignatureCalculatorModelAccessor implements IModelAccessor {
 
 	@Override
 	public EClass getType(EObject eObject) {
+		if (eObject == null) {
+			return null;
+		}
 		if (eObject instanceof Element) {
 			return ((Element)eObject).getType();
 		}

@@ -97,7 +97,7 @@ public class PCSimplifier {
 			default: return convertToExpression(LazyLoader.satSolverAdapter.simplify(
 						conditions.stream()
 							.map(PCSimplifier::convertToFormula)
-							.reduce(FormulaUtil::createXor).get().dnf()));
+							.reduce(FormulaUtil::createXor).get()).dnf());
 		}
 	}
 
